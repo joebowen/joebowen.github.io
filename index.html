@@ -3,34 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My GitHub Website</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Joe Bowen - Portfolio</title>
+  <style>
+    :root {
+      --primary-color: #004aad;
+      --text-color: #333;
+      --bg-color: #f8f9fa;
+      --section-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+    }
+
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      max-width: 300px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .profile-container img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 12px var(--shadow);
+      border: 3px solid #fff;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+    }
+
+    section {
+      background: var(--section-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style: disc;
+      margin: 1rem 0 1rem 1.5rem;
+    }
+
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      .profile-container img {
+        width: 110px;
+        height: 110px;
+      }
+
+      main {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>👋 Hi, I'm <span id="username">Your Name</span></h1>
-    <p>Welcome to my GitHub portfolio!</p>
+    <div class="profile-container">
+      <!-- Upload your image below -->
+      <img src="C:\Users\joebo\OneDrive\Pictures\1722543060347.jpg" alt="Joe Bowen headshot" />
+    </div>
+    <h1>Joe Bowen</h1>
+    <p>Statistics & Analytics Student | Digital Engineer | Data Enthusiast</p>
   </header>
 
   <main>
     <section id="about">
       <h2>About Me</h2>
-      <p>I’m a developer who loves building cool stuff!</p>
+      <p>
+        I’m an undergraduate at the University of North Carolina at Chapel Hill (Class of 2026),
+        majoring in Statistics and Analytics. I'm passionate about using technology, analytics, and
+        automation to solve real-world problems.
+      </p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills & Tools</h2>
+      <ul>
+        <li><strong>Languages & Analysis Tools:</strong> Python, R, SQL, JMP Pro, Power BI</li>
+        <li><strong>Developer Tools:</strong> Databricks, VS Code, Docker, Git, Anaconda Navigator, Computer Vision</li>
+        <li><strong>Automation & Control:</strong> Ignition SCADA, TwinCAT 3, Beckhoff PLCs, Kepware</li>
+      </ul>
     </section>
 
     <section id="projects">
-      <h2>My Projects</h2>
+      <h2>Projects</h2>
       <ul>
-        <li><a href="https://github.com/yourusername/project1">Project One</a></li>
-        <li><a href="https://github.com/yourusername/project2">Project Two</a></li>
+        <li><a href="https://github.com/joebowen/KOTK-Facial-Recognition">KOTK Facial Recognition</a></li>
+        <li><a href="https://github.com/joebowen/Project-Vera">Project VERA</a></li>
       </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:joe.bowen13@gmail.com">joe.bowen13@gmail.com</a></p>
+      <p>LinkedIn: <a href="https://www.linkedin.com/in/michael-j-bowen/" target="_blank">linkedin.com/in/michael-j-bowen</a></p>
     </section>
   </main>
 
   <footer>
-    <p>💡 Built with ❤️ using HTML, CSS, and JavaScript.</p>
+    <p>&copy; 2025 Joe Bowen • Built with HTML, CSS, and JavaScript</p>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
