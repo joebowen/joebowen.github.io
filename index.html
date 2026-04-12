@@ -300,6 +300,103 @@
       font-size: 0.95rem;
     }
 
+    .music-card {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+      text-align: left;
+    }
+
+    .music-heading {
+      margin: 0 0 14px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .music-link-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-radius: 14px;
+      padding: 8px;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .song-cover {
+      width: 74px;
+      height: 74px;
+      object-fit: cover;
+      border-radius: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .song-meta {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .song-title {
+      margin: 0 0 4px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: white;
+    }
+
+    .song-artist {
+      margin: 0 0 8px;
+      font-size: 0.88rem;
+      line-height: 1.25;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .listen-text {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .audio-player {
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .shuffle-btn {
+      margin-top: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .shuffle-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .music-card.is-changing .song-cover,
+    .music-card.is-changing .song-title,
+    .music-card.is-changing .song-artist,
+    .music-card.is-changing .listen-text {
+      opacity: 0.45;
+      transform: scale(0.98);
+    }
+
     @media (max-width: 980px) {
       .hero-layout {
         grid-template-columns: 1fr;
@@ -360,6 +457,24 @@
       .section-heading h2 {
         font-size: 1.7rem;
       }
+
+      .music-link-wrap {
+        gap: 12px;
+      }
+
+      .song-cover {
+        width: 66px;
+        height: 66px;
+      }
+
+      .song-title {
+        font-size: 0.92rem;
+      }
+
+      .song-artist,
+      .listen-text {
+        font-size: 0.82rem;
+      }
     }
   </style>
 </head>
@@ -391,6 +506,29 @@
           <a class="social-btn" href="https://linkedin.com/in/michael-j-bowen" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">in</a>
           <a class="social-btn" href="https://github.com/joebowen" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">⌘</a>
         </div>
+
+        <div class="music-card" id="music-card">
+          <h3 class="music-heading">My current favorites 🔥</h3>
+
+          <div class="music-link-wrap">
+            <img id="song-cover" src="images/song1.jpg" alt="Song cover art" class="song-cover" />
+
+            <div class="song-meta">
+              <p id="song-title" class="song-title">SONG TITLE 1</p>
+              <p id="song-artist" class="song-artist">ARTIST 1</p>
+              <span class="listen-text"></span>
+            </div>
+          </div>
+
+          <audio id="song-player" class="audio-player" controls>
+            <source src="audio/song1.mp3" type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+
+          <button id="shuffle-song-btn" class="shuffle-btn" type="button">
+            shuffle
+          </button>
+        </div>
       </aside>
 
       <section class="content">
@@ -400,32 +538,30 @@
             <h2>About Me</h2>
           </div>
 
-        <p>
-          I am a recent graduate from the University of North Carolina at Chapel Hill,
-          where I received my bachelor's degree in Statistics from the department of
-          <a href="https://stor.unc.edu/" target="_blank" rel="noopener noreferrer">
-            <strong>Statistics and Operations Research (STOR)</strong>
-          </a>.
-        </p>
+          <p>
+            I am a recent graduate from the University of North Carolina at Chapel Hill,
+            where I received my bachelor's degree in Statistics from the department of
+            <a href="https://stor.unc.edu/" target="_blank" rel="noopener noreferrer">
+              <strong>Statistics and Operations Research (STOR)</strong>
+            </a>.
+          </p>
 
-      <div style="margin-top: 2rem;">
-        <h3 style="text-align: left; margin-bottom: 0.5rem;">Notable Coursework</h3>
+          <div style="margin-top: 2rem;">
+            <h3 style="text-align: left; margin-bottom: 0.5rem;">Notable Coursework</h3>
 
-        <ul style="text-align: left; padding-left: 1.5rem; margin-top: 0;">
-          <li>Stochastic Modeling</li>
-          <li>Optimization for Machine Learning and Neural Networks</li>
-          <li>Methods of Data Analysis</li>
-          <li>Data Structures and Analysis</li>
-          <li>Linear Algebra for Applications</li>
-          <li>Calculus-Based Probability</li>
-        </ul>
-      </div>
+            <ul style="text-align: left; padding-left: 1.5rem; margin-top: 0;">
+              <li>Stochastic Modeling</li>
+              <li>Optimization for Machine Learning and Neural Networks</li>
+              <li>Methods of Data Analysis</li>
+              <li>Data Structures and Analysis</li>
+              <li>Linear Algebra for Applications</li>
+              <li>Calculus-Based Probability</li>
+            </ul>
+          </div>
 
-      <p class="muted" style="margin-top: 1.5rem;">
-        My interests include machine/deep learning for applications, statistical analysis for data driven decision making, as well as computer vision and automation.
-      </p>
-
-
+          <p class="muted" style="margin-top: 1.5rem;">
+            My interests include machine/deep learning for applications, statistical analysis for data driven decision making, as well as computer vision and automation.
+          </p>
         </section>
 
         <section id="skills" class="section">
@@ -503,22 +639,24 @@
                 </p>
               </div>
             </a>
-            </div>
-            </section>
+          </div>
+        </section>
 
         <section id="resume" class="section">
           <div class="section-heading">
             <div class="section-icon">📄</div>
             <h2>Resume</h2>
           </div>
+
           <p>
-            You can find the most recent copy of my resume 
+            You can find the most recent copy of my resume
             <a href="JoeBowen_Resume.pdf" target="_blank" rel="noopener"><strong>here.</strong></a>
           </p>
 
-        <footer>
-          © 2026 Joe Bowen • Built with HTML and CSS
-        </footer>
+          <footer>
+            © 2026 Joe Bowen • Built with HTML, CSS and Javascript.
+          </footer>
+        </section>
       </section>
     </div>
   </main>
@@ -533,6 +671,85 @@
         }
       });
     });
+
+    const songs = [
+      {
+        title: "Valley Winter Song",
+        artist: "Fountains of Wayne",
+        cover: "images/fountainsofwayne.jpg",
+        audio: "audio/Valley Winter Song.mp3"
+      },
+      {
+        title: "Homewrecker",
+        artist: "Sombr",
+        cover: "images/sombr.png",
+        audio: "audio/sombr Homewrecker Audio.mp3"
+      },
+      {
+        title: "Dugout",
+        artist: "The Backseat Lovers",
+        cover: "images/backseatlovers.jpg",
+        audio: "audio/Dugout.mp3"
+      },
+      {
+        title: "Digital Love",
+        artist: "Daft Punk",
+        cover: "images/Daft_Punk.png",
+        audio: "audio/Daft Punk - Digital Love (Official Audio).mp3"
+      },
+      {
+        title: "Good Does It Do",
+        artist: "Solon Holt",
+        cover: "images/solonholt.jpg",
+        audio: "audio/Good Does It Do.mp3"
+      }
+    ];
+
+    const musicCard = document.getElementById("music-card");
+    const songCover = document.getElementById("song-cover");
+    const songTitle = document.getElementById("song-title");
+    const songArtist = document.getElementById("song-artist");
+    const songPlayer = document.getElementById("song-player");
+    const shuffleSongBtn = document.getElementById("shuffle-song-btn");
+
+    let currentSongIndex = 0;
+
+    function renderSong(index, autoplay = false) {
+      const song = songs[index];
+
+      songCover.src = song.cover;
+      songCover.alt = song.title + " cover art";
+      songTitle.textContent = song.title;
+      songArtist.textContent = song.artist;
+
+      songPlayer.src = song.audio;
+      songPlayer.load();
+
+      if (autoplay) {
+        songPlayer.play().catch(() => {});
+      }
+    }
+
+    function shuffleSong() {
+      if (songs.length < 2) return;
+
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * songs.length);
+      } while (newIndex === currentSongIndex);
+
+      musicCard.classList.add("is-changing");
+
+      setTimeout(() => {
+        currentSongIndex = newIndex;
+        renderSong(currentSongIndex, true);
+        musicCard.classList.remove("is-changing");
+      }, 180);
+    }
+
+    shuffleSongBtn.addEventListener("click", shuffleSong);
+
+    renderSong(currentSongIndex);
   </script>
 </body>
 </html>
