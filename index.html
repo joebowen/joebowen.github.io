@@ -525,8 +525,8 @@
             Your browser does not support the audio element.
           </audio>
 
-          <button id="shuffle-song-btn" class="shuffle-btn" type="button">
-            shuffle
+          <button id="next-song-btn" class="shuffle-btn" type="button">
+            next song
           </button>
         </div>
       </aside>
@@ -710,44 +710,39 @@
     const songTitle = document.getElementById("song-title");
     const songArtist = document.getElementById("song-artist");
     const songPlayer = document.getElementById("song-player");
-    const shuffleSongBtn = document.getElementById("shuffle-song-btn");
+    const nextSongBtn = document.getElementById("next-song-btn");
 
     let currentSongIndex = 0;
 
     function renderSong(index, autoplay = false) {
       const song = songs[index];
 
-      songCover.src = song.cover;
-      songCover.alt = song.title + " cover art";
-      songTitle.textContent = song.title;
-      songArtist.textContent = song.artist;
-
-      songPlayer.src = song.audio;
-      songPlayer.load();
-
-      if (autoplay) {
-        songPlayer.play().catch(() => {});
-      }
-    }
-
-    function shuffleSong() {
-      if (songs.length < 2) return;
-
-      let newIndex;
-      do {
-        newIndex = Math.floor(Math.random() * songs.length);
-      } while (newIndex === currentSongIndex);
-
       musicCard.classList.add("is-changing");
 
       setTimeout(() => {
-        currentSongIndex = newIndex;
-        renderSong(currentSongIndex, true);
+        songCover.src = song.cover;
+        songCover.alt = song.title + " cover art";
+        songTitle.textContent = song.title;
+        songArtist.textContent = song.artist;
+
+        songPlayer.src = song.audio;
+        songPlayer.load();
+
+        if (autoplay) {
+          songPlayer.play().catch(() => {});
+        }
+
         musicCard.classList.remove("is-changing");
       }, 180);
     }
 
-    shuffleSongBtn.addEventListener("click", shuffleSong);
+    function playNextSong() {
+      currentSongIndex = (currentSongIndex + 1) % songs.length;
+      renderSong(currentSongIndex, true);
+    }
+
+    songPlayer.addEventListener("ended", playNextSong);
+    nextSongBtn.addEventListener("click", playNextSong);
 
     renderSong(currentSongIndex);
   </script>
