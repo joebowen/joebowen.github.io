@@ -203,6 +203,10 @@
       align-items: start;
     }
 
+    .timeline-section {
+      grid-column: 1 / -1;
+    }
+
     .sidebar {
       background:
         linear-gradient(180deg, rgba(15, 23, 42, 0.84), rgba(2, 6, 23, 0.72));
@@ -402,6 +406,20 @@
       width: 100%;
     }
 
+    .project-video {
+      margin-top: 1rem;
+      width: 320px;
+      max-width: 100%;
+    }
+
+    .project-video video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
     .projects-more a {
       font-weight: 700;
     }
@@ -428,9 +446,6 @@
 
     .timeline-shell {
       position: relative;
-      display: grid;
-      grid-template-columns: minmax(240px, 0.85fr) minmax(280px, 1.15fr);
-      gap: 2rem;
       margin-top: 2.5rem;
       padding: 1.3rem;
       border-radius: 24px;
@@ -460,7 +475,6 @@
       opacity: 0.55;
     }
 
-    .timeline-map,
     .timeline-list {
       position: relative;
       z-index: 1;
@@ -478,195 +492,6 @@
       height: 105%;
       object-fit: cover;
       display: block;
-    }
-
-    .timeline-map {
-      min-height: 520px;
-      border-radius: 20px;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 45% 50%, rgba(0, 229, 255, 0.14), transparent 18%),
-        radial-gradient(circle at 30% 70%, rgba(255, 138, 0, 0.08), transparent 16%),
-        linear-gradient(135deg, rgba(2, 6, 23, 0.72), rgba(15, 23, 42, 0.86) 52%, rgba(1, 4, 9, 0.88));
-      border: 1px solid rgba(0, 229, 255, 0.12);
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-        inset 0 0 80px rgba(0, 0, 0, 0.6);
-    }
-
-    .map-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0, 229, 255, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.045) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(circle at center, black 38%, transparent 84%);
-    }
-
-    .map-glow {
-      position: absolute;
-      inset: 8%;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(0, 229, 255, 0.14), transparent 58%);
-      filter: blur(10px);
-    }
-
-    .map-roads span {
-      position: absolute;
-      display: block;
-      height: 2px;
-      width: 62%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(148, 163, 184, 0.32),
-        rgba(0, 229, 255, 0.36),
-        transparent
-      );
-      transform-origin: center;
-      opacity: 0.85;
-    }
-
-    .road-1 {
-      top: 25%;
-      left: 5%;
-      transform: rotate(12deg);
-    }
-
-    .road-2 {
-      top: 42%;
-      left: 20%;
-      transform: rotate(-18deg);
-    }
-
-    .road-3 {
-      top: 58%;
-      left: 2%;
-      transform: rotate(30deg);
-    }
-
-    .road-4 {
-      top: 70%;
-      left: 25%;
-      transform: rotate(-8deg);
-    }
-
-    .road-5 {
-      top: 35%;
-      left: 40%;
-      transform: rotate(68deg);
-    }
-
-    .road-6 {
-      top: 50%;
-      left: 10%;
-      transform: rotate(82deg);
-    }
-
-    .road-7 {
-      top: 18%;
-      left: 28%;
-      transform: rotate(-32deg);
-    }
-
-    .road-8 {
-      top: 78%;
-      left: 4%;
-      transform: rotate(18deg);
-    }
-
-    .map-label {
-      position: absolute;
-      color: rgba(226, 232, 240, 0.34);
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(0, 229, 255, 0.18);
-    }
-
-    .label-1 {
-      top: 33%;
-      left: 34%;
-    }
-
-    .label-2 {
-      top: 54%;
-      left: 57%;
-    }
-
-    .label-3 {
-      top: 68%;
-      left: 22%;
-    }
-
-    .label-4 {
-      top: 18%;
-      left: 58%;
-    }
-
-    .map-node {
-      position: absolute;
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 999px;
-      background: rgba(0, 229, 255, 0.55);
-      border: 1px solid rgba(230, 255, 255, 0.8);
-      box-shadow:
-        0 0 0 4px rgba(0, 229, 255, 0.09),
-        0 0 18px rgba(0, 229, 255, 0.42);
-      transform: translate(-50%, -50%);
-      opacity: 0.65;
-      transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
-    }
-
-    .map-node.node-active {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.25);
-      background: var(--tron);
-    }
-
-    .map-marker {
-      position: absolute;
-      left: 32%;
-      top: 48%;
-      width: 1.15rem;
-      height: 1.15rem;
-      border-radius: 999px;
-      background: var(--tron);
-      border: 2px solid #eaffff;
-      box-shadow:
-        0 0 0 6px rgba(0, 229, 255, 0.18),
-        0 0 24px rgba(0, 229, 255, 0.95),
-        0 0 52px rgba(0, 229, 255, 0.55);
-      transform: translate(-50%, -50%);
-      transition:
-        left 350ms ease,
-        top 350ms ease,
-        box-shadow 250ms ease;
-    }
-
-    .map-marker::after {
-      content: "";
-      position: absolute;
-      inset: -14px;
-      border-radius: inherit;
-      border: 1px solid rgba(0, 229, 255, 0.55);
-      animation: markerPulse 1.6s ease-out infinite;
-    }
-
-    @keyframes markerPulse {
-      from {
-        transform: scale(0.65);
-        opacity: 0.9;
-      }
-
-      to {
-        transform: scale(1.9);
-        opacity: 0;
-      }
     }
 
     .timeline-list {
@@ -724,7 +549,6 @@
       display: grid;
       grid-template-columns: 1.75rem 1fr;
       gap: 1rem;
-      cursor: pointer;
       outline: none;
     }
 
@@ -739,11 +563,6 @@
       background: #101827;
       border: 2px solid rgba(148, 163, 184, 0.7);
       box-shadow: 0 0 0 5px rgba(2, 6, 23, 0.94);
-      transition:
-        background 200ms ease,
-        border-color 200ms ease,
-        box-shadow 200ms ease,
-        transform 200ms ease;
     }
 
     .timeline-card {
@@ -758,11 +577,6 @@
         0 14px 34px rgba(0, 0, 0, 0.24),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
       overflow: hidden;
-      transition:
-        transform 220ms ease,
-        border-color 220ms ease,
-        box-shadow 220ms ease,
-        background 220ms ease;
     }
 
     .timeline-card::before {
@@ -777,36 +591,6 @@
         transparent 34%
       );
       opacity: 0;
-      transition: opacity 220ms ease;
-    }
-
-    .timeline-item:hover .timeline-card,
-    .timeline-item:focus-visible .timeline-card,
-    .timeline-item.active .timeline-card {
-      transform: translateX(0.3rem);
-      border-color: rgba(0, 229, 255, 0.45);
-      box-shadow:
-        0 18px 44px rgba(0, 0, 0, 0.34),
-        0 0 32px rgba(0, 229, 255, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    }
-
-    .timeline-item:hover .timeline-card::before,
-    .timeline-item:focus-visible .timeline-card::before,
-    .timeline-item.active .timeline-card::before {
-      opacity: 1;
-    }
-
-    .timeline-item:hover .timeline-dot,
-    .timeline-item:focus-visible .timeline-dot,
-    .timeline-item.active .timeline-dot {
-      background: var(--tron);
-      border-color: #eaffff;
-      transform: scale(1.12);
-      box-shadow:
-        0 0 0 5px rgba(2, 6, 23, 0.95),
-        0 0 0 9px rgba(0, 229, 255, 0.15),
-        0 0 24px rgba(0, 229, 255, 0.75);
     }
 
     .timeline-card-icon {
@@ -865,6 +649,7 @@
     }
 
     footer {
+      grid-column: 1 / -1;
       margin-top: 30px;
       text-align: center;
       color: var(--soft);
@@ -992,14 +777,6 @@
       .section-heading h2 {
         font-size: 1.9rem;
       }
-
-      .timeline-shell {
-        grid-template-columns: 1fr;
-      }
-
-      .timeline-map {
-        min-height: 340px;
-      }
     }
 
     @media (max-width: 700px) {
@@ -1064,10 +841,6 @@
         border-radius: 20px;
       }
 
-      .timeline-map {
-        min-height: 290px;
-      }
-
       .timeline-item {
         grid-template-columns: 1.4rem 1fr;
         gap: 0.8rem;
@@ -1100,20 +873,12 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .tron-bg::after,
-      .map-marker::after {
+      .tron-bg::after {
         animation: none;
       }
 
       #light-cycle-canvas {
         opacity: 0.35;
-      }
-
-      .map-marker,
-      .timeline-card,
-      .timeline-dot,
-      .map-node {
-        transition: none;
       }
     }
   </style>
@@ -1215,134 +980,121 @@
               <strong><u>here.</u></strong>
             </a>
           </p>
-        </section>
 
-        <section id="timeline" class="section">
-          <div class="section-heading">
-            <div class="section-icon">⌁</div>
-            <h2>Timeline</h2>
+          <p class="muted" style="margin-top: 1.5rem;">
+            Check out my latest
+            <a href="https://github.com/joebowen/KOTK-Facial-Recognition" target="_blank" rel="noopener noreferrer">
+              <strong><u>project</u></strong>
+            </a>.
+          </p>
+
+          <div class="project-video">
+            <video controls>
+              <source src="images/Facial Recognition - Test.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
+                  </section>
+                </section>
 
-          <div class="timeline-shell">
-            <div class="timeline-map" aria-hidden="true">
-              <div class="map-grid"></div>
-              <div class="map-glow"></div>
+      <section id="timeline" class="section timeline-section">
+        <div class="section-heading">
+          <div class="section-icon">⏳</div>
+          <h2>Timeline</h2>
+        </div>
 
-              <div class="map-roads">
-                <span class="road-1"></span>
-                <span class="road-2"></span>
-                <span class="road-3"></span>
-                <span class="road-4"></span>
-                <span class="road-5"></span>
-                <span class="road-6"></span>
-                <span class="road-7"></span>
-                <span class="road-8"></span>
-              </div>
+        <div class="timeline-shell">
+          <div class="timeline-list">
+            <div class="timeline-track">
+              <article class="timeline-item" tabindex="0">
+                <div class="timeline-dot"></div>
 
-              <div class="map-label label-1">CITY</div>
-              <div class="map-label label-2">DISTRICT</div>
-              <div class="map-label label-3">AREA</div>
-              <div class="map-label label-4">ZONE</div>
-
-              <div class="map-node node-active" data-node="0" style="left: 32%; top: 48%;"></div>
-              <div class="map-node" data-node="1" style="left: 55%; top: 52%;"></div>
-              <div class="map-node" data-node="2" style="left: 43%; top: 68%;"></div>
-
-              <div class="map-marker active" id="timelineMapMarker"></div>
-            </div>
-
-            <div class="timeline-list">
-
-              <div class="timeline-track">
-                <article class="timeline-item active" tabindex="0" data-map-x="55" data-map-y="52" data-node-index="1">
-                  <div class="timeline-dot"></div>
-
-                  <div class="timeline-card">
-                    <div class="timeline-card-icon">
-                      <img src = "images/timeline/texas_logo.jpg">
-                    </div>
-
-                    <h3 class="timeline-card-title">
-                      Master's Degree
-                    </h3>
-                      
-                    <div class="timeline-meta">
-                      <strong>University of Texas at Austin</strong>
-                    </div>
-
-                    <div class="timeline-date">
-                      August 2026 - Present
-                    </div>
-
-                    <p class="timeline-description">
-                      M.S. - Computer Science (online)
-                    </p>
+                <div class="timeline-card">
+                  <div class="timeline-card-icon">
+                    <img src="images/timeline/texas_logo.jpg">
                   </div>
-                </article>
 
-                <article class="timeline-item active" tabindex="0" data-map-x="32" data-map-y="48" data-node-index="0">
-                  <div class="timeline-dot"></div>
-
-                  <div class="timeline-card">
-                    <div class="timeline-card-icon">
-                      <img src = "images/timeline/corning_logo.png">
-                    </div>
-
-                    <h3 class="timeline-card-title">
-                      Digial Engineer
-                    </h3>
-
-                    <div class="timeline-meta">
-                      <strong>Corning - </strong>
-                      <span>Wilmington, NC</span>
-                    </div>
-
-                    <div class="timeline-date">
-                      June 2026 - Present
-                    </div>
-
-                    <p class="timeline-description">
-                      <!-- description goes here -->
-                    </p>
+                  <h3 class="timeline-card-title">
+                    Master's Degree
+                  </h3>
+                    
+                  <div class="timeline-meta">
+                    <strong>University of Texas at Austin - </strong>
+                    <span>Online</span>
                   </div>
-                </article>
 
-                <article class="timeline-item" tabindex="0" data-map-x="43" data-map-y="68" data-node-index="2">
-                  <div class="timeline-dot"></div>
-
-                  <div class="timeline-card">
-                    <div class="timeline-card-icon">
-                      <img src = "images/timeline/unc_logo.jpg">
-                    </div>
-
-                    <h3 class="timeline-card-title">
-                      Bachelor's Degree
-                    </h3>
-
-                    <div class="timeline-meta">
-                      <strong>UNC Chapel Hill - </strong>
-                      <span>Chapel Hill, NC</span>
-                    </div>
-
-                    <div class="timeline-date">
-                      August 2023 - May 2026
-                    </div>
-
-                    <p class="timeline-description">
-                      B.S. - Statistics and Analytis
-                    </p>
+                  <div class="timeline-date">
+                    Starting August 2026
                   </div>
-                </article>
-              </div>
+
+                  <p class="timeline-description">
+                    M.S. - Computer Science 
+                  </p>
+                </div>
+              </article>
+
+              <article class="timeline-item" tabindex="0">
+                <div class="timeline-dot"></div>
+
+                <div class="timeline-card">
+                  <div class="timeline-card-icon">
+                    <img src="images/timeline/corning_logo.png">
+                  </div>
+
+                  <h3 class="timeline-card-title">
+                    Digital Engineer
+                  </h3>
+
+                  <div class="timeline-meta">
+                    <strong>Corning Incorporated - </strong>
+                    <span>Wilmington, NC</span>
+                  </div>
+
+                  <div class="timeline-date">
+                    June 2026 - Present
+                  </div>
+
+                  <p class="timeline-description">
+                    <!-- description goes here -->
+                  </p>
+                </div>
+              </article>
+
+              <article class="timeline-item" tabindex="0">
+                <div class="timeline-dot"></div>
+
+                <div class="timeline-card">
+                  <div class="timeline-card-icon">
+                    <img src="images/timeline/unc_logo.jpg">
+                  </div>
+
+                  <h3 class="timeline-card-title">
+                    Bachelor's Degree
+                  </h3>
+
+                  <div class="timeline-meta">
+                    <strong>UNC Chapel Hill - </strong>
+                    <span>Chapel Hill, NC</span>
+                  </div>
+
+                  <div class="timeline-date">
+                    August 2023 - May 2026
+                  </div>
+
+                  <p class="timeline-description">
+                    B.S. - Statistics and Analytis
+                  </p>
+                </div>
+              </article>
             </div>
           </div>
-        </section>
-
-        <footer>
-          © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
-          Last updated: 4/16/2026
-        </footer>
+        </div>
       </section>
+
+      <footer>
+        © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
+        Last updated: 5/17/2026
+      </footer>
     </div>
   </main>
 
@@ -1356,53 +1108,6 @@
         }
       });
     });
-
-    const timelineItems = document.querySelectorAll(".timeline-item");
-    const timelineMapMarker = document.getElementById("timelineMapMarker");
-    const timelineMapNodes = document.querySelectorAll(".map-node");
-
-    function activateTimelineItem(item) {
-      if (!item || !timelineMapMarker) return;
-
-      const x = item.dataset.mapX;
-      const y = item.dataset.mapY;
-      const nodeIndex = item.dataset.nodeIndex;
-
-      timelineItems.forEach(timelineItem => {
-        timelineItem.classList.remove("active");
-      });
-
-      timelineMapNodes.forEach(node => {
-        node.classList.remove("node-active");
-      });
-
-      item.classList.add("active");
-
-      const matchingNode = document.querySelector(`.map-node[data-node="${nodeIndex}"]`);
-
-      if (matchingNode) {
-        matchingNode.classList.add("node-active");
-      }
-
-      timelineMapMarker.style.left = `${x}%`;
-      timelineMapMarker.style.top = `${y}%`;
-    }
-
-    if (timelineItems.length && timelineMapMarker) {
-      timelineItems.forEach(item => {
-        item.addEventListener("mouseenter", () => {
-          activateTimelineItem(item);
-        });
-
-        item.addEventListener("focusin", () => {
-          activateTimelineItem(item);
-        });
-
-        item.addEventListener("click", () => {
-          activateTimelineItem(item);
-        });
-      });
-    }
 
     const songs = [
       {
@@ -1569,8 +1274,24 @@
       return (direction + 2) % 4;
     }
 
-    function getOppositeTeam(team) {
-      return team === "blue" ? "orange" : "blue";
+    function findNearestEnemy(cycle) {
+      let nearest = null;
+      let nearestDistance = Infinity;
+
+      for (const other of cycles) {
+        if (!other.alive || other.team === cycle.team) continue;
+
+        const distance =
+          Math.abs(other.cx - cycle.cx) +
+          Math.abs(other.cy - cycle.cy);
+
+        if (distance < nearestDistance) {
+          nearest = other;
+          nearestDistance = distance;
+        }
+      }
+
+      return nearest;
     }
 
     function cycleAge(cycle) {
@@ -1703,37 +1424,12 @@
       return occupant && occupant.team === cycle.team;
     }
 
-    function isOppositeColorCell(cycle, cx, cy) {
-      const occupant = getOccupant(cx, cy);
-      return occupant && occupant.team !== cycle.team;
-    }
-
     function isSoftBlocked(cycle, cx, cy) {
       if (isWall(cx, cy)) {
         return true;
       }
 
       return isOwnColorCell(cycle, cx, cy);
-    }
-
-    function findNearestEnemy(cycle) {
-      let nearest = null;
-      let nearestDistance = Infinity;
-
-      for (const other of cycles) {
-        if (!other.alive || other.team === cycle.team) continue;
-
-        const distance =
-          Math.abs(other.cx - cycle.cx) +
-          Math.abs(other.cy - cycle.cy);
-
-        if (distance < nearestDistance) {
-          nearest = other;
-          nearestDistance = distance;
-        }
-      }
-
-      return nearest;
     }
 
     function getEnemyTrailTargets(cycle) {
