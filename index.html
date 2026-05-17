@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🚀 Joe Bowen</title>
+  <title>Joe Bowen</title>
+  <link rel="icon" type="image/png" href="images/icons/JB_Icon.png">
+
   <style>
     :root {
       --bg-1: #0f172a;
@@ -16,6 +18,7 @@
       --soft: #94a3b8;
       --accent: #60a5fa;
       --accent-2: #93c5fd;
+      --tron: #00e5ff;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     }
 
@@ -32,12 +35,85 @@
     body {
       font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, #22345f 0%, transparent 35%),
-        radial-gradient(circle at bottom right, #163544 0%, transparent 30%),
-        linear-gradient(135deg, var(--bg-2), var(--bg-1) 55%, #10222f 100%);
+      background: #030712;
       min-height: 100vh;
       line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /*
+      Updated Tron-style background layer.
+    */
+    .tron-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(0, 229, 255, 0.13), transparent 34rem),
+        radial-gradient(circle at 18% 78%, rgba(255, 138, 0, 0.12), transparent 28rem),
+        radial-gradient(circle at 82% 72%, rgba(96, 165, 250, 0.09), transparent 26rem),
+        linear-gradient(180deg, #020617 0%, #030712 52%, #010409 100%);
+    }
+
+    .tron-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.075) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.55;
+      transform: perspective(800px) rotateX(58deg) translateY(12%);
+      transform-origin: center bottom;
+    }
+
+    .tron-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(2, 6, 23, 0.24) 0%,
+          transparent 28%,
+          rgba(2, 6, 23, 0.58) 76%,
+          rgba(1, 4, 9, 0.92) 100%
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      opacity: 0.7;
+      animation: scanMove 5s linear infinite;
+    }
+
+    /*
+      Autonomous light cycle canvas.
+    */
+    #light-cycle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -9;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 1;
+    }
+
+    @keyframes scanMove {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 0 40px;
+      }
     }
 
     a {
@@ -49,9 +125,10 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(10, 15, 30, 0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(3, 7, 18, 0.78);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.14);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
     }
 
     .nav-inner {
@@ -70,6 +147,9 @@
       font-weight: 700;
       letter-spacing: 0.4px;
       color: white;
+      text-shadow:
+        0 0 10px rgba(0, 229, 255, 0.55),
+        0 0 26px rgba(0, 229, 255, 0.25);
     }
 
     .nav-links {
@@ -81,17 +161,22 @@
     .nav-links a {
       color: var(--muted);
       font-size: 0.98rem;
-      transition: color 0.2s ease;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
     }
 
     .nav-links a:hover {
       color: white;
+      text-shadow:
+        0 0 8px rgba(0, 229, 255, 0.85),
+        0 0 20px rgba(0, 229, 255, 0.45);
     }
 
     .main {
       max-width: 1200px;
       margin: 0 auto;
       padding: 44px 24px 56px;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-layout {
@@ -102,14 +187,18 @@
     }
 
     .sidebar {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid var(--panel-border);
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.84), rgba(2, 6, 23, 0.72));
+      border: 1px solid rgba(0, 229, 255, 0.16);
       border-radius: 28px;
       padding: 32px 24px;
-      box-shadow: var(--shadow);
+      box-shadow:
+        var(--shadow),
+        0 0 28px rgba(0, 229, 255, 0.07);
       text-align: center;
       position: sticky;
       top: 104px;
+      backdrop-filter: blur(14px);
     }
 
     .avatar-wrap {
@@ -124,7 +213,9 @@
       border-radius: 50%;
       border: 4px solid rgba(255,255,255,0.95);
       object-fit: cover;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.35),
+        0 0 30px rgba(0, 229, 255, 0.12);
       background: #1e293b;
     }
 
@@ -134,6 +225,9 @@
       font-weight: 800;
       margin-bottom: 12px;
       letter-spacing: -0.03em;
+      text-shadow:
+        0 0 10px rgba(0, 229, 255, 0.32),
+        0 0 24px rgba(0, 229, 255, 0.12);
     }
 
     .role {
@@ -157,10 +251,10 @@
     }
 
     .social-icon {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    display: block;
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      display: block;
     }
 
     .social-btn {
@@ -171,24 +265,29 @@
       align-items: center;
       justify-content: center;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(0, 229, 255, 0.16);
       color: white;
       font-size: 1.1rem;
-      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .social-btn:hover {
       transform: translateY(-2px);
       background: rgba(96,165,250,0.18);
-      border-color: rgba(147,197,253,0.45);
+      border-color: rgba(0, 229, 255, 0.5);
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.18);
     }
 
     .content {
-      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
-      border: 1px solid var(--panel-border);
+      background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.84), rgba(2, 6, 23, 0.72));
+      border: 1px solid rgba(0, 229, 255, 0.15);
       border-radius: 28px;
       padding: 40px;
-      box-shadow: var(--shadow);
+      box-shadow:
+        var(--shadow),
+        0 0 32px rgba(0, 229, 255, 0.06);
+      backdrop-filter: blur(14px);
     }
 
     .section {
@@ -216,7 +315,8 @@
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
-      border: 1px solid rgba(96,165,250,0.18);
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.08);
     }
 
     .section-heading h2 {
@@ -245,7 +345,7 @@
 
     .card {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(0, 229, 255, 0.13);
       border-radius: 18px;
       padding: 20px;
     }
@@ -269,7 +369,7 @@
 
     .project:hover {
       transform: translateY(-4px);
-      border-color: rgba(96,165,250,0.3);
+      border-color: rgba(0, 229, 255, 0.36);
       background: rgba(255,255,255,0.06);
     }
 
@@ -281,13 +381,13 @@
     }
 
     .projects-more {
-    grid-column: 1 / -1;
-    width: 100%;
-  }
+      grid-column: 1 / -1;
+      width: 100%;
+    }
 
     .projects-more a {
-    font-weight: 700;
-}
+      font-weight: 700;
+    }
 
     .contact-list {
       display: grid;
@@ -299,7 +399,7 @@
       padding: 16px 18px;
       border-radius: 16px;
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(0, 229, 255, 0.13);
       color: var(--muted);
     }
 
@@ -321,9 +421,11 @@
       padding: 16px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.14);
       color: #fff;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.16),
+        0 0 20px rgba(0, 229, 255, 0.05);
       text-align: left;
     }
 
@@ -392,17 +494,19 @@
       border: none;
       border-radius: 999px;
       padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.14);
+      background: rgba(0, 229, 255, 0.14);
+      border: 1px solid rgba(0, 229, 255, 0.16);
       color: #fff;
       font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+      transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
     .shuffle-btn:hover {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(0, 229, 255, 0.22);
       transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.16);
     }
 
     .music-card.is-changing .song-cover,
@@ -492,9 +596,23 @@
         font-size: 0.82rem;
       }
     }
-</style>
+
+    @media (prefers-reduced-motion: reduce) {
+      .tron-bg::after {
+        animation: none;
+      }
+
+      #light-cycle-canvas {
+        opacity: 0.45;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="tron-bg" aria-hidden="true"></div>
+  <canvas id="light-cycle-canvas" aria-hidden="true"></canvas>
+
   <header class="navbar">
     <div class="nav-inner">
       <div class="brand">Joe Bowen</div>
@@ -525,7 +643,7 @@
           </a>
           <a class="social-btn" href="https://github.com/joebowen" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
             <img src="images/icons/github-icon.png" alt="GitHub icon" class="social-icon">
-          </a>  
+          </a>
         </div>
 
         <div class="music-card" id="music-card">
@@ -561,9 +679,9 @@
 
           <p>
             I am a recent graduate from the University of North Carolina at Chapel Hill,
-            where I received my bachelor's degree in Statistics from the department of
+            where I received my bachelor's degree in Statistics from the department of Statistics and Operations Research
             <a href="https://stor.unc.edu/" target="_blank" rel="noopener noreferrer">
-              <strong>Statistics and Operations Research (STOR).</strong>
+              <strong><u>(STOR)</u>.</strong>
             </a>
           </p>
 
@@ -581,108 +699,18 @@
           </div>
 
           <p class="muted" style="margin-top: 1.5rem;">
-            My interests include machine/deep learning for applications, statistical analysis for data driven decision making, as well as computer vision and automation.
+            My interests include machine/deep learning for applications, statistical modeling,
+            as well as computer vision and automation. My
+            Resume/CV is available <a href="JoeBowen_Resume.pdf" target="_blank" rel="noopener noreferrer">
+              <strong><u>here.</u></strong>
+            </a>
           </p>
         </section>
 
-        <section id="skills" class="section">
-          <div class="section-heading" style="text-align: center;">
-            <div class="section-icon">🛠</div>
-            <h2>Skills & Tools</h2>
-          </div>
-
-          <div class="skills-grid">
-            <div class="card" style="text-align: center;">
-              <h3>Languages</h3>
-              <ul style="display: inline-block; text-align: left;">
-                <li>Python</li>
-                <li>R</li>
-                <li>SQL</li>
-                <li>Java</li>
-                <li>LaTeX</li>
-              </ul>
-            </div>
-
-            <div class="card" style="text-align: center;">
-              <h3>Developer Tools</h3>
-              <ul style="display: inline-block; text-align: left;">
-                <li>Databricks</li>
-                <li>VS Code</li>
-                <li>Docker</li>
-                <li>Git</li>
-                <li>Anaconda Navigator</li>
-              </ul>
-            </div>
-
-            <div class="card" style="text-align: center;">
-              <h3>Automation & Control</h3>
-              <ul style="display: inline-block; text-align: left;">
-                <li>Ignition SCADA</li>
-                <li>TwinCAT 3</li>
-                <li>Beckhoff PLCs</li>
-                <li>Kepware</li>
-              </ul>
-            </div>
-
-            <div class="card" style="text-align: center;">
-              <h3>Focus Areas</h3>
-              <ul style="display: inline-block; text-align: left;">
-                <li>Analytics</li>
-                <li>Automation</li>
-                <li>Applied Technology</li>
-                <li>Data-Driven Problem Solving</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section id="projects" class="section">
-          <div class="section-heading">
-            <div class="section-icon">📁</div>
-            <h2>Projects</h2>
-          </div>
-
-          <div class="projects-grid">
-            <a href="https://github.com/joebowen/KOTK-Facial-Recognition" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-              <div class="card project">
-                <div class="project-title">KOTK Facial Recognition</div>
-                <p>
-                  A project focused on facial recognition workflows and computer vision applications.
-                </p>
-              </div>
-            </a>
-
-            <a href="https://github.com/joebowen/tex.ai" class="project-link">
-              <div class="card project">
-                <div class="project-title">TeX.ai</div>
-                <p>
-                  GPT wrapper that renders LaTeX continuously in a local web app interface.
-                </p>
-              </div>
-            </a>
-
-            <p class="projects-more">
-              More of my school based projects are available
-              <a href="pages/projects.html">here</a>.
-            </p>
-            </div>
-            </section>
-
-            <section id="resume" class="section">
-              <div class="section-heading">
-                <div class="section-icon">📄</div>
-                <h2>Resume</h2>
-              </div>
-          <p>
-            You can find the most recent copy of my resume
-            <a href="JoeBowen_Resume.pdf" target="_blank" rel="noopener"><strong>here.</strong></a>
-          </p>
-
-          <footer>
-            © 2026 Joe Bowen • Built with HTML, CSS and Javascript. <br>
-            Last updated: 4/16/2026
-          </footer>
-        </section>
+        <footer>
+          © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
+          Last updated: 5/17/2026
+        </footer>
       </section>
     </div>
   </main>
@@ -771,6 +799,579 @@
     nextSongBtn.addEventListener("click", playNextSong);
 
     renderSong(currentSongIndex);
+
+    /*
+      Smooth Tron light-cycle background.
+
+      What this does:
+      - Blue and orange bikes move smoothly on a grid.
+      - Trails are solid continuous light walls.
+      - Bikes cannot reverse or cross any trail, including their own color.
+      - Blue and orange are biased toward each other, so interactions/derezzes happen.
+      - When a bike hits a wall/trail, it derezzes, its own trail clears, and it respawns.
+    */
+
+    const canvas = document.getElementById("light-cycle-canvas");
+    const ctx = canvas.getContext("2d");
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let cols = 0;
+    let rows = 0;
+    let frame = 0;
+
+    const CELL = 18;
+    const SPEED = 3;
+    const TURN_CHANCE = 0.018;
+    const CHASE_CHANCE = 0.42;
+    const RESPAWN_DELAY = 80;
+    const TRAIL_LINE_WIDTH = 7;
+    const TRAIL_CORE_WIDTH = 2.4;
+
+    const BLUE = "#00e5ff";
+    const BLUE_CORE = "#d9fbff";
+    const ORANGE = "#ff8a00";
+    const ORANGE_CORE = "#fff0d2";
+
+    let cycles = [];
+    let occupied = new Map();
+    let particles = [];
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function cellKey(cx, cy) {
+      return cx + "," + cy;
+    }
+
+    function randInt(min, max) {
+      return Math.floor(min + Math.random() * Math.max(1, max - min + 1));
+    }
+
+    function cellFromX(x) {
+      return Math.floor(x / CELL);
+    }
+
+    function cellFromY(y) {
+      return Math.floor(y / CELL);
+    }
+
+    function cellToX(cx) {
+      return cx * CELL + CELL / 2;
+    }
+
+    function cellToY(cy) {
+      return cy * CELL + CELL / 2;
+    }
+
+    function hexToRgba(hex, alpha) {
+      const clean = hex.replace("#", "");
+      const r = parseInt(clean.substring(0, 2), 16);
+      const g = parseInt(clean.substring(2, 4), 16);
+      const b = parseInt(clean.substring(4, 6), 16);
+      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    }
+
+    function directionVector(direction) {
+      if (direction === 0) return { x: 1, y: 0 };
+      if (direction === 1) return { x: 0, y: 1 };
+      if (direction === 2) return { x: -1, y: 0 };
+      return { x: 0, y: -1 };
+    }
+
+    function oppositeDirection(direction) {
+      return (direction + 2) % 4;
+    }
+
+    function createCycle(id, team, color, core, preferredSide) {
+      let cx;
+      let cy;
+      let direction;
+
+      const margin = 5;
+
+      if (preferredSide === "left") {
+        cx = margin;
+        cy = randInt(margin, Math.max(margin, rows - margin - 1));
+        direction = 0;
+      } else if (preferredSide === "right") {
+        cx = Math.max(margin, cols - margin - 1);
+        cy = randInt(margin, Math.max(margin, rows - margin - 1));
+        direction = 2;
+      } else if (preferredSide === "top") {
+        cx = randInt(margin, Math.max(margin, cols - margin - 1));
+        cy = margin;
+        direction = 1;
+      } else {
+        cx = randInt(margin, Math.max(margin, cols - margin - 1));
+        cy = Math.max(margin, rows - margin - 1);
+        direction = 3;
+      }
+
+      return {
+        id,
+        team,
+        color,
+        core,
+        x: cellToX(cx),
+        y: cellToY(cy),
+        cx,
+        cy,
+        direction,
+        targetX: cellToX(cx),
+        targetY: cellToY(cy),
+        alive: true,
+        respawn: 0,
+        turnCooldown: randInt(8, 24),
+        trail: [
+          {
+            x: cellToX(cx),
+            y: cellToY(cy)
+          }
+        ],
+        sizePulse: Math.random() * Math.PI * 2
+      };
+    }
+
+    function resetOccupancy() {
+      occupied.clear();
+
+      for (const cycle of cycles) {
+        if (!cycle.alive) continue;
+
+        for (const point of cycle.trail) {
+          const cx = cellFromX(point.x);
+          const cy = cellFromY(point.y);
+          occupied.set(cellKey(cx, cy), {
+            team: cycle.team,
+            cycleId: cycle.id
+          });
+        }
+      }
+    }
+
+    function resizeCanvas() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      cols = Math.ceil(width / CELL);
+      rows = Math.ceil(height / CELL);
+
+      occupied.clear();
+      particles = [];
+
+      cycles = [
+        createCycle("blue-1", "blue", BLUE, BLUE_CORE, "left"),
+        createCycle("orange-1", "orange", ORANGE, ORANGE_CORE, "right"),
+        createCycle("blue-2", "blue", BLUE, BLUE_CORE, "top"),
+        createCycle("orange-2", "orange", ORANGE, ORANGE_CORE, "bottom")
+      ];
+
+      resetOccupancy();
+    }
+
+    function isCellBlocked(cx, cy) {
+      if (cx < 0 || cy < 0 || cx >= cols || cy >= rows) {
+        return true;
+      }
+
+      return occupied.has(cellKey(cx, cy));
+    }
+
+    function findNearestEnemy(cycle) {
+      let nearest = null;
+      let nearestDistance = Infinity;
+
+      for (const other of cycles) {
+        if (!other.alive || other.team === cycle.team) continue;
+
+        const distance =
+          Math.abs(other.cx - cycle.cx) +
+          Math.abs(other.cy - cycle.cy);
+
+        if (distance < nearestDistance) {
+          nearest = other;
+          nearestDistance = distance;
+        }
+      }
+
+      return nearest;
+    }
+
+    function scoreDirectionTowardEnemy(cycle, direction) {
+      const enemy = findNearestEnemy(cycle);
+
+      if (!enemy) return 0;
+
+      const vector = directionVector(direction);
+      const nx = cycle.cx + vector.x;
+      const ny = cycle.cy + vector.y;
+
+      const oldDistance =
+        Math.abs(enemy.cx - cycle.cx) +
+        Math.abs(enemy.cy - cycle.cy);
+
+      const newDistance =
+        Math.abs(enemy.cx - nx) +
+        Math.abs(enemy.cy - ny);
+
+      return oldDistance - newDistance;
+    }
+
+    function chooseDirection(cycle) {
+      const choices = [];
+
+      for (let direction = 0; direction < 4; direction++) {
+        if (direction === oppositeDirection(cycle.direction)) {
+          continue;
+        }
+
+        const vector = directionVector(direction);
+        const nx = cycle.cx + vector.x;
+        const ny = cycle.cy + vector.y;
+
+        if (!isCellBlocked(nx, ny)) {
+          choices.push(direction);
+        }
+      }
+
+      if (!choices.length) {
+        return cycle.direction;
+      }
+
+      const forward = directionVector(cycle.direction);
+      const fx = cycle.cx + forward.x;
+      const fy = cycle.cy + forward.y;
+      const canGoForward = !isCellBlocked(fx, fy);
+
+      /*
+        This bias makes orange and blue eventually enter the same areas,
+        creating real trail collisions and derezz moments.
+      */
+      if (Math.random() < CHASE_CHANCE) {
+        let bestDirection = choices[0];
+        let bestScore = -Infinity;
+
+        for (const direction of choices) {
+          const score = scoreDirectionTowardEnemy(cycle, direction);
+
+          if (score > bestScore) {
+            bestScore = score;
+            bestDirection = direction;
+          }
+        }
+
+        if (bestScore >= 0) {
+          cycle.turnCooldown = randInt(8, 24);
+          return bestDirection;
+        }
+      }
+
+      if (
+        canGoForward &&
+        cycle.turnCooldown > 0 &&
+        Math.random() > TURN_CHANCE
+      ) {
+        return cycle.direction;
+      }
+
+      cycle.turnCooldown = randInt(10, 34);
+      return choices[randInt(0, choices.length - 1)];
+    }
+
+    function explode(x, y, color, amount) {
+      for (let i = 0; i < amount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.2 + Math.random() * 5.5;
+
+        particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 34 + Math.random() * 32,
+          maxLife: 66,
+          color,
+          size: 1.5 + Math.random() * 3.6
+        });
+      }
+    }
+
+    function clearCycleTrail(cycle) {
+      for (const point of cycle.trail) {
+        const cx = cellFromX(point.x);
+        const cy = cellFromY(point.y);
+        const key = cellKey(cx, cy);
+        const occupant = occupied.get(key);
+
+        if (occupant && occupant.cycleId === cycle.id) {
+          occupied.delete(key);
+        }
+      }
+
+      cycle.trail = [];
+    }
+
+    function derezzCycle(cycle) {
+      explode(cycle.x, cycle.y, cycle.color, 58);
+      clearCycleTrail(cycle);
+
+      cycle.alive = false;
+      cycle.respawn = RESPAWN_DELAY + randInt(0, 70);
+    }
+
+    function respawnCycle(cycle) {
+      const side = cycle.team === "blue"
+        ? (Math.random() > 0.5 ? "left" : "top")
+        : (Math.random() > 0.5 ? "right" : "bottom");
+
+      const fresh = createCycle(
+        cycle.id,
+        cycle.team,
+        cycle.color,
+        cycle.core,
+        side
+      );
+
+      Object.assign(cycle, fresh);
+
+      const key = cellKey(cycle.cx, cycle.cy);
+      occupied.set(key, {
+        team: cycle.team,
+        cycleId: cycle.id
+      });
+    }
+
+    function beginNextCell(cycle) {
+      cycle.direction = chooseDirection(cycle);
+
+      const vector = directionVector(cycle.direction);
+      const nextCx = cycle.cx + vector.x;
+      const nextCy = cycle.cy + vector.y;
+      const nextKey = cellKey(nextCx, nextCy);
+
+      if (isCellBlocked(nextCx, nextCy)) {
+        derezzCycle(cycle);
+        return;
+      }
+
+      cycle.cx = nextCx;
+      cycle.cy = nextCy;
+      cycle.targetX = cellToX(nextCx);
+      cycle.targetY = cellToY(nextCy);
+      cycle.turnCooldown--;
+
+      occupied.set(nextKey, {
+        team: cycle.team,
+        cycleId: cycle.id
+      });
+
+      cycle.trail.push({
+        x: cycle.targetX,
+        y: cycle.targetY
+      });
+    }
+
+    function updateCycle(cycle) {
+      if (!cycle.alive) {
+        cycle.respawn--;
+
+        if (cycle.respawn <= 0) {
+          respawnCycle(cycle);
+        }
+
+        return;
+      }
+
+      const dx = cycle.targetX - cycle.x;
+      const dy = cycle.targetY - cycle.y;
+      const distance = Math.hypot(dx, dy);
+
+      if (distance <= SPEED) {
+        cycle.x = cycle.targetX;
+        cycle.y = cycle.targetY;
+        beginNextCell(cycle);
+        return;
+      }
+
+      cycle.x += (dx / distance) * SPEED;
+      cycle.y += (dy / distance) * SPEED;
+    }
+
+    function drawTrail(cycle) {
+      if (cycle.trail.length < 1) return;
+
+      ctx.save();
+      ctx.lineCap = "square";
+      ctx.lineJoin = "miter";
+      ctx.shadowColor = cycle.color;
+      ctx.shadowBlur = 24;
+
+      ctx.beginPath();
+      ctx.moveTo(cycle.trail[0].x, cycle.trail[0].y);
+
+      for (let i = 1; i < cycle.trail.length; i++) {
+        ctx.lineTo(cycle.trail[i].x, cycle.trail[i].y);
+      }
+
+      if (cycle.alive) {
+        ctx.lineTo(cycle.x, cycle.y);
+      }
+
+      ctx.strokeStyle = hexToRgba(cycle.color, 0.42);
+      ctx.lineWidth = TRAIL_LINE_WIDTH + 5;
+      ctx.stroke();
+
+      ctx.shadowBlur = 15;
+      ctx.strokeStyle = hexToRgba(cycle.color, 0.95);
+      ctx.lineWidth = TRAIL_LINE_WIDTH;
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = cycle.core;
+      ctx.lineWidth = TRAIL_CORE_WIDTH;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function drawCycle(cycle) {
+      if (!cycle.alive) return;
+
+      const vector = directionVector(cycle.direction);
+      const angle = Math.atan2(vector.y, vector.x);
+      const pulse = 0.75 + Math.sin(frame * 0.12 + cycle.sizePulse) * 0.22;
+
+      ctx.save();
+      ctx.translate(cycle.x, cycle.y);
+      ctx.rotate(angle);
+
+      ctx.shadowColor = cycle.color;
+      ctx.shadowBlur = 28;
+
+      ctx.fillStyle = hexToRgba(cycle.color, 0.22);
+      ctx.beginPath();
+      ctx.ellipse(-8, 0, 24, 9, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = cycle.color;
+      ctx.beginPath();
+      ctx.roundRect(-11, -4.5, 22, 9, 5);
+      ctx.fill();
+
+      ctx.fillStyle = cycle.core;
+      ctx.beginPath();
+      ctx.roundRect(-5, -2, 10, 4, 3);
+      ctx.fill();
+
+      ctx.strokeStyle = hexToRgba(cycle.color, 0.95);
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-9, -7);
+      ctx.lineTo(8, -7);
+      ctx.moveTo(-9, 7);
+      ctx.lineTo(8, 7);
+      ctx.stroke();
+
+      ctx.fillStyle = hexToRgba(cycle.color, 0.48 + pulse * 0.28);
+      ctx.beginPath();
+      ctx.moveTo(-14, -2.5);
+      ctx.lineTo(-34 - pulse * 16, 0);
+      ctx.lineTo(-14, 2.5);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawParticles() {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const particle = particles[i];
+
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.vx *= 0.955;
+        particle.vy *= 0.955;
+        particle.life--;
+
+        const alpha = Math.max(0, particle.life / particle.maxLife);
+
+        ctx.save();
+        ctx.shadowColor = particle.color;
+        ctx.shadowBlur = 16;
+        ctx.fillStyle = hexToRgba(particle.color, alpha);
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size * alpha, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (particle.life <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+
+    function drawBackgroundGlow() {
+      ctx.save();
+
+      const horizon = height * 0.58;
+      const gradient = ctx.createLinearGradient(0, horizon, 0, height);
+      gradient.addColorStop(0, "rgba(0, 229, 255, 0)");
+      gradient.addColorStop(1, "rgba(0, 229, 255, 0.08)");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.restore();
+    }
+
+    function animateLightCycles() {
+      frame++;
+
+      ctx.clearRect(0, 0, width, height);
+      drawBackgroundGlow();
+
+      if (!reducedMotion.matches) {
+        cycles.forEach(updateCycle);
+
+        cycles.forEach(drawTrail);
+        cycles.forEach(drawCycle);
+        drawParticles();
+      } else {
+        cycles.forEach(drawTrail);
+      }
+
+      requestAnimationFrame(animateLightCycles);
+    }
+
+    if ("roundRect" in CanvasRenderingContext2D.prototype === false) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+
+        this.beginPath();
+        this.moveTo(x + r, y);
+        this.arcTo(x + w, y, x + w, y + h, r);
+        this.arcTo(x + w, y + h, x, y + h, r);
+        this.arcTo(x, y + h, x, y, r);
+        this.arcTo(x, y, x + w, y, r);
+        this.closePath();
+
+        return this;
+      };
+    }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    animateLightCycles();
   </script>
 </body>
 </html>
