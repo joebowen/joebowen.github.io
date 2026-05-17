@@ -30,6 +30,10 @@
 
     html {
       scroll-behavior: smooth;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
     }
 
     body {
@@ -37,13 +41,14 @@
       color: var(--text);
       background: #030712;
       min-height: 100vh;
+      min-height: 100dvh;
       line-height: 1.65;
       overflow-x: hidden;
+      overscroll-behavior-x: none;
+      touch-action: pan-y;
+      position: relative;
     }
 
-    /*
-      Updated Tron-style background layer.
-    */
     .tron-bg {
       position: fixed;
       inset: 0;
@@ -55,6 +60,11 @@
         radial-gradient(circle at 18% 78%, rgba(255, 138, 0, 0.12), transparent 28rem),
         radial-gradient(circle at 82% 72%, rgba(96, 165, 250, 0.09), transparent 26rem),
         linear-gradient(180deg, #020617 0%, #030712 52%, #010409 100%);
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      transform: translateZ(0);
+      will-change: transform;
     }
 
     .tron-bg::before {
@@ -93,17 +103,24 @@
       animation: scanMove 5s linear infinite;
     }
 
-    /*
-      Autonomous light cycle canvas.
-    */
     #light-cycle-canvas {
       position: fixed;
       inset: 0;
       z-index: -9;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       pointer-events: none;
       opacity: 1;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      .tron-bg,
+      #light-cycle-canvas {
+        height: 100svh;
+      }
     }
 
     @keyframes scanMove {
@@ -409,6 +426,444 @@
       margin-bottom: 4px;
     }
 
+    .timeline-shell {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(240px, 0.85fr) minmax(280px, 1.15fr);
+      gap: 2rem;
+      margin-top: 2.5rem;
+      padding: 1.3rem;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 20% 35%, rgba(0, 229, 255, 0.12), transparent 24rem),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.025));
+      border: 1px solid rgba(0, 229, 255, 0.14);
+      overflow: hidden;
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.22),
+        inset 0 0 30px rgba(0, 229, 255, 0.025);
+    }
+
+    .timeline-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.025) 0,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      opacity: 0.55;
+    }
+
+    .timeline-map,
+    .timeline-list {
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-card-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .timeline-card-icon img {
+      width: 105%;
+      height: 105%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .timeline-map {
+      min-height: 520px;
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 45% 50%, rgba(0, 229, 255, 0.14), transparent 18%),
+        radial-gradient(circle at 30% 70%, rgba(255, 138, 0, 0.08), transparent 16%),
+        linear-gradient(135deg, rgba(2, 6, 23, 0.72), rgba(15, 23, 42, 0.86) 52%, rgba(1, 4, 9, 0.88));
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        inset 0 0 80px rgba(0, 0, 0, 0.6);
+    }
+
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.045) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black 38%, transparent 84%);
+    }
+
+    .map-glow {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(0, 229, 255, 0.14), transparent 58%);
+      filter: blur(10px);
+    }
+
+    .map-roads span {
+      position: absolute;
+      display: block;
+      height: 2px;
+      width: 62%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(148, 163, 184, 0.32),
+        rgba(0, 229, 255, 0.36),
+        transparent
+      );
+      transform-origin: center;
+      opacity: 0.85;
+    }
+
+    .road-1 {
+      top: 25%;
+      left: 5%;
+      transform: rotate(12deg);
+    }
+
+    .road-2 {
+      top: 42%;
+      left: 20%;
+      transform: rotate(-18deg);
+    }
+
+    .road-3 {
+      top: 58%;
+      left: 2%;
+      transform: rotate(30deg);
+    }
+
+    .road-4 {
+      top: 70%;
+      left: 25%;
+      transform: rotate(-8deg);
+    }
+
+    .road-5 {
+      top: 35%;
+      left: 40%;
+      transform: rotate(68deg);
+    }
+
+    .road-6 {
+      top: 50%;
+      left: 10%;
+      transform: rotate(82deg);
+    }
+
+    .road-7 {
+      top: 18%;
+      left: 28%;
+      transform: rotate(-32deg);
+    }
+
+    .road-8 {
+      top: 78%;
+      left: 4%;
+      transform: rotate(18deg);
+    }
+
+    .map-label {
+      position: absolute;
+      color: rgba(226, 232, 240, 0.34);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.18);
+    }
+
+    .label-1 {
+      top: 33%;
+      left: 34%;
+    }
+
+    .label-2 {
+      top: 54%;
+      left: 57%;
+    }
+
+    .label-3 {
+      top: 68%;
+      left: 22%;
+    }
+
+    .label-4 {
+      top: 18%;
+      left: 58%;
+    }
+
+    .map-node {
+      position: absolute;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 999px;
+      background: rgba(0, 229, 255, 0.55);
+      border: 1px solid rgba(230, 255, 255, 0.8);
+      box-shadow:
+        0 0 0 4px rgba(0, 229, 255, 0.09),
+        0 0 18px rgba(0, 229, 255, 0.42);
+      transform: translate(-50%, -50%);
+      opacity: 0.65;
+      transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .map-node.node-active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.25);
+      background: var(--tron);
+    }
+
+    .map-marker {
+      position: absolute;
+      left: 32%;
+      top: 48%;
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 999px;
+      background: var(--tron);
+      border: 2px solid #eaffff;
+      box-shadow:
+        0 0 0 6px rgba(0, 229, 255, 0.18),
+        0 0 24px rgba(0, 229, 255, 0.95),
+        0 0 52px rgba(0, 229, 255, 0.55);
+      transform: translate(-50%, -50%);
+      transition:
+        left 350ms ease,
+        top 350ms ease,
+        box-shadow 250ms ease;
+    }
+
+    .map-marker::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: inherit;
+      border: 1px solid rgba(0, 229, 255, 0.55);
+      animation: markerPulse 1.6s ease-out infinite;
+    }
+
+    @keyframes markerPulse {
+      from {
+        transform: scale(0.65);
+        opacity: 0.9;
+      }
+
+      to {
+        transform: scale(1.9);
+        opacity: 0;
+      }
+    }
+
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .timeline-kicker {
+      color: var(--tron);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+    }
+
+    .timeline-title-main {
+      margin: 0 0 1.75rem;
+      color: #f8fbff;
+      font-size: clamp(1.7rem, 4vw, 2.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      text-shadow:
+        0 0 12px rgba(0, 229, 255, 0.26),
+        0 0 26px rgba(0, 229, 255, 0.1);
+    }
+
+    .timeline-track {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+    }
+
+    .timeline-track::before {
+      content: "";
+      position: absolute;
+      top: -1rem;
+      bottom: -1rem;
+      left: 0.85rem;
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 229, 255, 0.4),
+        rgba(148, 163, 184, 0.24),
+        transparent
+      );
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.75rem 1fr;
+      gap: 1rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .timeline-dot {
+      position: relative;
+      z-index: 2;
+      width: 0.95rem;
+      height: 0.95rem;
+      margin-top: 1.8rem;
+      margin-left: 0.4rem;
+      border-radius: 999px;
+      background: #101827;
+      border: 2px solid rgba(148, 163, 184, 0.7);
+      box-shadow: 0 0 0 5px rgba(2, 6, 23, 0.94);
+      transition:
+        background 200ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease,
+        transform 200ms ease;
+    }
+
+    .timeline-card {
+      position: relative;
+      padding: 1.35rem;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+        rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        background 220ms ease;
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 18% 0%,
+        rgba(0, 229, 255, 0.18),
+        transparent 34%
+      );
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+
+    .timeline-item:hover .timeline-card,
+    .timeline-item:focus-visible .timeline-card,
+    .timeline-item.active .timeline-card {
+      transform: translateX(0.3rem);
+      border-color: rgba(0, 229, 255, 0.45);
+      box-shadow:
+        0 18px 44px rgba(0, 0, 0, 0.34),
+        0 0 32px rgba(0, 229, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .timeline-item:hover .timeline-card::before,
+    .timeline-item:focus-visible .timeline-card::before,
+    .timeline-item.active .timeline-card::before {
+      opacity: 1;
+    }
+
+    .timeline-item:hover .timeline-dot,
+    .timeline-item:focus-visible .timeline-dot,
+    .timeline-item.active .timeline-dot {
+      background: var(--tron);
+      border-color: #eaffff;
+      transform: scale(1.12);
+      box-shadow:
+        0 0 0 5px rgba(2, 6, 23, 0.95),
+        0 0 0 9px rgba(0, 229, 255, 0.15),
+        0 0 24px rgba(0, 229, 255, 0.75);
+    }
+
+    .timeline-card-icon {
+      position: absolute;
+      top: 1.15rem;
+      right: 1.15rem;
+      display: grid;
+      place-items: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      color: #eaffff;
+      border: 2px solid var(--tron);
+      box-shadow:
+        0 0 18px rgba(0, 229, 255, 0.28),
+        0 8px 14px rgba(0, 0, 0, 0.28);
+    }
+
+    .timeline-card-title {
+      min-height: 1.25rem;
+      margin: 0 3.8rem 0.35rem 0;
+      color: var(--tron);
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .timeline-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.2rem;
+      color: rgba(226, 232, 240, 0.72);
+      font-size: 0.92rem;
+    }
+
+    .timeline-meta strong {
+      color: #f8fbff;
+    }
+
+    .timeline-date {
+      min-height: 1rem;
+      color: rgba(226, 232, 240, 0.62);
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 0.9rem;
+    }
+
+    .timeline-description {
+      min-height: 2.6rem;
+      margin: 0;
+      color: rgba(226, 232, 240, 0.78);
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
     footer {
       margin-top: 30px;
       text-align: center;
@@ -537,6 +992,14 @@
       .section-heading h2 {
         font-size: 1.9rem;
       }
+
+      .timeline-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-map {
+        min-height: 340px;
+      }
     }
 
     @media (max-width: 700px) {
@@ -595,15 +1058,62 @@
       .listen-text {
         font-size: 0.82rem;
       }
+
+      .timeline-shell {
+        padding: 1rem;
+        border-radius: 20px;
+      }
+
+      .timeline-map {
+        min-height: 290px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1.4rem 1fr;
+        gap: 0.8rem;
+      }
+
+      .timeline-track::before {
+        left: 0.68rem;
+      }
+
+      .timeline-dot {
+        margin-left: 0.22rem;
+      }
+
+      .timeline-card {
+        padding: 1.15rem;
+      }
+
+      .timeline-card-icon {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 2.7rem;
+        height: 2.7rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .timeline-card-title {
+        margin-right: 0;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .tron-bg::after {
+      .tron-bg::after,
+      .map-marker::after {
         animation: none;
       }
 
       #light-cycle-canvas {
-        opacity: 0.45;
+        opacity: 0.35;
+      }
+
+      .map-marker,
+      .timeline-card,
+      .timeline-dot,
+      .map-node {
+        transition: none;
       }
     }
   </style>
@@ -618,7 +1128,7 @@
       <div class="brand">Joe Bowen</div>
       <nav class="nav-links">
         <a href="#about">Bio</a>
-        <a href="#skills">Skills</a>
+        <a href="#timeline">Timeline</a>
         <a href="#projects">Projects</a>
       </nav>
     </div>
@@ -692,7 +1202,7 @@
               <li>Stochastic Modeling</li>
               <li>Optimization for Machine Learning and Neural Networks</li>
               <li>Methods of Data Analysis</li>
-              <li>Data Structures and Analysis</li>
+              <li>Data Structures and Algorithms</li>
               <li>Linear Algebra for Applications</li>
               <li>Calculus-Based Probability</li>
             </ul>
@@ -707,9 +1217,130 @@
           </p>
         </section>
 
+        <section id="timeline" class="section">
+          <div class="section-heading">
+            <div class="section-icon">⌁</div>
+            <h2>Timeline</h2>
+          </div>
+
+          <div class="timeline-shell">
+            <div class="timeline-map" aria-hidden="true">
+              <div class="map-grid"></div>
+              <div class="map-glow"></div>
+
+              <div class="map-roads">
+                <span class="road-1"></span>
+                <span class="road-2"></span>
+                <span class="road-3"></span>
+                <span class="road-4"></span>
+                <span class="road-5"></span>
+                <span class="road-6"></span>
+                <span class="road-7"></span>
+                <span class="road-8"></span>
+              </div>
+
+              <div class="map-label label-1">CITY</div>
+              <div class="map-label label-2">DISTRICT</div>
+              <div class="map-label label-3">AREA</div>
+              <div class="map-label label-4">ZONE</div>
+
+              <div class="map-node node-active" data-node="0" style="left: 32%; top: 48%;"></div>
+              <div class="map-node" data-node="1" style="left: 55%; top: 52%;"></div>
+              <div class="map-node" data-node="2" style="left: 43%; top: 68%;"></div>
+
+              <div class="map-marker active" id="timelineMapMarker"></div>
+            </div>
+
+            <div class="timeline-list">
+
+              <div class="timeline-track">
+                <article class="timeline-item active" tabindex="0" data-map-x="55" data-map-y="52" data-node-index="1">
+                  <div class="timeline-dot"></div>
+
+                  <div class="timeline-card">
+                    <div class="timeline-card-icon">
+                      <img src = "images/timeline/texas_logo.jpg">
+                    </div>
+
+                    <h3 class="timeline-card-title">
+                      Master's Degree
+                    </h3>
+                      
+                    <div class="timeline-meta">
+                      <strong>University of Texas at Austin</strong>
+                    </div>
+
+                    <div class="timeline-date">
+                      August 2026 - Present
+                    </div>
+
+                    <p class="timeline-description">
+                      M.S. - Computer Science (online)
+                    </p>
+                  </div>
+                </article>
+
+                <article class="timeline-item active" tabindex="0" data-map-x="32" data-map-y="48" data-node-index="0">
+                  <div class="timeline-dot"></div>
+
+                  <div class="timeline-card">
+                    <div class="timeline-card-icon">
+                      <img src = "images/timeline/corning_logo.png">
+                    </div>
+
+                    <h3 class="timeline-card-title">
+                      Digial Engineer
+                    </h3>
+
+                    <div class="timeline-meta">
+                      <strong>Corning - </strong>
+                      <span>Wilmington, NC</span>
+                    </div>
+
+                    <div class="timeline-date">
+                      June 2026 - Present
+                    </div>
+
+                    <p class="timeline-description">
+                      <!-- description goes here -->
+                    </p>
+                  </div>
+                </article>
+
+                <article class="timeline-item" tabindex="0" data-map-x="43" data-map-y="68" data-node-index="2">
+                  <div class="timeline-dot"></div>
+
+                  <div class="timeline-card">
+                    <div class="timeline-card-icon">
+                      <img src = "images/timeline/unc_logo.jpg">
+                    </div>
+
+                    <h3 class="timeline-card-title">
+                      Bachelor's Degree
+                    </h3>
+
+                    <div class="timeline-meta">
+                      <strong>UNC Chapel Hill - </strong>
+                      <span>Chapel Hill, NC</span>
+                    </div>
+
+                    <div class="timeline-date">
+                      August 2023 - May 2026
+                    </div>
+
+                    <p class="timeline-description">
+                      B.S. - Statistics and Analytis
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <footer>
           © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
-          Last updated: 5/17/2026
+          Last updated: 4/16/2026
         </footer>
       </section>
     </div>
@@ -725,6 +1356,53 @@
         }
       });
     });
+
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    const timelineMapMarker = document.getElementById("timelineMapMarker");
+    const timelineMapNodes = document.querySelectorAll(".map-node");
+
+    function activateTimelineItem(item) {
+      if (!item || !timelineMapMarker) return;
+
+      const x = item.dataset.mapX;
+      const y = item.dataset.mapY;
+      const nodeIndex = item.dataset.nodeIndex;
+
+      timelineItems.forEach(timelineItem => {
+        timelineItem.classList.remove("active");
+      });
+
+      timelineMapNodes.forEach(node => {
+        node.classList.remove("node-active");
+      });
+
+      item.classList.add("active");
+
+      const matchingNode = document.querySelector(`.map-node[data-node="${nodeIndex}"]`);
+
+      if (matchingNode) {
+        matchingNode.classList.add("node-active");
+      }
+
+      timelineMapMarker.style.left = `${x}%`;
+      timelineMapMarker.style.top = `${y}%`;
+    }
+
+    if (timelineItems.length && timelineMapMarker) {
+      timelineItems.forEach(item => {
+        item.addEventListener("mouseenter", () => {
+          activateTimelineItem(item);
+        });
+
+        item.addEventListener("focusin", () => {
+          activateTimelineItem(item);
+        });
+
+        item.addEventListener("click", () => {
+          activateTimelineItem(item);
+        });
+      });
+    }
 
     const songs = [
       {
@@ -801,14 +1479,18 @@
     renderSong(currentSongIndex);
 
     /*
-      Smooth Tron light-cycle background.
+      Optimized Tron light-cycle background.
 
-      What this does:
-      - Blue and orange bikes move smoothly on a grid.
-      - Trails are solid continuous light walls.
-      - Bikes cannot reverse or cross any trail, including their own color.
-      - Blue and orange are biased toward each other, so interactions/derezzes happen.
-      - When a bike hits a wall/trail, it derezzes, its own trail clears, and it respawns.
+      Behavior:
+      - Only two active bikes: one blue and one orange.
+      - Bikes do not die from walls, their own trail, or their own color.
+      - Bikes only derezz when they collide with the opposite color.
+      - After 7 seconds, each bike enters hunting mode.
+      - No bike can live longer than 10 seconds.
+      - In hunting mode, bikes aggressively seek the nearest opposite-color bike/trail.
+      - Self-circling is prevented by steering away from recently visited cells instead of derezzing.
+      - Trails are capped and old segments are removed from the collision map.
+      - Mobile viewport sizing is improved with visualViewport when available.
     */
 
     const canvas = document.getElementById("light-cycle-canvas");
@@ -820,14 +1502,26 @@
     let cols = 0;
     let rows = 0;
     let frame = 0;
+    let lastTimestamp = 0;
 
-    const CELL = 18;
-    const SPEED = 3;
-    const TURN_CHANCE = 0.018;
-    const CHASE_CHANCE = 0.42;
-    const RESPAWN_DELAY = 80;
-    const TRAIL_LINE_WIDTH = 7;
-    const TRAIL_CORE_WIDTH = 2.4;
+    const CELL = 20;
+    const SPEED = 4;
+    const TARGET_FPS = 45;
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+    const HUNT_AFTER_MS = 7000;
+    const MAX_LIFE_MS = 10000;
+    const RESPAWN_DELAY_MS = 450;
+    const MAX_TRAIL_POINTS = 120;
+    const MAX_PARTICLES = 120;
+
+    const TURN_CHANCE = 0.045;
+    const CHASE_CHANCE = 0.72;
+    const DIRECT_COLLISION_CHANCE = 0.28;
+    const LOOP_WINDOW = 18;
+
+    const TRAIL_LINE_WIDTH = 6;
+    const TRAIL_CORE_WIDTH = 2;
 
     const BLUE = "#00e5ff";
     const BLUE_CORE = "#d9fbff";
@@ -846,14 +1540,6 @@
 
     function randInt(min, max) {
       return Math.floor(min + Math.random() * Math.max(1, max - min + 1));
-    }
-
-    function cellFromX(x) {
-      return Math.floor(x / CELL);
-    }
-
-    function cellFromY(y) {
-      return Math.floor(y / CELL);
     }
 
     function cellToX(cx) {
@@ -883,12 +1569,24 @@
       return (direction + 2) % 4;
     }
 
+    function getOppositeTeam(team) {
+      return team === "blue" ? "orange" : "blue";
+    }
+
+    function cycleAge(cycle) {
+      return performance.now() - cycle.birthTime;
+    }
+
+    function isHunting(cycle) {
+      return cycleAge(cycle) >= HUNT_AFTER_MS;
+    }
+
     function createCycle(id, team, color, core, preferredSide) {
       let cx;
       let cy;
       let direction;
 
-      const margin = 5;
+      const margin = 4;
 
       if (preferredSide === "left") {
         cx = margin;
@@ -908,25 +1606,34 @@
         direction = 3;
       }
 
+      const startX = cellToX(cx);
+      const startY = cellToY(cy);
+
       return {
         id,
         team,
         color,
         core,
-        x: cellToX(cx),
-        y: cellToY(cy),
+        x: startX,
+        y: startY,
         cx,
         cy,
         direction,
-        targetX: cellToX(cx),
-        targetY: cellToY(cy),
+        previousDirection: direction,
+        targetX: startX,
+        targetY: startY,
         alive: true,
-        respawn: 0,
-        turnCooldown: randInt(8, 24),
+        birthTime: performance.now(),
+        respawnAt: 0,
+        turnCooldown: randInt(4, 14),
+        tightTurns: 0,
+        recentlyVisited: [cellKey(cx, cy)],
         trail: [
           {
-            x: cellToX(cx),
-            y: cellToY(cy)
+            x: startX,
+            y: startY,
+            cx,
+            cy
           }
         ],
         sizePulse: Math.random() * Math.PI * 2
@@ -940,9 +1647,7 @@
         if (!cycle.alive) continue;
 
         for (const point of cycle.trail) {
-          const cx = cellFromX(point.x);
-          const cy = cellFromY(point.y);
-          occupied.set(cellKey(cx, cy), {
+          occupied.set(cellKey(point.cx, point.cy), {
             team: cycle.team,
             cycleId: cycle.id
           });
@@ -951,9 +1656,18 @@
     }
 
     function resizeCanvas() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      const viewportWidth = window.visualViewport
+        ? window.visualViewport.width
+        : window.innerWidth;
+
+      const viewportHeight = window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+
+      width = Math.ceil(viewportWidth);
+      height = Math.ceil(viewportHeight);
 
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
@@ -970,20 +1684,36 @@
 
       cycles = [
         createCycle("blue-1", "blue", BLUE, BLUE_CORE, "left"),
-        createCycle("orange-1", "orange", ORANGE, ORANGE_CORE, "right"),
-        createCycle("blue-2", "blue", BLUE, BLUE_CORE, "top"),
-        createCycle("orange-2", "orange", ORANGE, ORANGE_CORE, "bottom")
+        createCycle("orange-1", "orange", ORANGE, ORANGE_CORE, "right")
       ];
 
       resetOccupancy();
     }
 
-    function isCellBlocked(cx, cy) {
-      if (cx < 0 || cy < 0 || cx >= cols || cy >= rows) {
+    function getOccupant(cx, cy) {
+      return occupied.get(cellKey(cx, cy));
+    }
+
+    function isWall(cx, cy) {
+      return cx < 0 || cy < 0 || cx >= cols || cy >= rows;
+    }
+
+    function isOwnColorCell(cycle, cx, cy) {
+      const occupant = getOccupant(cx, cy);
+      return occupant && occupant.team === cycle.team;
+    }
+
+    function isOppositeColorCell(cycle, cx, cy) {
+      const occupant = getOccupant(cx, cy);
+      return occupant && occupant.team !== cycle.team;
+    }
+
+    function isSoftBlocked(cycle, cx, cy) {
+      if (isWall(cx, cy)) {
         return true;
       }
 
-      return occupied.has(cellKey(cx, cy));
+      return isOwnColorCell(cycle, cx, cy);
     }
 
     function findNearestEnemy(cycle) {
@@ -1006,28 +1736,147 @@
       return nearest;
     }
 
-    function scoreDirectionTowardEnemy(cycle, direction) {
-      const enemy = findNearestEnemy(cycle);
+    function getEnemyTrailTargets(cycle) {
+      const targets = [];
 
-      if (!enemy) return 0;
+      for (const other of cycles) {
+        if (!other.alive || other.team === cycle.team) continue;
 
+        targets.push({
+          cx: other.cx,
+          cy: other.cy,
+          x: other.x,
+          y: other.y,
+          type: "bike"
+        });
+
+        for (const point of other.trail) {
+          targets.push({
+            cx: point.cx,
+            cy: point.cy,
+            x: point.x,
+            y: point.y,
+            type: "trail"
+          });
+        }
+      }
+
+      return targets;
+    }
+
+    function findNearestEnemyTarget(cycle) {
+      const targets = getEnemyTrailTargets(cycle);
+
+      if (!targets.length) {
+        return null;
+      }
+
+      let nearest = targets[0];
+      let nearestDistance = Infinity;
+
+      for (const target of targets) {
+        const distance =
+          Math.abs(target.cx - cycle.cx) +
+          Math.abs(target.cy - cycle.cy);
+
+        if (distance < nearestDistance) {
+          nearest = target;
+          nearestDistance = distance;
+        }
+      }
+
+      return nearest;
+    }
+
+    function countOpenNeighborsForCell(cycle, cx, cy) {
+      let openNeighbors = 0;
+
+      for (let d = 0; d < 4; d++) {
+        const vector = directionVector(d);
+        const nx = cx + vector.x;
+        const ny = cy + vector.y;
+
+        if (!isSoftBlocked(cycle, nx, ny)) {
+          openNeighbors++;
+        }
+      }
+
+      return openNeighbors;
+    }
+
+    function scoreDirection(cycle, direction) {
       const vector = directionVector(direction);
       const nx = cycle.cx + vector.x;
       const ny = cycle.cy + vector.y;
 
-      const oldDistance =
-        Math.abs(enemy.cx - cycle.cx) +
-        Math.abs(enemy.cy - cycle.cy);
+      if (isWall(nx, ny)) {
+        return -999999;
+      }
 
-      const newDistance =
-        Math.abs(enemy.cx - nx) +
-        Math.abs(enemy.cy - ny);
+      const key = cellKey(nx, ny);
+      const occupant = occupied.get(key);
+      const enemy = findNearestEnemy(cycle);
+      const enemyTarget = findNearestEnemyTarget(cycle);
+      const hunting = isHunting(cycle);
 
-      return oldDistance - newDistance;
+      let score = 0;
+
+      if (occupant) {
+        if (occupant.team !== cycle.team) {
+          score += hunting ? 100000 : 300;
+        } else {
+          score -= hunting ? 10000 : 1200;
+        }
+      }
+
+      if (enemyTarget) {
+        const oldDistance =
+          Math.abs(enemyTarget.cx - cycle.cx) +
+          Math.abs(enemyTarget.cy - cycle.cy);
+
+        const newDistance =
+          Math.abs(enemyTarget.cx - nx) +
+          Math.abs(enemyTarget.cy - ny);
+
+        score += (oldDistance - newDistance) * (hunting ? 160 : 18);
+
+        if (hunting) {
+          score -= newDistance * 6;
+        }
+      } else if (enemy) {
+        const oldDistance =
+          Math.abs(enemy.cx - cycle.cx) +
+          Math.abs(enemy.cy - cycle.cy);
+
+        const newDistance =
+          Math.abs(enemy.cx - nx) +
+          Math.abs(enemy.cy - ny);
+
+        score += (oldDistance - newDistance) * (hunting ? 110 : 18);
+      }
+
+      const openNeighbors = countOpenNeighborsForCell(cycle, nx, ny);
+      score += openNeighbors * (hunting ? 2 : 12);
+
+      if (cycle.recentlyVisited.includes(key)) {
+        score -= hunting ? 120 : 220;
+      }
+
+      if (direction === cycle.direction) {
+        score += hunting ? 18 : 12;
+      }
+
+      if (direction !== cycle.direction) {
+        score -= hunting ? 1 : 4;
+      }
+
+      score += Math.random() * (hunting ? 3 : 8);
+
+      return score;
     }
 
-    function chooseDirection(cycle) {
-      const choices = [];
+    function getValidDirections(cycle, allowEnemyCollision = true) {
+      const directions = [];
 
       for (let direction = 0; direction < 4; direction++) {
         if (direction === oppositeDirection(cycle.direction)) {
@@ -1038,30 +1887,72 @@
         const nx = cycle.cx + vector.x;
         const ny = cycle.cy + vector.y;
 
-        if (!isCellBlocked(nx, ny)) {
-          choices.push(direction);
+        if (isWall(nx, ny)) {
+          continue;
+        }
+
+        const occupant = getOccupant(nx, ny);
+
+        if (occupant && occupant.team === cycle.team) {
+          continue;
+        }
+
+        if (!allowEnemyCollision && occupant && occupant.team !== cycle.team) {
+          continue;
+        }
+
+        directions.push(direction);
+      }
+
+      return directions;
+    }
+
+    function getEmergencyDirections(cycle) {
+      const directions = [];
+
+      for (let direction = 0; direction < 4; direction++) {
+        if (direction === oppositeDirection(cycle.direction)) {
+          continue;
+        }
+
+        const vector = directionVector(direction);
+        const nx = cycle.cx + vector.x;
+        const ny = cycle.cy + vector.y;
+
+        if (isWall(nx, ny)) {
+          continue;
+        }
+
+        const occupant = getOccupant(nx, ny);
+
+        if (!occupant || occupant.team !== cycle.team) {
+          directions.push(direction);
         }
       }
 
+      return directions;
+    }
+
+    function chooseDirection(cycle) {
+      const hunting = isHunting(cycle);
+      let choices = getValidDirections(cycle, true);
+
       if (!choices.length) {
-        return cycle.direction;
+        choices = getEmergencyDirections(cycle);
       }
 
-      const forward = directionVector(cycle.direction);
-      const fx = cycle.cx + forward.x;
-      const fy = cycle.cy + forward.y;
-      const canGoForward = !isCellBlocked(fx, fy);
+      if (!choices.length) {
+        return oppositeDirection(cycle.direction);
+      }
 
-      /*
-        This bias makes orange and blue eventually enter the same areas,
-        creating real trail collisions and derezz moments.
-      */
-      if (Math.random() < CHASE_CHANCE) {
+      const enemyTarget = findNearestEnemyTarget(cycle);
+
+      if (hunting && enemyTarget) {
         let bestDirection = choices[0];
         let bestScore = -Infinity;
 
         for (const direction of choices) {
-          const score = scoreDirectionTowardEnemy(cycle, direction);
+          const score = scoreDirection(cycle, direction);
 
           if (score > bestScore) {
             bestScore = score;
@@ -1069,47 +1960,81 @@
           }
         }
 
-        if (bestScore >= 0) {
-          cycle.turnCooldown = randInt(8, 24);
-          return bestDirection;
+        return bestDirection;
+      }
+
+      const enemy = findNearestEnemy(cycle);
+
+      if (enemy && Math.random() < DIRECT_COLLISION_CHANCE) {
+        let directDirection = choices[0];
+        let bestDistance = Infinity;
+
+        for (const direction of choices) {
+          const vector = directionVector(direction);
+          const nx = cycle.cx + vector.x;
+          const ny = cycle.cy + vector.y;
+          const distance = Math.abs(enemy.cx - nx) + Math.abs(enemy.cy - ny);
+
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            directDirection = direction;
+          }
         }
+
+        return directDirection;
       }
 
       if (
-        canGoForward &&
+        choices.includes(cycle.direction) &&
         cycle.turnCooldown > 0 &&
         Math.random() > TURN_CHANCE
       ) {
         return cycle.direction;
       }
 
-      cycle.turnCooldown = randInt(10, 34);
-      return choices[randInt(0, choices.length - 1)];
+      let bestDirection = choices[0];
+      let bestScore = -Infinity;
+
+      for (const direction of choices) {
+        let score = scoreDirection(cycle, direction);
+
+        if (Math.random() < CHASE_CHANCE) {
+          score += scoreDirection(cycle, direction) * 0.35;
+        }
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestDirection = direction;
+        }
+      }
+
+      return bestDirection;
     }
 
     function explode(x, y, color, amount) {
-      for (let i = 0; i < amount; i++) {
+      const available = Math.max(0, MAX_PARTICLES - particles.length);
+      const count = Math.min(amount, available);
+
+      for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 1.2 + Math.random() * 5.5;
+        const speed = 1.2 + Math.random() * 4.8;
 
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          life: 34 + Math.random() * 32,
-          maxLife: 66,
+          life: 20 + Math.random() * 24,
+          maxLife: 44,
           color,
-          size: 1.5 + Math.random() * 3.6
+          size: 1.3 + Math.random() * 3
         });
       }
     }
 
     function clearCycleTrail(cycle) {
       for (const point of cycle.trail) {
-        const cx = cellFromX(point.x);
-        const cy = cellFromY(point.y);
-        const key = cellKey(cx, cy);
+        const key = cellKey(point.cx, point.cy);
         const occupant = occupied.get(key);
 
         if (occupant && occupant.cycleId === cycle.id) {
@@ -1120,12 +2045,26 @@
       cycle.trail = [];
     }
 
+    function trimTrail(cycle) {
+      while (cycle.trail.length > MAX_TRAIL_POINTS) {
+        const oldPoint = cycle.trail.shift();
+        const key = cellKey(oldPoint.cx, oldPoint.cy);
+        const occupant = occupied.get(key);
+
+        if (occupant && occupant.cycleId === cycle.id) {
+          occupied.delete(key);
+        }
+      }
+    }
+
     function derezzCycle(cycle) {
-      explode(cycle.x, cycle.y, cycle.color, 58);
+      if (!cycle.alive) return;
+
+      explode(cycle.x, cycle.y, cycle.color, 34);
       clearCycleTrail(cycle);
 
       cycle.alive = false;
-      cycle.respawn = RESPAWN_DELAY + randInt(0, 70);
+      cycle.respawnAt = performance.now() + RESPAWN_DELAY_MS + randInt(0, 350);
     }
 
     function respawnCycle(cycle) {
@@ -1143,31 +2082,71 @@
 
       Object.assign(cycle, fresh);
 
-      const key = cellKey(cycle.cx, cycle.cy);
-      occupied.set(key, {
+      occupied.set(cellKey(cycle.cx, cycle.cy), {
         team: cycle.team,
         cycleId: cycle.id
       });
     }
 
-    function beginNextCell(cycle) {
-      cycle.direction = chooseDirection(cycle);
+    function trackLooping(cycle, nextKey, newDirection) {
+      cycle.recentlyVisited.push(nextKey);
+
+      if (cycle.recentlyVisited.length > LOOP_WINDOW) {
+        cycle.recentlyVisited.shift();
+      }
+
+      if (newDirection !== cycle.previousDirection) {
+        cycle.tightTurns++;
+      } else {
+        cycle.tightTurns = Math.max(0, cycle.tightTurns - 1);
+      }
+
+      cycle.previousDirection = newDirection;
+
+      return false;
+    }
+
+    function nudgeAwayFromBlockedCell(cycle) {
+      const choices = getValidDirections(cycle, false);
+
+      if (!choices.length) {
+        return false;
+      }
+
+      let bestDirection = choices[0];
+      let bestScore = -Infinity;
+
+      for (const direction of choices) {
+        const score = scoreDirection(cycle, direction);
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestDirection = direction;
+        }
+      }
+
+      cycle.direction = bestDirection;
 
       const vector = directionVector(cycle.direction);
       const nextCx = cycle.cx + vector.x;
       const nextCy = cycle.cy + vector.y;
-      const nextKey = cellKey(nextCx, nextCy);
 
-      if (isCellBlocked(nextCx, nextCy)) {
-        derezzCycle(cycle);
-        return;
+      if (isWall(nextCx, nextCy) || isOwnColorCell(cycle, nextCx, nextCy)) {
+        return false;
       }
 
-      cycle.cx = nextCx;
-      cycle.cy = nextCy;
       cycle.targetX = cellToX(nextCx);
       cycle.targetY = cellToY(nextCy);
-      cycle.turnCooldown--;
+      cycle.cx = nextCx;
+      cycle.cy = nextCy;
+
+      const nextKey = cellKey(nextCx, nextCy);
+
+      cycle.recentlyVisited.push(nextKey);
+
+      if (cycle.recentlyVisited.length > LOOP_WINDOW) {
+        cycle.recentlyVisited.shift();
+      }
 
       occupied.set(nextKey, {
         team: cycle.team,
@@ -1176,18 +2155,83 @@
 
       cycle.trail.push({
         x: cycle.targetX,
-        y: cycle.targetY
+        y: cycle.targetY,
+        cx: nextCx,
+        cy: nextCy
       });
+
+      trimTrail(cycle);
+
+      return true;
+    }
+
+    function beginNextCell(cycle) {
+      const newDirection = chooseDirection(cycle);
+      const didTurn = newDirection !== cycle.previousDirection;
+
+      cycle.direction = newDirection;
+
+      const vector = directionVector(cycle.direction);
+      const nextCx = cycle.cx + vector.x;
+      const nextCy = cycle.cy + vector.y;
+      const nextKey = cellKey(nextCx, nextCy);
+      const occupant = occupied.get(nextKey);
+
+      if (isWall(nextCx, nextCy)) {
+        nudgeAwayFromBlockedCell(cycle);
+        return;
+      }
+
+      if (occupant) {
+        if (occupant.team !== cycle.team) {
+          derezzCycle(cycle);
+          return;
+        }
+
+        nudgeAwayFromBlockedCell(cycle);
+        return;
+      }
+
+      trackLooping(cycle, nextKey, newDirection);
+
+      cycle.cx = nextCx;
+      cycle.cy = nextCy;
+      cycle.targetX = cellToX(nextCx);
+      cycle.targetY = cellToY(nextCy);
+      cycle.turnCooldown--;
+
+      if (cycle.turnCooldown <= 0 || didTurn) {
+        cycle.turnCooldown = randInt(4, 16);
+      }
+
+      occupied.set(nextKey, {
+        team: cycle.team,
+        cycleId: cycle.id
+      });
+
+      cycle.trail.push({
+        x: cycle.targetX,
+        y: cycle.targetY,
+        cx: nextCx,
+        cy: nextCy
+      });
+
+      trimTrail(cycle);
     }
 
     function updateCycle(cycle) {
-      if (!cycle.alive) {
-        cycle.respawn--;
+      const now = performance.now();
 
-        if (cycle.respawn <= 0) {
+      if (!cycle.alive) {
+        if (now >= cycle.respawnAt) {
           respawnCycle(cycle);
         }
 
+        return;
+      }
+
+      if (now - cycle.birthTime >= MAX_LIFE_MS) {
+        derezzCycle(cycle);
         return;
       }
 
@@ -1213,7 +2257,7 @@
       ctx.lineCap = "square";
       ctx.lineJoin = "miter";
       ctx.shadowColor = cycle.color;
-      ctx.shadowBlur = 24;
+      ctx.shadowBlur = 16;
 
       ctx.beginPath();
       ctx.moveTo(cycle.trail[0].x, cycle.trail[0].y);
@@ -1226,12 +2270,12 @@
         ctx.lineTo(cycle.x, cycle.y);
       }
 
-      ctx.strokeStyle = hexToRgba(cycle.color, 0.42);
-      ctx.lineWidth = TRAIL_LINE_WIDTH + 5;
+      ctx.strokeStyle = hexToRgba(cycle.color, 0.35);
+      ctx.lineWidth = TRAIL_LINE_WIDTH + 4;
       ctx.stroke();
 
-      ctx.shadowBlur = 15;
-      ctx.strokeStyle = hexToRgba(cycle.color, 0.95);
+      ctx.shadowBlur = 9;
+      ctx.strokeStyle = hexToRgba(cycle.color, 0.84);
       ctx.lineWidth = TRAIL_LINE_WIDTH;
       ctx.stroke();
 
@@ -1248,16 +2292,17 @@
 
       const vector = directionVector(cycle.direction);
       const angle = Math.atan2(vector.y, vector.x);
-      const pulse = 0.75 + Math.sin(frame * 0.12 + cycle.sizePulse) * 0.22;
+      const hunting = isHunting(cycle);
+      const pulse = 0.75 + Math.sin(frame * (hunting ? 0.22 : 0.12) + cycle.sizePulse) * 0.22;
 
       ctx.save();
       ctx.translate(cycle.x, cycle.y);
       ctx.rotate(angle);
 
       ctx.shadowColor = cycle.color;
-      ctx.shadowBlur = 28;
+      ctx.shadowBlur = hunting ? 28 : 18;
 
-      ctx.fillStyle = hexToRgba(cycle.color, 0.22);
+      ctx.fillStyle = hexToRgba(cycle.color, 0.2);
       ctx.beginPath();
       ctx.ellipse(-8, 0, 24, 9, 0, 0, Math.PI * 2);
       ctx.fill();
@@ -1272,8 +2317,8 @@
       ctx.roundRect(-5, -2, 10, 4, 3);
       ctx.fill();
 
-      ctx.strokeStyle = hexToRgba(cycle.color, 0.95);
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = hexToRgba(cycle.color, hunting ? 1 : 0.9);
+      ctx.lineWidth = hunting ? 2.5 : 2;
       ctx.beginPath();
       ctx.moveTo(-9, -7);
       ctx.lineTo(8, -7);
@@ -1281,13 +2326,21 @@
       ctx.lineTo(8, 7);
       ctx.stroke();
 
-      ctx.fillStyle = hexToRgba(cycle.color, 0.48 + pulse * 0.28);
+      ctx.fillStyle = hexToRgba(cycle.color, 0.42 + pulse * 0.22);
       ctx.beginPath();
       ctx.moveTo(-14, -2.5);
-      ctx.lineTo(-34 - pulse * 16, 0);
+      ctx.lineTo(-28 - pulse * 12, 0);
       ctx.lineTo(-14, 2.5);
       ctx.closePath();
       ctx.fill();
+
+      if (hunting) {
+        ctx.strokeStyle = hexToRgba(cycle.core, 0.7);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, 17 + pulse * 4, 0, Math.PI * 2);
+        ctx.stroke();
+      }
 
       ctx.restore();
     }
@@ -1298,15 +2351,15 @@
 
         particle.x += particle.vx;
         particle.y += particle.vy;
-        particle.vx *= 0.955;
-        particle.vy *= 0.955;
+        particle.vx *= 0.94;
+        particle.vy *= 0.94;
         particle.life--;
 
         const alpha = Math.max(0, particle.life / particle.maxLife);
 
         ctx.save();
         ctx.shadowColor = particle.color;
-        ctx.shadowBlur = 16;
+        ctx.shadowBlur = 10;
         ctx.fillStyle = hexToRgba(particle.color, alpha);
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size * alpha, 0, Math.PI * 2);
@@ -1325,7 +2378,7 @@
       const horizon = height * 0.58;
       const gradient = ctx.createLinearGradient(0, horizon, 0, height);
       gradient.addColorStop(0, "rgba(0, 229, 255, 0)");
-      gradient.addColorStop(1, "rgba(0, 229, 255, 0.08)");
+      gradient.addColorStop(1, "rgba(0, 229, 255, 0.055)");
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
@@ -1333,7 +2386,20 @@
       ctx.restore();
     }
 
-    function animateLightCycles() {
+    function animateLightCycles(timestamp) {
+      requestAnimationFrame(animateLightCycles);
+
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+      }
+
+      const elapsed = timestamp - lastTimestamp;
+
+      if (elapsed < FRAME_INTERVAL) {
+        return;
+      }
+
+      lastTimestamp = timestamp - (elapsed % FRAME_INTERVAL);
       frame++;
 
       ctx.clearRect(0, 0, width, height);
@@ -1341,15 +2407,12 @@
 
       if (!reducedMotion.matches) {
         cycles.forEach(updateCycle);
-
         cycles.forEach(drawTrail);
         cycles.forEach(drawCycle);
         drawParticles();
       } else {
         cycles.forEach(drawTrail);
       }
-
-      requestAnimationFrame(animateLightCycles);
     }
 
     if ("roundRect" in CanvasRenderingContext2D.prototype === false) {
@@ -1370,8 +2433,14 @@
     }
 
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-    animateLightCycles();
+
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", resizeCanvas, { passive: true });
+    }
+
+    requestAnimationFrame(animateLightCycles);
   </script>
 </body>
 </html>
