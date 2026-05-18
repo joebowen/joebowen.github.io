@@ -18,7 +18,7 @@
       --soft: #94a3b8;
       --accent: #60a5fa;
       --accent-2: #93c5fd;
-      --tron: #00e5ff;
+      --glow: #00e5ff;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
     }
 
@@ -39,7 +39,12 @@
     body {
       font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-      background: #030712;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(0, 229, 255, 0.12), transparent 32rem),
+        radial-gradient(circle at 12% 80%, rgba(96, 165, 250, 0.12), transparent 28rem),
+        radial-gradient(circle at 88% 72%, rgba(147, 197, 253, 0.08), transparent 26rem),
+        linear-gradient(180deg, #020617 0%, #030712 52%, #010409 100%);
+      background-attachment: fixed;
       min-height: 100vh;
       min-height: 100dvh;
       line-height: 1.65;
@@ -49,88 +54,42 @@
       position: relative;
     }
 
-    .tron-bg {
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
-      z-index: -10;
-      overflow: hidden;
+      z-index: -2;
       pointer-events: none;
-      background:
-        radial-gradient(circle at 50% 42%, rgba(0, 229, 255, 0.13), transparent 34rem),
-        radial-gradient(circle at 18% 78%, rgba(255, 138, 0, 0.12), transparent 28rem),
-        radial-gradient(circle at 82% 72%, rgba(96, 165, 250, 0.09), transparent 26rem),
-        linear-gradient(180deg, #020617 0%, #030712 52%, #010409 100%);
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      transform: translateZ(0);
-      will-change: transform;
-    }
-
-    .tron-bg::before {
-      content: "";
-      position: absolute;
-      inset: 0;
       background-image:
-        linear-gradient(rgba(0, 229, 255, 0.075) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 229, 255, 0.075) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.55;
-      transform: perspective(800px) rotateX(58deg) translateY(12%);
-      transform-origin: center bottom;
+        linear-gradient(rgba(0, 229, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.045) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 82%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 82%);
     }
 
-    .tron-bg::after {
+    body::after {
       content: "";
-      position: absolute;
+      position: fixed;
       inset: 0;
+      z-index: -1;
+      pointer-events: none;
       background:
         linear-gradient(
           to bottom,
-          rgba(2, 6, 23, 0.24) 0%,
-          transparent 28%,
-          rgba(2, 6, 23, 0.58) 76%,
-          rgba(1, 4, 9, 0.92) 100%
+          rgba(2, 6, 23, 0.08) 0%,
+          transparent 36%,
+          rgba(2, 6, 23, 0.38) 80%,
+          rgba(1, 4, 9, 0.76) 100%
         ),
         repeating-linear-gradient(
           to bottom,
-          rgba(255, 255, 255, 0.02) 0px,
-          rgba(255, 255, 255, 0.02) 1px,
+          rgba(255, 255, 255, 0.018) 0px,
+          rgba(255, 255, 255, 0.018) 1px,
           transparent 1px,
-          transparent 5px
+          transparent 6px
         );
-      opacity: 0.7;
-      animation: scanMove 5s linear infinite;
-    }
-
-    #light-cycle-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: -9;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      pointer-events: none;
-      opacity: 1;
-      transform: translateZ(0);
-      will-change: transform;
-    }
-
-    @supports (-webkit-touch-callout: none) {
-      .tron-bg,
-      #light-cycle-canvas {
-        height: 100svh;
-      }
-    }
-
-    @keyframes scanMove {
-      from {
-        background-position: 0 0;
-      }
-
-      to {
-        background-position: 0 40px;
-      }
+      opacity: 0.48;
     }
 
     a {
@@ -203,7 +162,8 @@
       align-items: start;
     }
 
-    .timeline-section {
+    .timeline-section,
+    .projects-section {
       grid-column: 1 / -1;
     }
 
@@ -256,12 +216,6 @@
       color: var(--accent);
       font-weight: 700;
       margin-bottom: 10px;
-    }
-
-    .school {
-      font-size: 1.05rem;
-      color: var(--muted);
-      margin-bottom: 28px;
     }
 
     .socials {
@@ -356,95 +310,202 @@
       color: var(--muted);
     }
 
-    .skills-grid,
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 18px;
+    .joe-gpt-card {
+      margin-top: 2rem;
+      padding: 1.3rem;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0, 229, 255, 0.13), transparent 18rem),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)),
+        rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(0, 229, 255, 0.16);
+      box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      position: relative;
     }
 
-    .card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(0, 229, 255, 0.13);
-      border-radius: 18px;
-      padding: 20px;
+    .joe-gpt-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.025) 0,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      opacity: 0.35;
     }
 
-    .card h3 {
-      font-size: 1.05rem;
-      color: var(--accent-2);
-      margin-bottom: 10px;
+    .joe-gpt-header,
+    .joe-gpt-chat,
+    .joe-gpt-prompts,
+    .joe-gpt-form {
+      position: relative;
+      z-index: 1;
     }
 
-    .card p,
-    .card li {
-      font-size: 1rem;
-      color: var(--muted);
+    .joe-gpt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .joe-gpt-header h3 {
+      margin: 0 0 0.25rem;
+      color: var(--glow);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.28);
+    }
+
+    .joe-gpt-header p {
+      margin: 0;
+      color: rgba(226, 232, 240, 0.78);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .joe-gpt-badge {
+      flex-shrink: 0;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      color: #eaffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .joe-gpt-chat {
+      min-height: 120px;
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 0.9rem;
+      border-radius: 16px;
+      background: rgba(2, 6, 23, 0.52);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      margin-bottom: 0.9rem;
+    }
+
+    .joe-gpt-message {
+      padding: 0.75rem 0.85rem;
+      border-radius: 14px;
+      margin-bottom: 0.7rem;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .joe-gpt-message:last-child {
       margin-bottom: 0;
     }
 
-    .project {
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    }
-
-    .project:hover {
-      transform: translateY(-4px);
-      border-color: rgba(0, 229, 255, 0.36);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .project-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: white;
-    }
-
-    .projects-more {
-      grid-column: 1 / -1;
-      width: 100%;
-    }
-
-    .project-video {
-      margin-top: 1rem;
-      width: 320px;
-      max-width: 100%;
-    }
-
-    .project-video video {
+    .joe-gpt-message strong {
       display: block;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 16px;
+      margin-bottom: 0.25rem;
+      color: #ffffff;
     }
 
-    .projects-more a {
-      font-weight: 700;
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .contact-item {
-      padding: 16px 18px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(0, 229, 255, 0.13);
-      color: var(--muted);
-    }
-
-    .contact-item strong {
-      color: white;
+    .joe-gpt-message span {
       display: block;
-      margin-bottom: 4px;
     }
 
-    .timeline-shell {
+    .joe-gpt-message-bot {
+      background: rgba(96, 165, 250, 0.11);
+      border: 1px solid rgba(96, 165, 250, 0.16);
+      color: rgba(226, 232, 240, 0.86);
+    }
+
+    .joe-gpt-message-user {
+      margin-left: auto;
+      background: rgba(0, 229, 255, 0.11);
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      color: #f8fbff;
+      max-width: 85%;
+    }
+
+    .joe-gpt-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .joe-gpt-prompt {
+      border: 1px solid rgba(0, 229, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.055);
+      color: rgba(248, 251, 255, 0.9);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .joe-gpt-prompt:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 229, 255, 0.13);
+      border-color: rgba(0, 229, 255, 0.35);
+    }
+
+    .joe-gpt-form {
+      display: flex;
+      gap: 0.65rem;
+    }
+
+    .joe-gpt-form input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid rgba(0, 229, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.64);
+      color: white;
+      padding: 0.85rem 1rem;
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .joe-gpt-form input::placeholder {
+      color: rgba(226, 232, 240, 0.48);
+    }
+
+    .joe-gpt-form input:focus {
+      border-color: rgba(0, 229, 255, 0.45);
+      box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.08);
+    }
+
+    .joe-gpt-form button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 1.15rem;
+      background: rgba(0, 229, 255, 0.16);
+      border: 1px solid rgba(0, 229, 255, 0.24);
+      color: #ffffff;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .joe-gpt-form button:hover {
+      transform: translateY(-1px);
+      background: rgba(0, 229, 255, 0.24);
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.15);
+    }
+
+    .timeline-shell,
+    .projects-shell {
       position: relative;
       margin-top: 2.5rem;
       padding: 1.3rem;
@@ -459,7 +520,8 @@
         inset 0 0 30px rgba(0, 229, 255, 0.025);
     }
 
-    .timeline-shell::before {
+    .timeline-shell::before,
+    .projects-shell::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -472,63 +534,29 @@
           transparent 1px,
           transparent 5px
         );
-      opacity: 0.55;
+      opacity: 0.45;
     }
 
-    .timeline-list {
+    .timeline-list,
+    .projects-list {
       position: relative;
       z-index: 1;
-    }
-
-    .timeline-card-icon {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-
-    .timeline-card-icon img {
-      width: 105%;
-      height: 105%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .timeline-list {
       display: flex;
       flex-direction: column;
       justify-content: center;
       min-width: 0;
     }
 
-    .timeline-kicker {
-      color: var(--tron);
-      font-size: 0.78rem;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 0.65rem;
-    }
-
-    .timeline-title-main {
-      margin: 0 0 1.75rem;
-      color: #f8fbff;
-      font-size: clamp(1.7rem, 4vw, 2.8rem);
-      line-height: 0.95;
-      letter-spacing: -0.05em;
-      text-shadow:
-        0 0 12px rgba(0, 229, 255, 0.26),
-        0 0 26px rgba(0, 229, 255, 0.1);
-    }
-
-    .timeline-track {
+    .timeline-track,
+    .projects-track {
       position: relative;
       display: flex;
       flex-direction: column;
       gap: 1.35rem;
     }
 
-    .timeline-track::before {
+    .timeline-track::before,
+    .projects-track::before {
       content: "";
       position: absolute;
       top: -1rem;
@@ -544,7 +572,8 @@
       );
     }
 
-    .timeline-item {
+    .timeline-item,
+    .project-item {
       position: relative;
       display: grid;
       grid-template-columns: 1.75rem 1fr;
@@ -552,7 +581,8 @@
       outline: none;
     }
 
-    .timeline-dot {
+    .timeline-dot,
+    .project-dot {
       position: relative;
       z-index: 2;
       width: 0.95rem;
@@ -565,7 +595,8 @@
       box-shadow: 0 0 0 5px rgba(2, 6, 23, 0.94);
     }
 
-    .timeline-card {
+    .timeline-card,
+    .project-card {
       position: relative;
       padding: 1.35rem;
       border-radius: 18px;
@@ -579,7 +610,8 @@
       overflow: hidden;
     }
 
-    .timeline-card::before {
+    .timeline-card::before,
+    .project-card::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -590,10 +622,11 @@
         rgba(0, 229, 255, 0.18),
         transparent 34%
       );
-      opacity: 0;
+      opacity: 0.45;
     }
 
-    .timeline-card-icon {
+    .timeline-card-icon,
+    .project-card-icon {
       position: absolute;
       top: 1.15rem;
       right: 1.15rem;
@@ -603,23 +636,36 @@
       height: 3rem;
       border-radius: 999px;
       color: #eaffff;
-      border: 2px solid var(--tron);
+      border: 2px solid var(--glow);
       box-shadow:
         0 0 18px rgba(0, 229, 255, 0.28),
         0 8px 14px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      font-size: 1.35rem;
+      background: rgba(2, 6, 23, 0.72);
     }
 
-    .timeline-card-title {
+    .timeline-card-icon img,
+    .project-card-icon img {
+      width: 105%;
+      height: 105%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .timeline-card-title,
+    .project-card-title {
       min-height: 1.25rem;
       margin: 0 3.8rem 0.35rem 0;
-      color: var(--tron);
+      color: var(--glow);
       font-size: clamp(1.2rem, 2.4vw, 1.55rem);
       line-height: 1.05;
       font-weight: 900;
       letter-spacing: -0.04em;
     }
 
-    .timeline-meta {
+    .timeline-meta,
+    .project-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
@@ -628,11 +674,13 @@
       font-size: 0.92rem;
     }
 
-    .timeline-meta strong {
+    .timeline-meta strong,
+    .project-meta strong {
       color: #f8fbff;
     }
 
-    .timeline-date {
+    .timeline-date,
+    .project-date {
       min-height: 1rem;
       color: rgba(226, 232, 240, 0.62);
       font-size: 0.88rem;
@@ -640,12 +688,50 @@
       margin-bottom: 0.9rem;
     }
 
-    .timeline-description {
+    .timeline-description,
+    .project-description {
       min-height: 2.6rem;
       margin: 0;
       color: rgba(226, 232, 240, 0.78);
       font-size: 0.95rem;
       line-height: 1.55;
+    }
+
+    .project-link {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #f8fbff;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .project-link:hover {
+      color: var(--glow);
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.45);
+    }
+
+    .project-video {
+      margin: 1.5rem auto 0;
+      width: min(100%, 760px);
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-video video {
+      display: block;
+      width: 80%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.26),
+        0 0 28px rgba(0, 229, 255, 0.08);
+      background: #020617;
     }
 
     footer {
@@ -805,17 +891,28 @@
         height: 160px;
       }
 
-      .skills-grid,
-      .projects-grid {
-        grid-template-columns: 1fr;
-      }
-
       p {
         font-size: 1.05rem;
       }
 
       .section-heading h2 {
         font-size: 1.7rem;
+      }
+
+      .joe-gpt-header {
+        flex-direction: column;
+      }
+
+      .joe-gpt-form {
+        flex-direction: column;
+      }
+
+      .joe-gpt-form button {
+        width: 100%;
+      }
+
+      .joe-gpt-message-user {
+        max-width: 100%;
       }
 
       .music-link-wrap {
@@ -836,29 +933,35 @@
         font-size: 0.82rem;
       }
 
-      .timeline-shell {
+      .timeline-shell,
+      .projects-shell {
         padding: 1rem;
         border-radius: 20px;
       }
 
-      .timeline-item {
+      .timeline-item,
+      .project-item {
         grid-template-columns: 1.4rem 1fr;
         gap: 0.8rem;
       }
 
-      .timeline-track::before {
+      .timeline-track::before,
+      .projects-track::before {
         left: 0.68rem;
       }
 
-      .timeline-dot {
+      .timeline-dot,
+      .project-dot {
         margin-left: 0.22rem;
       }
 
-      .timeline-card {
+      .timeline-card,
+      .project-card {
         padding: 1.15rem;
       }
 
-      .timeline-card-icon {
+      .timeline-card-icon,
+      .project-card-icon {
         position: relative;
         top: auto;
         right: auto;
@@ -867,34 +970,30 @@
         margin-bottom: 0.8rem;
       }
 
-      .timeline-card-title {
+      .timeline-card-title,
+      .project-card-title {
         margin-right: 0;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .tron-bg::after {
-        animation: none;
-      }
-
-      #light-cycle-canvas {
-        opacity: 0.35;
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="tron-bg" aria-hidden="true"></div>
-  <canvas id="light-cycle-canvas" aria-hidden="true"></canvas>
-
   <header class="navbar">
     <div class="nav-inner">
       <div class="brand">Joe Bowen</div>
       <nav class="nav-links">
         <a href="#about">Bio</a>
-        <a href="#timeline">Timeline</a>
         <a href="#projects">Projects</a>
+        <a href="#timeline">Timeline</a>
       </nav>
     </div>
   </header>
@@ -907,7 +1006,7 @@
         </div>
 
         <h1 class="name">Joe Bowen</h1>
-        <div class="role">Digital Engineer</div>
+        <div class="role">console.log("Hello!");</div>
 
         <div class="socials">
           <a class="social-btn" href="mailto:joe.bowen13@gmail.com" title="Email" aria-label="Email">
@@ -981,21 +1080,45 @@
             </a>
           </p>
 
-          <p class="muted" style="margin-top: 1.5rem;">
-            Check out my latest
-            <a href="https://github.com/joebowen/KOTK-Facial-Recognition" target="_blank" rel="noopener noreferrer">
-              <strong><u>project</u></strong>
-            </a>.
-          </p>
+          <div class="joe-gpt-card">
+            <div class="joe-gpt-header">
+              <div>
+                <h3>Joe GPT</h3>
+                <p>Ask questions about my background, projects, coursework, and interests.</p>
+              </div>
+            </div>
 
-          <div class="project-video">
-            <video controls>
-              <source src="images/Facial Recognition - Test.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+            <div class="joe-gpt-chat" id="joe-gpt-chat">
+              <div class="joe-gpt-message joe-gpt-message-bot">
+                <strong>Joe GPT:</strong>
+                <span>
+                  Hey, I’m Joe GPT. Soon you’ll be able to ask me about Joe’s experience,
+                  projects, resume, and technical interests.
+                </span>
+              </div>
+            </div>
+
+            <div class="joe-gpt-prompts">
+              <button type="button" class="joe-gpt-prompt">Summarize Joe</button>
+              <button type="button" class="joe-gpt-prompt">What projects has Joe built?</button>
+              <button type="button" class="joe-gpt-prompt">What are Joe’s interests?</button>
+            </div>
+
+            <form class="joe-gpt-form" id="joe-gpt-form">
+              <input
+                type="text"
+                id="joe-gpt-input"
+                placeholder="Ask Joe GPT..."
+                autocomplete="off"
+              />
+
+              <button type="submit">
+                Send
+              </button>
+            </form>
           </div>
-                  </section>
-                </section>
+        </section>
+      </section>
 
       <section id="timeline" class="section timeline-section">
         <div class="section-heading">
@@ -1011,13 +1134,13 @@
 
                 <div class="timeline-card">
                   <div class="timeline-card-icon">
-                    <img src="images/timeline/texas_logo.jpg">
+                    <img src="images/timeline/texas_logo.jpg" alt="University of Texas logo">
                   </div>
 
                   <h3 class="timeline-card-title">
                     Master's Degree
                   </h3>
-                    
+
                   <div class="timeline-meta">
                     <strong>University of Texas at Austin - </strong>
                     <span>Online</span>
@@ -1028,7 +1151,7 @@
                   </div>
 
                   <p class="timeline-description">
-                    M.S. - Computer Science 
+                    M.S. - Computer Science
                   </p>
                 </div>
               </article>
@@ -1038,7 +1161,7 @@
 
                 <div class="timeline-card">
                   <div class="timeline-card-icon">
-                    <img src="images/timeline/corning_logo.png">
+                    <img src="images/timeline/corning_logo.png" alt="Corning logo">
                   </div>
 
                   <h3 class="timeline-card-title">
@@ -1065,7 +1188,7 @@
 
                 <div class="timeline-card">
                   <div class="timeline-card-icon">
-                    <img src="images/timeline/unc_logo.jpg">
+                    <img src="images/timeline/unc_logo.jpg" alt="UNC Chapel Hill logo">
                   </div>
 
                   <h3 class="timeline-card-title">
@@ -1082,8 +1205,64 @@
                   </div>
 
                   <p class="timeline-description">
-                    B.S. - Statistics and Analytis
+                    B.S. - Statistics and Analytics
                   </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section projects-section">
+        <div class="section-heading">
+          <div class="section-icon">🧪</div>
+          <h2>Projects</h2>
+        </div>
+
+        <div class="projects-shell">
+          <div class="projects-list">
+            <div class="projects-track">
+              <article class="project-item" tabindex="0">
+                <div class="project-dot"></div>
+
+                <div class="project-card">
+                  <div class="project-card-icon">
+                    🧠
+                  </div>
+
+                  <h3 class="project-card-title">
+                    KOTK Facial Recognition
+                  </h3>
+
+                  <div class="project-meta">
+                    <strong>Computer Vision - </strong>
+                    <span>Facial Recognition</span>
+                  </div>
+
+                  <div class="project-date">
+                    Latest Project
+                  </div>
+
+                  <p class="project-description">
+                    A computer vision project focused on facial recognition and automation.
+                  </p>
+
+                  <a
+                    class="project-link"
+                    href="https://github.com/joebowen/KOTK-Facial-Recognition"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View project on GitHub
+                  </a>
+
+                  <div class="project-video">
+                    <video controls>
+                      <source src="images/Facial Recognition - Test.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 </div>
               </article>
             </div>
@@ -1102,6 +1281,7 @@
     document.querySelectorAll('a[href^="#"]').forEach(link => {
       link.addEventListener("click", function (e) {
         const target = document.querySelector(this.getAttribute("href"));
+
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1183,960 +1363,96 @@
 
     renderSong(currentSongIndex);
 
-    /*
-      Optimized Tron light-cycle background.
+    const joeGptForm = document.getElementById("joe-gpt-form");
+    const joeGptInput = document.getElementById("joe-gpt-input");
+    const joeGptChat = document.getElementById("joe-gpt-chat");
+    const joeGptPrompts = document.querySelectorAll(".joe-gpt-prompt");
 
-      Behavior:
-      - Only two active bikes: one blue and one orange.
-      - Bikes do not die from walls, their own trail, or their own color.
-      - Bikes only derezz when they collide with the opposite color.
-      - After 7 seconds, each bike enters hunting mode.
-      - No bike can live longer than 10 seconds.
-      - In hunting mode, bikes aggressively seek the nearest opposite-color bike/trail.
-      - Self-circling is prevented by steering away from recently visited cells instead of derezzing.
-      - Trails are capped and old segments are removed from the collision map.
-      - Mobile viewport sizing is improved with visualViewport when available.
-    */
-
-    const canvas = document.getElementById("light-cycle-canvas");
-    const ctx = canvas.getContext("2d");
-
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-    let cols = 0;
-    let rows = 0;
-    let frame = 0;
-    let lastTimestamp = 0;
-
-    const CELL = 20;
-    const SPEED = 4;
-    const TARGET_FPS = 45;
-    const FRAME_INTERVAL = 1000 / TARGET_FPS;
-
-    const HUNT_AFTER_MS = 7000;
-    const MAX_LIFE_MS = 10000;
-    const RESPAWN_DELAY_MS = 450;
-    const MAX_TRAIL_POINTS = 120;
-    const MAX_PARTICLES = 120;
-
-    const TURN_CHANCE = 0.045;
-    const CHASE_CHANCE = 0.72;
-    const DIRECT_COLLISION_CHANCE = 0.28;
-    const LOOP_WINDOW = 18;
-
-    const TRAIL_LINE_WIDTH = 6;
-    const TRAIL_CORE_WIDTH = 2;
-
-    const BLUE = "#00e5ff";
-    const BLUE_CORE = "#d9fbff";
-    const ORANGE = "#ff8a00";
-    const ORANGE_CORE = "#fff0d2";
-
-    let cycles = [];
-    let occupied = new Map();
-    let particles = [];
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    function cellKey(cx, cy) {
-      return cx + "," + cy;
+    function escapeHTML(text) {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
-    function randInt(min, max) {
-      return Math.floor(min + Math.random() * Math.max(1, max - min + 1));
+    function addJoeGptMessage(sender, text, type) {
+      const message = document.createElement("div");
+      message.className = `joe-gpt-message joe-gpt-message-${type}`;
+
+      message.innerHTML = `
+        <strong>${escapeHTML(sender)}:</strong>
+        <span>${escapeHTML(text)}</span>
+      `;
+
+      joeGptChat.appendChild(message);
+      joeGptChat.scrollTop = joeGptChat.scrollHeight;
     }
 
-    function cellToX(cx) {
-      return cx * CELL + CELL / 2;
-    }
+    async function handleJoeGptSubmit(question) {
+      const trimmedQuestion = question.trim();
 
-    function cellToY(cy) {
-      return cy * CELL + CELL / 2;
-    }
+      if (!trimmedQuestion) return;
 
-    function hexToRgba(hex, alpha) {
-      const clean = hex.replace("#", "");
-      const r = parseInt(clean.substring(0, 2), 16);
-      const g = parseInt(clean.substring(2, 4), 16);
-      const b = parseInt(clean.substring(4, 6), 16);
-      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    }
+      addJoeGptMessage("You", trimmedQuestion, "user");
+      joeGptInput.value = "";
 
-    function directionVector(direction) {
-      if (direction === 0) return { x: 1, y: 0 };
-      if (direction === 1) return { x: 0, y: 1 };
-      if (direction === 2) return { x: -1, y: 0 };
-      return { x: 0, y: -1 };
-    }
+      addJoeGptMessage("Joe GPT", "Thinking...", "bot");
 
-    function oppositeDirection(direction) {
-      return (direction + 2) % 4;
-    }
+      const thinkingMessage = joeGptChat.lastElementChild;
 
-    function findNearestEnemy(cycle) {
-      let nearest = null;
-      let nearestDistance = Infinity;
-
-      for (const other of cycles) {
-        if (!other.alive || other.team === cycle.team) continue;
-
-        const distance =
-          Math.abs(other.cx - cycle.cx) +
-          Math.abs(other.cy - cycle.cy);
-
-        if (distance < nearestDistance) {
-          nearest = other;
-          nearestDistance = distance;
-        }
-      }
-
-      return nearest;
-    }
-
-    function cycleAge(cycle) {
-      return performance.now() - cycle.birthTime;
-    }
-
-    function isHunting(cycle) {
-      return cycleAge(cycle) >= HUNT_AFTER_MS;
-    }
-
-    function createCycle(id, team, color, core, preferredSide) {
-      let cx;
-      let cy;
-      let direction;
-
-      const margin = 4;
-
-      if (preferredSide === "left") {
-        cx = margin;
-        cy = randInt(margin, Math.max(margin, rows - margin - 1));
-        direction = 0;
-      } else if (preferredSide === "right") {
-        cx = Math.max(margin, cols - margin - 1);
-        cy = randInt(margin, Math.max(margin, rows - margin - 1));
-        direction = 2;
-      } else if (preferredSide === "top") {
-        cx = randInt(margin, Math.max(margin, cols - margin - 1));
-        cy = margin;
-        direction = 1;
-      } else {
-        cx = randInt(margin, Math.max(margin, cols - margin - 1));
-        cy = Math.max(margin, rows - margin - 1);
-        direction = 3;
-      }
-
-      const startX = cellToX(cx);
-      const startY = cellToY(cy);
-
-      return {
-        id,
-        team,
-        color,
-        core,
-        x: startX,
-        y: startY,
-        cx,
-        cy,
-        direction,
-        previousDirection: direction,
-        targetX: startX,
-        targetY: startY,
-        alive: true,
-        birthTime: performance.now(),
-        respawnAt: 0,
-        turnCooldown: randInt(4, 14),
-        tightTurns: 0,
-        recentlyVisited: [cellKey(cx, cy)],
-        trail: [
-          {
-            x: startX,
-            y: startY,
-            cx,
-            cy
-          }
-        ],
-        sizePulse: Math.random() * Math.PI * 2
-      };
-    }
-
-    function resetOccupancy() {
-      occupied.clear();
-
-      for (const cycle of cycles) {
-        if (!cycle.alive) continue;
-
-        for (const point of cycle.trail) {
-          occupied.set(cellKey(point.cx, point.cy), {
-            team: cycle.team,
-            cycleId: cycle.id
-          });
-        }
-      }
-    }
-
-    function resizeCanvas() {
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-
-      const viewportWidth = window.visualViewport
-        ? window.visualViewport.width
-        : window.innerWidth;
-
-      const viewportHeight = window.visualViewport
-        ? window.visualViewport.height
-        : window.innerHeight;
-
-      width = Math.ceil(viewportWidth);
-      height = Math.ceil(viewportHeight);
-
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      cols = Math.ceil(width / CELL);
-      rows = Math.ceil(height / CELL);
-
-      occupied.clear();
-      particles = [];
-
-      cycles = [
-        createCycle("blue-1", "blue", BLUE, BLUE_CORE, "left"),
-        createCycle("orange-1", "orange", ORANGE, ORANGE_CORE, "right")
-      ];
-
-      resetOccupancy();
-    }
-
-    function getOccupant(cx, cy) {
-      return occupied.get(cellKey(cx, cy));
-    }
-
-    function isWall(cx, cy) {
-      return cx < 0 || cy < 0 || cx >= cols || cy >= rows;
-    }
-
-    function isOwnColorCell(cycle, cx, cy) {
-      const occupant = getOccupant(cx, cy);
-      return occupant && occupant.team === cycle.team;
-    }
-
-    function isSoftBlocked(cycle, cx, cy) {
-      if (isWall(cx, cy)) {
-        return true;
-      }
-
-      return isOwnColorCell(cycle, cx, cy);
-    }
-
-    function getEnemyTrailTargets(cycle) {
-      const targets = [];
-
-      for (const other of cycles) {
-        if (!other.alive || other.team === cycle.team) continue;
-
-        targets.push({
-          cx: other.cx,
-          cy: other.cy,
-          x: other.x,
-          y: other.y,
-          type: "bike"
+      try {
+        const response = await fetch("/api/joe-gpt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: trimmedQuestion
+          })
         });
 
-        for (const point of other.trail) {
-          targets.push({
-            cx: point.cx,
-            cy: point.cy,
-            x: point.x,
-            y: point.y,
-            type: "trail"
-          });
-        }
-      }
-
-      return targets;
-    }
-
-    function findNearestEnemyTarget(cycle) {
-      const targets = getEnemyTrailTargets(cycle);
-
-      if (!targets.length) {
-        return null;
-      }
-
-      let nearest = targets[0];
-      let nearestDistance = Infinity;
-
-      for (const target of targets) {
-        const distance =
-          Math.abs(target.cx - cycle.cx) +
-          Math.abs(target.cy - cycle.cy);
-
-        if (distance < nearestDistance) {
-          nearest = target;
-          nearestDistance = distance;
-        }
-      }
-
-      return nearest;
-    }
-
-    function countOpenNeighborsForCell(cycle, cx, cy) {
-      let openNeighbors = 0;
-
-      for (let d = 0; d < 4; d++) {
-        const vector = directionVector(d);
-        const nx = cx + vector.x;
-        const ny = cy + vector.y;
-
-        if (!isSoftBlocked(cycle, nx, ny)) {
-          openNeighbors++;
-        }
-      }
-
-      return openNeighbors;
-    }
-
-    function scoreDirection(cycle, direction) {
-      const vector = directionVector(direction);
-      const nx = cycle.cx + vector.x;
-      const ny = cycle.cy + vector.y;
-
-      if (isWall(nx, ny)) {
-        return -999999;
-      }
-
-      const key = cellKey(nx, ny);
-      const occupant = occupied.get(key);
-      const enemy = findNearestEnemy(cycle);
-      const enemyTarget = findNearestEnemyTarget(cycle);
-      const hunting = isHunting(cycle);
-
-      let score = 0;
-
-      if (occupant) {
-        if (occupant.team !== cycle.team) {
-          score += hunting ? 100000 : 300;
-        } else {
-          score -= hunting ? 10000 : 1200;
-        }
-      }
-
-      if (enemyTarget) {
-        const oldDistance =
-          Math.abs(enemyTarget.cx - cycle.cx) +
-          Math.abs(enemyTarget.cy - cycle.cy);
-
-        const newDistance =
-          Math.abs(enemyTarget.cx - nx) +
-          Math.abs(enemyTarget.cy - ny);
-
-        score += (oldDistance - newDistance) * (hunting ? 160 : 18);
-
-        if (hunting) {
-          score -= newDistance * 6;
-        }
-      } else if (enemy) {
-        const oldDistance =
-          Math.abs(enemy.cx - cycle.cx) +
-          Math.abs(enemy.cy - cycle.cy);
-
-        const newDistance =
-          Math.abs(enemy.cx - nx) +
-          Math.abs(enemy.cy - ny);
-
-        score += (oldDistance - newDistance) * (hunting ? 110 : 18);
-      }
-
-      const openNeighbors = countOpenNeighborsForCell(cycle, nx, ny);
-      score += openNeighbors * (hunting ? 2 : 12);
-
-      if (cycle.recentlyVisited.includes(key)) {
-        score -= hunting ? 120 : 220;
-      }
-
-      if (direction === cycle.direction) {
-        score += hunting ? 18 : 12;
-      }
-
-      if (direction !== cycle.direction) {
-        score -= hunting ? 1 : 4;
-      }
-
-      score += Math.random() * (hunting ? 3 : 8);
-
-      return score;
-    }
-
-    function getValidDirections(cycle, allowEnemyCollision = true) {
-      const directions = [];
-
-      for (let direction = 0; direction < 4; direction++) {
-        if (direction === oppositeDirection(cycle.direction)) {
-          continue;
-        }
-
-        const vector = directionVector(direction);
-        const nx = cycle.cx + vector.x;
-        const ny = cycle.cy + vector.y;
-
-        if (isWall(nx, ny)) {
-          continue;
-        }
-
-        const occupant = getOccupant(nx, ny);
-
-        if (occupant && occupant.team === cycle.team) {
-          continue;
-        }
-
-        if (!allowEnemyCollision && occupant && occupant.team !== cycle.team) {
-          continue;
-        }
-
-        directions.push(direction);
-      }
-
-      return directions;
-    }
-
-    function getEmergencyDirections(cycle) {
-      const directions = [];
-
-      for (let direction = 0; direction < 4; direction++) {
-        if (direction === oppositeDirection(cycle.direction)) {
-          continue;
-        }
-
-        const vector = directionVector(direction);
-        const nx = cycle.cx + vector.x;
-        const ny = cycle.cy + vector.y;
-
-        if (isWall(nx, ny)) {
-          continue;
-        }
-
-        const occupant = getOccupant(nx, ny);
-
-        if (!occupant || occupant.team !== cycle.team) {
-          directions.push(direction);
-        }
-      }
-
-      return directions;
-    }
-
-    function chooseDirection(cycle) {
-      const hunting = isHunting(cycle);
-      let choices = getValidDirections(cycle, true);
-
-      if (!choices.length) {
-        choices = getEmergencyDirections(cycle);
-      }
-
-      if (!choices.length) {
-        return oppositeDirection(cycle.direction);
-      }
-
-      const enemyTarget = findNearestEnemyTarget(cycle);
-
-      if (hunting && enemyTarget) {
-        let bestDirection = choices[0];
-        let bestScore = -Infinity;
-
-        for (const direction of choices) {
-          const score = scoreDirection(cycle, direction);
-
-          if (score > bestScore) {
-            bestScore = score;
-            bestDirection = direction;
-          }
-        }
-
-        return bestDirection;
-      }
-
-      const enemy = findNearestEnemy(cycle);
-
-      if (enemy && Math.random() < DIRECT_COLLISION_CHANCE) {
-        let directDirection = choices[0];
-        let bestDistance = Infinity;
-
-        for (const direction of choices) {
-          const vector = directionVector(direction);
-          const nx = cycle.cx + vector.x;
-          const ny = cycle.cy + vector.y;
-          const distance = Math.abs(enemy.cx - nx) + Math.abs(enemy.cy - ny);
-
-          if (distance < bestDistance) {
-            bestDistance = distance;
-            directDirection = direction;
-          }
-        }
-
-        return directDirection;
-      }
-
-      if (
-        choices.includes(cycle.direction) &&
-        cycle.turnCooldown > 0 &&
-        Math.random() > TURN_CHANCE
-      ) {
-        return cycle.direction;
-      }
-
-      let bestDirection = choices[0];
-      let bestScore = -Infinity;
-
-      for (const direction of choices) {
-        let score = scoreDirection(cycle, direction);
-
-        if (Math.random() < CHASE_CHANCE) {
-          score += scoreDirection(cycle, direction) * 0.35;
-        }
-
-        if (score > bestScore) {
-          bestScore = score;
-          bestDirection = direction;
-        }
-      }
-
-      return bestDirection;
-    }
-
-    function explode(x, y, color, amount) {
-      const available = Math.max(0, MAX_PARTICLES - particles.length);
-      const count = Math.min(amount, available);
-
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 1.2 + Math.random() * 4.8;
-
-        particles.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 20 + Math.random() * 24,
-          maxLife: 44,
-          color,
-          size: 1.3 + Math.random() * 3
-        });
-      }
-    }
-
-    function clearCycleTrail(cycle) {
-      for (const point of cycle.trail) {
-        const key = cellKey(point.cx, point.cy);
-        const occupant = occupied.get(key);
-
-        if (occupant && occupant.cycleId === cycle.id) {
-          occupied.delete(key);
-        }
-      }
-
-      cycle.trail = [];
-    }
-
-    function trimTrail(cycle) {
-      while (cycle.trail.length > MAX_TRAIL_POINTS) {
-        const oldPoint = cycle.trail.shift();
-        const key = cellKey(oldPoint.cx, oldPoint.cy);
-        const occupant = occupied.get(key);
-
-        if (occupant && occupant.cycleId === cycle.id) {
-          occupied.delete(key);
-        }
-      }
-    }
-
-    function derezzCycle(cycle) {
-      if (!cycle.alive) return;
-
-      explode(cycle.x, cycle.y, cycle.color, 34);
-      clearCycleTrail(cycle);
-
-      cycle.alive = false;
-      cycle.respawnAt = performance.now() + RESPAWN_DELAY_MS + randInt(0, 350);
-    }
-
-    function respawnCycle(cycle) {
-      const side = cycle.team === "blue"
-        ? (Math.random() > 0.5 ? "left" : "top")
-        : (Math.random() > 0.5 ? "right" : "bottom");
-
-      const fresh = createCycle(
-        cycle.id,
-        cycle.team,
-        cycle.color,
-        cycle.core,
-        side
-      );
-
-      Object.assign(cycle, fresh);
-
-      occupied.set(cellKey(cycle.cx, cycle.cy), {
-        team: cycle.team,
-        cycleId: cycle.id
-      });
-    }
-
-    function trackLooping(cycle, nextKey, newDirection) {
-      cycle.recentlyVisited.push(nextKey);
-
-      if (cycle.recentlyVisited.length > LOOP_WINDOW) {
-        cycle.recentlyVisited.shift();
-      }
-
-      if (newDirection !== cycle.previousDirection) {
-        cycle.tightTurns++;
-      } else {
-        cycle.tightTurns = Math.max(0, cycle.tightTurns - 1);
-      }
-
-      cycle.previousDirection = newDirection;
-
-      return false;
-    }
-
-    function nudgeAwayFromBlockedCell(cycle) {
-      const choices = getValidDirections(cycle, false);
-
-      if (!choices.length) {
-        return false;
-      }
-
-      let bestDirection = choices[0];
-      let bestScore = -Infinity;
-
-      for (const direction of choices) {
-        const score = scoreDirection(cycle, direction);
-
-        if (score > bestScore) {
-          bestScore = score;
-          bestDirection = direction;
-        }
-      }
-
-      cycle.direction = bestDirection;
-
-      const vector = directionVector(cycle.direction);
-      const nextCx = cycle.cx + vector.x;
-      const nextCy = cycle.cy + vector.y;
-
-      if (isWall(nextCx, nextCy) || isOwnColorCell(cycle, nextCx, nextCy)) {
-        return false;
-      }
-
-      cycle.targetX = cellToX(nextCx);
-      cycle.targetY = cellToY(nextCy);
-      cycle.cx = nextCx;
-      cycle.cy = nextCy;
-
-      const nextKey = cellKey(nextCx, nextCy);
-
-      cycle.recentlyVisited.push(nextKey);
-
-      if (cycle.recentlyVisited.length > LOOP_WINDOW) {
-        cycle.recentlyVisited.shift();
-      }
-
-      occupied.set(nextKey, {
-        team: cycle.team,
-        cycleId: cycle.id
-      });
-
-      cycle.trail.push({
-        x: cycle.targetX,
-        y: cycle.targetY,
-        cx: nextCx,
-        cy: nextCy
-      });
-
-      trimTrail(cycle);
-
-      return true;
-    }
-
-    function beginNextCell(cycle) {
-      const newDirection = chooseDirection(cycle);
-      const didTurn = newDirection !== cycle.previousDirection;
-
-      cycle.direction = newDirection;
-
-      const vector = directionVector(cycle.direction);
-      const nextCx = cycle.cx + vector.x;
-      const nextCy = cycle.cy + vector.y;
-      const nextKey = cellKey(nextCx, nextCy);
-      const occupant = occupied.get(nextKey);
-
-      if (isWall(nextCx, nextCy)) {
-        nudgeAwayFromBlockedCell(cycle);
-        return;
-      }
-
-      if (occupant) {
-        if (occupant.team !== cycle.team) {
-          derezzCycle(cycle);
+        const data = await response.json();
+
+        thinkingMessage.remove();
+
+        if (!response.ok) {
+          addJoeGptMessage(
+            "Joe GPT",
+            data.error || "Something went wrong. Please try again later.",
+            "bot"
+          );
           return;
         }
 
-        nudgeAwayFromBlockedCell(cycle);
-        return;
+        addJoeGptMessage(
+          "Joe GPT",
+          data.reply || "I could not generate a response.",
+          "bot"
+        );
+      } catch (error) {
+        thinkingMessage.remove();
+
+        addJoeGptMessage(
+          "Joe GPT",
+          "I could not connect to the backend yet. This usually means the API route is not deployed or running locally.",
+          "bot"
+        );
       }
+    }
 
-      trackLooping(cycle, nextKey, newDirection);
+    joeGptForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      handleJoeGptSubmit(joeGptInput.value);
+    });
 
-      cycle.cx = nextCx;
-      cycle.cy = nextCy;
-      cycle.targetX = cellToX(nextCx);
-      cycle.targetY = cellToY(nextCy);
-      cycle.turnCooldown--;
-
-      if (cycle.turnCooldown <= 0 || didTurn) {
-        cycle.turnCooldown = randInt(4, 16);
-      }
-
-      occupied.set(nextKey, {
-        team: cycle.team,
-        cycleId: cycle.id
+    joeGptPrompts.forEach(button => {
+      button.addEventListener("click", function () {
+        joeGptInput.value = this.textContent;
+        handleJoeGptSubmit(this.textContent);
       });
-
-      cycle.trail.push({
-        x: cycle.targetX,
-        y: cycle.targetY,
-        cx: nextCx,
-        cy: nextCy
-      });
-
-      trimTrail(cycle);
-    }
-
-    function updateCycle(cycle) {
-      const now = performance.now();
-
-      if (!cycle.alive) {
-        if (now >= cycle.respawnAt) {
-          respawnCycle(cycle);
-        }
-
-        return;
-      }
-
-      if (now - cycle.birthTime >= MAX_LIFE_MS) {
-        derezzCycle(cycle);
-        return;
-      }
-
-      const dx = cycle.targetX - cycle.x;
-      const dy = cycle.targetY - cycle.y;
-      const distance = Math.hypot(dx, dy);
-
-      if (distance <= SPEED) {
-        cycle.x = cycle.targetX;
-        cycle.y = cycle.targetY;
-        beginNextCell(cycle);
-        return;
-      }
-
-      cycle.x += (dx / distance) * SPEED;
-      cycle.y += (dy / distance) * SPEED;
-    }
-
-    function drawTrail(cycle) {
-      if (cycle.trail.length < 1) return;
-
-      ctx.save();
-      ctx.lineCap = "square";
-      ctx.lineJoin = "miter";
-      ctx.shadowColor = cycle.color;
-      ctx.shadowBlur = 16;
-
-      ctx.beginPath();
-      ctx.moveTo(cycle.trail[0].x, cycle.trail[0].y);
-
-      for (let i = 1; i < cycle.trail.length; i++) {
-        ctx.lineTo(cycle.trail[i].x, cycle.trail[i].y);
-      }
-
-      if (cycle.alive) {
-        ctx.lineTo(cycle.x, cycle.y);
-      }
-
-      ctx.strokeStyle = hexToRgba(cycle.color, 0.35);
-      ctx.lineWidth = TRAIL_LINE_WIDTH + 4;
-      ctx.stroke();
-
-      ctx.shadowBlur = 9;
-      ctx.strokeStyle = hexToRgba(cycle.color, 0.84);
-      ctx.lineWidth = TRAIL_LINE_WIDTH;
-      ctx.stroke();
-
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = cycle.core;
-      ctx.lineWidth = TRAIL_CORE_WIDTH;
-      ctx.stroke();
-
-      ctx.restore();
-    }
-
-    function drawCycle(cycle) {
-      if (!cycle.alive) return;
-
-      const vector = directionVector(cycle.direction);
-      const angle = Math.atan2(vector.y, vector.x);
-      const hunting = isHunting(cycle);
-      const pulse = 0.75 + Math.sin(frame * (hunting ? 0.22 : 0.12) + cycle.sizePulse) * 0.22;
-
-      ctx.save();
-      ctx.translate(cycle.x, cycle.y);
-      ctx.rotate(angle);
-
-      ctx.shadowColor = cycle.color;
-      ctx.shadowBlur = hunting ? 28 : 18;
-
-      ctx.fillStyle = hexToRgba(cycle.color, 0.2);
-      ctx.beginPath();
-      ctx.ellipse(-8, 0, 24, 9, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = cycle.color;
-      ctx.beginPath();
-      ctx.roundRect(-11, -4.5, 22, 9, 5);
-      ctx.fill();
-
-      ctx.fillStyle = cycle.core;
-      ctx.beginPath();
-      ctx.roundRect(-5, -2, 10, 4, 3);
-      ctx.fill();
-
-      ctx.strokeStyle = hexToRgba(cycle.color, hunting ? 1 : 0.9);
-      ctx.lineWidth = hunting ? 2.5 : 2;
-      ctx.beginPath();
-      ctx.moveTo(-9, -7);
-      ctx.lineTo(8, -7);
-      ctx.moveTo(-9, 7);
-      ctx.lineTo(8, 7);
-      ctx.stroke();
-
-      ctx.fillStyle = hexToRgba(cycle.color, 0.42 + pulse * 0.22);
-      ctx.beginPath();
-      ctx.moveTo(-14, -2.5);
-      ctx.lineTo(-28 - pulse * 12, 0);
-      ctx.lineTo(-14, 2.5);
-      ctx.closePath();
-      ctx.fill();
-
-      if (hunting) {
-        ctx.strokeStyle = hexToRgba(cycle.core, 0.7);
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.arc(0, 0, 17 + pulse * 4, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      ctx.restore();
-    }
-
-    function drawParticles() {
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const particle = particles[i];
-
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.vx *= 0.94;
-        particle.vy *= 0.94;
-        particle.life--;
-
-        const alpha = Math.max(0, particle.life / particle.maxLife);
-
-        ctx.save();
-        ctx.shadowColor = particle.color;
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = hexToRgba(particle.color, alpha);
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size * alpha, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        if (particle.life <= 0) {
-          particles.splice(i, 1);
-        }
-      }
-    }
-
-    function drawBackgroundGlow() {
-      ctx.save();
-
-      const horizon = height * 0.58;
-      const gradient = ctx.createLinearGradient(0, horizon, 0, height);
-      gradient.addColorStop(0, "rgba(0, 229, 255, 0)");
-      gradient.addColorStop(1, "rgba(0, 229, 255, 0.055)");
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.restore();
-    }
-
-    function animateLightCycles(timestamp) {
-      requestAnimationFrame(animateLightCycles);
-
-      if (!lastTimestamp) {
-        lastTimestamp = timestamp;
-      }
-
-      const elapsed = timestamp - lastTimestamp;
-
-      if (elapsed < FRAME_INTERVAL) {
-        return;
-      }
-
-      lastTimestamp = timestamp - (elapsed % FRAME_INTERVAL);
-      frame++;
-
-      ctx.clearRect(0, 0, width, height);
-      drawBackgroundGlow();
-
-      if (!reducedMotion.matches) {
-        cycles.forEach(updateCycle);
-        cycles.forEach(drawTrail);
-        cycles.forEach(drawCycle);
-        drawParticles();
-      } else {
-        cycles.forEach(drawTrail);
-      }
-    }
-
-    if ("roundRect" in CanvasRenderingContext2D.prototype === false) {
-      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
-        if (w < 2 * r) r = w / 2;
-        if (h < 2 * r) r = h / 2;
-
-        this.beginPath();
-        this.moveTo(x + r, y);
-        this.arcTo(x + w, y, x + w, y + h, r);
-        this.arcTo(x + w, y + h, x, y + h, r);
-        this.arcTo(x, y + h, x, y, r);
-        this.arcTo(x, y, x + w, y, r);
-        this.closePath();
-
-        return this;
-      };
-    }
-
-    resizeCanvas();
-
-    window.addEventListener("resize", resizeCanvas, { passive: true });
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", resizeCanvas, { passive: true });
-    }
-
-    requestAnimationFrame(animateLightCycles);
+    });
   </script>
 </body>
 </html>

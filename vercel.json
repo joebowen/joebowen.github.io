@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/joe-gpt.js": {
+      "maxDuration": 30
+    }
+  }
+}
