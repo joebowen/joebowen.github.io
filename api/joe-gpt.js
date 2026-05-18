@@ -1,4 +1,12 @@
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "https://joebowen.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -6,19 +14,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body || {};
-
-    if (!message || typeof message !== "string") {
-      return res.status(400).json({
-        error: "Message is required"
-      });
-    }
-
-    if (message.length > 800) {
-      return res.status(400).json({
-        error: "Message is too long"
-      });
-    }
+    const { message } = req.body;
 
     const poeApiKey = process.env.POE_API_KEY;
     const poeModel = process.env.POE_MODEL || "gpt-4o-mini";
@@ -42,10 +38,10 @@ Known information about Joe:
 - Digital Engineer at Corning Incorporated in Wilmington, NC, beginning June 2026
 - Interests include machine learning, deep learning applications, statistical modeling, computer vision, and automation
 - Notable coursework includes Stochastic Modeling, Optimization for Machine Learning and Neural Networks, Methods of Data Analysis, Data Structures and Algorithms, Linear Algebra for Applications, and Calculus-Based Probability
-- Really loves LaTeX, considers himseld a "TeXpert"
-- Big Miami Dolphins Fan
+- Really loves LaTeX, considers himself a "TeXpert"
+- Big Miami Dolphins fan
 - Enjoys time with friends
-- Has a cat named Myrtle, she is 3 years old
+- Has a cat named Myrtle; she is 3 years old
 - Enjoys running
 
 Rules:
@@ -67,19 +63,10 @@ Rules:
 - For basic conversational messages such as greetings, thanks, small talk, or polite follow-ups, respond naturally like a normal chatbot while still keeping the conversation centered on Joe Bowen and this website.
 `;
 
-    /*
-      IMPORTANT:
-      This file currently contains the secure backend shell.
-      The exact Poe API call depends on which Poe API method/package you are using.
-
-      If your Poe API supports OpenAI-compatible chat completions,
-      the fetch below may work with the correct endpoint.
-    */
-
     const response = await fetch("https://api.poe.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${poeApiKey}`,
+        Authorization: `Bearer ${poeApiKey}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
