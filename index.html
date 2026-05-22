@@ -868,18 +868,22 @@
     }
 
     .nc-map-wrap {
-      position: relative;
       width: 100%;
-      aspect-ratio: 16 / 8.5;
-      display: grid;
-      place-items: center;
+      display: flex;
+      justify-content: center;
       overflow: visible;
+    }
+
+    .nc-map-inner {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      line-height: 0;
     }
 
     .nc-map-img {
       width: 100%;
-      height: 100%;
-      object-fit: contain;
+      height: auto;
       display: block;
       filter:
         drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28))
@@ -891,10 +895,10 @@
     .wilmington-marker {
       position: absolute;
       left: 71.8%;
-      top: 75.1%;
+      top: 86.3%;
       z-index: 3;
-      width: 12px;
-      height: 12px;
+      width: 13px;
+      height: 13px;
       border-radius: 999px;
       background: #ffffff;
       border: 3px solid var(--glow);
@@ -1094,9 +1098,6 @@
         margin-right: 0;
       }
 
-      .nc-map-wrap {
-        aspect-ratio: 16 / 8;
-      }
 
       .wilmington-marker {
         width: 8px;
@@ -1188,16 +1189,17 @@
           <h3 class="location-heading">Currently in Wilmington, NC 📍</h3>
 
           <div class="nc-map-wrap" aria-label="Map of North Carolina with a blinking marker near Wilmington">
-            <img
-              class="nc-map-img"
-              src="images/nc-map.png"
-              alt="Map of North Carolina"
-              draggable="false"
-            />
+            <div class="nc-map-inner">
+              <img
+                class="nc-map-img"
+                src="images/nc-map.png"
+                alt="Map of North Carolina"
+                draggable="false"
+              />
 
-            <span class="wilmington-marker" aria-hidden="true"></span>
+              <span class="wilmington-marker" aria-hidden="true"></span>
+            </div>
           </div>
-        </div>
       </aside>
 
       <section class="content">
