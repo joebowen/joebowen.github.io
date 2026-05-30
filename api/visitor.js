@@ -1,9 +1,25 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "https://joebowen.github.io");
+  const allowedOrigins = [
+    "https://joebowen.github.io",
+    "https://joebowen-github-io.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"
+  ];
+
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "https://joebowen.github.io");
+  }
+
+  res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Cache-Control", "no-store");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
@@ -111,7 +127,7 @@ export default async function handler(req, res) {
     const rows = await supabaseRequest(
       supabaseUrl,
       supabaseServiceRoleKey,
-      "/rest/v1/visitor_locations?select=city,region,country,latitude,longitude"
+      "/rest/v1/visitor_locations?select=city,region,country,latitude,longitude,visited_at&order=visited_at.desc&limit=5000"
     );
 
     const locations = aggregateLocations(rows);
@@ -227,15 +243,20 @@ async function supabaseRequest(
   path,
   options = {}
 ) {
+  const headers = {
+    apikey: supabaseServiceRoleKey,
+    Authorization: `Bearer ${supabaseServiceRoleKey}`,
+    "Content-Type": "application/json",
+    ...(options.headers || {})
+  };
+
+  if (options.method && options.method !== "GET") {
+    headers.Prefer = "return=minimal";
+  }
+
   const response = await fetch(`${supabaseUrl}${path}`, {
     method: options.method || "GET",
-    headers: {
-      apikey: supabaseServiceRoleKey,
-      Authorization: `Bearer ${supabaseServiceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-      ...(options.headers || {})
-    },
+    headers,
     body: options.body
   });
 
@@ -256,9 +277,9 @@ function aggregateLocations(rows) {
   const locationMap = new Map();
 
   for (const row of rows || []) {
-    const city = row.city || "";
-    const region = row.region || "";
-    const country = row.country || "";
+    const city = cleanLocationPart(row.city, "Unknown city");
+    const region = cleanLocationPart(row.region, "Unknown region");
+    const country = cleanLocationPart(row.country, "Unknown country");
     const latitude = Number(row.latitude);
     const longitude = Number(row.longitude);
 
@@ -266,23 +287,55 @@ function aggregateLocations(rows) {
       continue;
     }
 
-    const key = `${city}|${region}|${country}|${latitude}|${longitude}`;
+    const key = createLocationKey(city, region, country);
 
     if (!locationMap.has(key)) {
       locationMap.set(key, {
         city,
         region,
         country,
-        latitude,
-        longitude,
+        latitudeSum: 0,
+        longitudeSum: 0,
+        coordinateCount: 0,
         visits: 0
       });
     }
 
-    locationMap.get(key).visits += 1;
+    const location = locationMap.get(key);
+
+    location.latitudeSum += latitude;
+    location.longitudeSum += longitude;
+    location.coordinateCount += 1;
+    location.visits += 1;
   }
 
   return Array.from(locationMap.values())
+    .map(location => ({
+      city: location.city,
+      region: location.region,
+      country: location.country,
+      latitude: location.latitudeSum / location.coordinateCount,
+      longitude: location.longitudeSum / location.coordinateCount,
+      visits: location.visits
+    }))
     .sort((a, b) => b.visits - a.visits)
     .slice(0, 100);
+}
+
+function cleanLocationPart(value, fallback) {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const cleaned = value.trim();
+
+  return cleaned || fallback;
+}
+
+function createLocationKey(city, region, country) {
+  return [
+    city.toLowerCase(),
+    region.toLowerCase(),
+    country.toLowerCase()
+  ].join("|");
 }

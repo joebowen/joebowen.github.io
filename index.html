@@ -989,6 +989,7 @@
     }
 
     .visitor-marker {
+      position: relative;
       width: 16px;
       height: 16px;
       border-radius: 999px;
@@ -1033,7 +1034,6 @@
     .visitor-popup strong {
       color: var(--glow);
     }
-
 
     .visitor-table-wrap {
       position: relative;
@@ -1791,154 +1791,238 @@
       });
     });
 
-let visitorMap;
-let visitorMarkerLayer;
+    let visitorMap;
+    let visitorMarkerLayer;
+    let visitorMapLoaded = false;
+    let visitorMapLoading = false;
 
-function initializeVisitorMap() {
-  const mapElement = document.getElementById("visitor-map");
+    function initializeVisitorMap() {
+      const mapElement = document.getElementById("visitor-map");
 
-  if (!mapElement || typeof L === "undefined") return;
-
-  visitorMap = L.map("visitor-map", {
-    center: [20, 0],
-    zoom: 2,
-    minZoom: 1,
-    maxZoom: 8,
-    worldCopyJump: true,
-    scrollWheelZoom: false
-  });
-
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    subdomains: "abcd",
-    maxZoom: 19
-  }).addTo(visitorMap);
-
-  visitorMarkerLayer = L.layerGroup().addTo(visitorMap);
-
-  setTimeout(() => {
-    visitorMap.invalidateSize();
-  }, 250);
-}
-
-async function loadVisitorMap() {
-  const visitorTableBody = document.getElementById("visitor-table-body");
-
-  if (!visitorTableBody) return;
-
-  try {
-    if (!visitorMap) {
-      initializeVisitorMap();
-    }
-
-    const response = await fetch("https://joebowen-github-io.vercel.app/api/visitor", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+      if (!mapElement) {
+        console.error("Visitor map element not found.");
+        return false;
       }
-    });
 
-    const data = await response.json();
+      if (typeof L === "undefined") {
+        console.error("Leaflet is not loaded yet.");
+        return false;
+      }
 
-    if (!response.ok) {
-      throw new Error(data.error || "Could not load visitor data.");
+      if (visitorMap) {
+        setTimeout(() => {
+          visitorMap.invalidateSize();
+        }, 250);
+
+        return true;
+      }
+
+      visitorMap = L.map("visitor-map", {
+        center: [20, 0],
+        zoom: 2,
+        minZoom: 1,
+        maxZoom: 8,
+        worldCopyJump: true,
+        scrollWheelZoom: false
+      });
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: "abcd",
+        maxZoom: 19
+      }).addTo(visitorMap);
+
+      visitorMarkerLayer = L.layerGroup().addTo(visitorMap);
+
+      setTimeout(() => {
+        visitorMap.invalidateSize();
+      }, 250);
+
+      return true;
     }
 
-    visitorTableBody.innerHTML = "";
+    async function loadVisitorMap(retries = 2) {
+      const visitorTableBody = document.getElementById("visitor-table-body");
 
-    if (visitorMarkerLayer) {
-      visitorMarkerLayer.clearLayers();
-    }
-
-    const locations = data.locations || [];
-
-    if (locations.length === 0) {
-      visitorTableBody.innerHTML = `
-        <tr>
-          <td colspan="2">No visitor data yet.</td>
-        </tr>
-      `;
-      return;
-    }
-
-    const bounds = [];
-
-    locations.forEach(location => {
-      const latitude = Number(location.latitude);
-      const longitude = Number(location.longitude);
-      const visits = Number(location.visits || 0);
-
-      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      if (!visitorTableBody) {
+        console.error("Visitor table body not found.");
         return;
       }
 
-      const labelParts = [
-        location.city,
-        location.region,
-        location.country
-      ].filter(Boolean);
+      if (visitorMapLoading) {
+        return;
+      }
 
-      const label = labelParts.join(", ") || "Unknown location";
+      visitorMapLoading = true;
 
-      const visitorIcon = L.divIcon({
-        className: "",
-        html: '<div class="visitor-marker"></div>',
-        iconSize: [16, 16],
-        iconAnchor: [8, 8],
-        popupAnchor: [0, -10]
-      });
+      try {
+        const mapReady = initializeVisitorMap();
 
-      L.marker([latitude, longitude], {
-        icon: visitorIcon
-      })
-        .bindPopup(
-          `<strong>${escapeHTML(label)}</strong><br>${visits} visit${visits === 1 ? "" : "s"}`,
-          {
-            className: "visitor-popup"
+        if (!mapReady) {
+          throw new Error("Visitor map could not initialize.");
+        }
+
+        console.log("Loading visitor map data...");
+
+        const response = await fetch("https://joebowen-github-io.vercel.app/api/visitor", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          cache: "no-store"
+        });
+
+        const data = await response.json();
+
+        console.log("Visitor API status:", response.status);
+        console.log("Visitor API data:", data);
+
+        if (!response.ok) {
+          throw new Error(data.error || "Could not load visitor data.");
+        }
+
+        visitorTableBody.innerHTML = "";
+
+        if (visitorMarkerLayer) {
+          visitorMarkerLayer.clearLayers();
+        }
+
+        const locations = data.locations || [];
+
+        if (locations.length === 0) {
+          visitorTableBody.innerHTML = `
+            <tr>
+              <td colspan="2">No visitor data yet.</td>
+            </tr>
+          `;
+
+          visitorMapLoaded = true;
+          return;
+        }
+
+        const bounds = [];
+
+        locations.forEach(location => {
+          const latitude = Number(location.latitude);
+          const longitude = Number(location.longitude);
+          const visits = Number(location.visits || 0);
+
+          if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            return;
           }
-        )
-        .addTo(visitorMarkerLayer);
 
-      bounds.push([latitude, longitude]);
+          const labelParts = [
+            location.city,
+            location.region,
+            location.country
+          ].filter(Boolean);
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${escapeHTML(label)}</td>
-        <td>${escapeHTML(visits)}</td>
-      `;
+          const label = labelParts.join(", ") || "Unknown location";
 
-      visitorTableBody.appendChild(row);
+          const visitorIcon = L.divIcon({
+            className: "",
+            html: '<div class="visitor-marker"></div>',
+            iconSize: [16, 16],
+            iconAnchor: [8, 8],
+            popupAnchor: [0, -10]
+          });
+
+          L.marker([latitude, longitude], {
+            icon: visitorIcon
+          })
+            .bindPopup(
+              `<strong>${escapeHTML(label)}</strong><br>${visits} visit${visits === 1 ? "" : "s"}`,
+              {
+                className: "visitor-popup"
+              }
+            )
+            .addTo(visitorMarkerLayer);
+
+          bounds.push([latitude, longitude]);
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${escapeHTML(label)}</td>
+            <td>${escapeHTML(visits)}</td>
+          `;
+
+          visitorTableBody.appendChild(row);
+        });
+
+        if (bounds.length > 1 && visitorMap) {
+          visitorMap.fitBounds(bounds, {
+            padding: [40, 40],
+            maxZoom: 4
+          });
+        } else if (bounds.length === 1 && visitorMap) {
+          visitorMap.setView(bounds[0], 3);
+        }
+
+        if (visitorMap) {
+          setTimeout(() => {
+            visitorMap.invalidateSize();
+          }, 250);
+        }
+
+        if (!visitorTableBody.children.length) {
+          visitorTableBody.innerHTML = `
+            <tr>
+              <td colspan="2">No visitor data with valid coordinates yet.</td>
+            </tr>
+          `;
+        }
+
+        visitorMapLoaded = true;
+      } catch (error) {
+        console.error("Visitor map error:", error);
+
+        visitorMapLoaded = false;
+
+        if (retries > 0) {
+          console.log(`Retrying visitor map load. Retries left: ${retries}`);
+
+          visitorMapLoading = false;
+
+          setTimeout(() => {
+            loadVisitorMap(retries - 1);
+          }, 800);
+
+          return;
+        }
+
+        visitorTableBody.innerHTML = `
+          <tr>
+            <td colspan="2">Visitor map is not connected yet.</td>
+          </tr>
+        `;
+      } finally {
+        visitorMapLoading = false;
+      }
+    }
+
+    function initVisitorMap() {
+      if (visitorMapLoaded || visitorMapLoading) {
+        return;
+      }
+
+      loadVisitorMap();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initVisitorMap);
+    } else {
+      initVisitorMap();
+    }
+
+    window.addEventListener("pageshow", () => {
+      initVisitorMap();
     });
 
-    if (bounds.length > 1 && visitorMap) {
-      visitorMap.fitBounds(bounds, {
-        padding: [40, 40],
-        maxZoom: 4
-      });
-    } else if (bounds.length === 1 && visitorMap) {
-      visitorMap.setView(bounds[0], 3);
-    }
-
-    if (!visitorTableBody.children.length) {
-      visitorTableBody.innerHTML = `
-        <tr>
-          <td colspan="2">No visitor data with valid coordinates yet.</td>
-        </tr>
-      `;
-    }
-  } catch (error) {
-    console.error("Visitor map error:", error);
-
-    visitorTableBody.innerHTML = `
-      <tr>
-        <td colspan="2">Visitor map is not connected yet.</td>
-      </tr>
-    `;
-  }
-}
-
-initializeVisitorMap();
-loadVisitorMap();
+    window.addEventListener("resize", () => {
+      if (visitorMap) {
+        visitorMap.invalidateSize();
+      }
+    });
   </script>
 </body>
 </html>
