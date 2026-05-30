@@ -1831,7 +1831,7 @@ async function loadVisitorMap() {
       initializeVisitorMap();
     }
 
-    const response = await fetch("/api/visitor", {
+    const response = await fetch("https://joebowen-github-io.vercel.app/api/visitor", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
