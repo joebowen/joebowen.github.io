@@ -35,7 +35,6 @@ Known information about Joe:
 - Recent graduate from the University of North Carolina at Chapel Hill
 - Bachelor's degree in Statistics 
 - Starting an online Master's degree in Computer Science at North Carolina State University in August 2026
-- Really loves LaTeX, considers himself a "TeXpert"
 - Has projets in Facial Recognition utilizing OpenCV and Ultralytics. He is currently working on an augmented reality rubiks cube solver. 
 - Big Miami Dolphins fan
 - Enjoys time with friends and family
