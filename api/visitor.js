@@ -43,91 +43,53 @@ export default async function handler(req, res) {
     }
 
     const ip = getClientIp(req);
-
-    if (!ip) {
-      return res.status(400).json({
-        error: "Could not determine visitor IP address."
-      });
-    }
-
     const lookupIp = normalizeIpForLookup(ip);
 
+    if (!ip) {
+      console.error("Could not determine visitor IP address.");
+    }
+
     if (!lookupIp) {
-      return res.status(400).json({
-        error: "Could not determine a public visitor IP address."
+      console.error("Could not determine a public visitor IP address.", {
+        ip
       });
     }
 
-    const userAgent = req.headers["user-agent"] || null;
-    const ipHash = hashIp(lookupIp, ipHashSalt);
+    if (lookupIp) {
+      const userAgent = req.headers["user-agent"] || null;
+      const ipHash = hashIp(lookupIp, ipHashSalt);
 
-    const todayStart = getTodayStartIsoUTC();
-    const tomorrowStart = getTomorrowStartIsoUTC();
+      const todayStart = getTodayStartIsoUTC();
+      const tomorrowStart = getTomorrowStartIsoUTC();
 
-    const existingVisitsToday = await supabaseRequest(
-      supabaseUrl,
-      supabaseServiceRoleKey,
-      `/rest/v1/visitor_locations?select=id&ip_hash=eq.${encodeURIComponent(ipHash)}&visited_at=gte.${encodeURIComponent(todayStart)}&visited_at=lt.${encodeURIComponent(tomorrowStart)}&limit=1`
-    );
+      const existingVisitsToday = await supabaseRequest(
+        supabaseUrl,
+        supabaseServiceRoleKey,
+        `/rest/v1/visitor_locations?select=id&ip_hash=eq.${encodeURIComponent(
+          ipHash
+        )}&visited_at=gte.${encodeURIComponent(
+          todayStart
+        )}&visited_at=lt.${encodeURIComponent(tomorrowStart)}&limit=1`
+      );
 
-    const alreadyVisitedToday =
-      Array.isArray(existingVisitsToday) && existingVisitsToday.length > 0;
+      const alreadyVisitedToday =
+        Array.isArray(existingVisitsToday) && existingVisitsToday.length > 0;
 
-    if (!alreadyVisitedToday) {
-      const geoResponse = await fetch(`https://ipapi.co/${lookupIp}/json/`, {
-        headers: {
-          "User-Agent": "joebowen-visitor-map/1.0"
-        }
-      });
-
-      if (!geoResponse.ok) {
-        return res.status(502).json({
-          error: "Could not fetch IP geolocation data."
-        });
-      }
-
-      const geo = await geoResponse.json();
-
-      if (geo.error) {
-        return res.status(502).json({
-          error: geo.reason || "IP geolocation lookup failed."
-        });
-      }
-
-      const city = geo.city || null;
-      const region = geo.region || null;
-      const country = geo.country_name || null;
-      const latitude = Number(geo.latitude);
-      const longitude = Number(geo.longitude);
-
-      const hasValidCoordinates =
-        Number.isFinite(latitude) && Number.isFinite(longitude);
-
-      if (hasValidCoordinates) {
-        await supabaseRequest(
+      if (!alreadyVisitedToday) {
+        await tryInsertVisitorLocation({
           supabaseUrl,
           supabaseServiceRoleKey,
-          "/rest/v1/visitor_locations",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              ip_hash: ipHash,
-              city,
-              region,
-              country,
-              latitude,
-              longitude,
-              user_agent: userAgent
-            })
-          }
-        );
+          lookupIp,
+          ipHash,
+          userAgent
+        });
       }
     }
 
     const rows = await supabaseRequest(
       supabaseUrl,
       supabaseServiceRoleKey,
-      "/rest/v1/visitor_locations?select=city,region,country,latitude,longitude,visited_at&order=visited_at.desc&limit=5000"
+      "/rest/v1/visitor_locations?select=city,region,country,latitude,longitude,visited_at&order=visited_at.desc&limit=10000"
     );
 
     const locations = aggregateLocations(rows);
@@ -142,6 +104,88 @@ export default async function handler(req, res) {
     return res.status(500).json({
       error: "Could not process visitor location."
     });
+  }
+}
+
+async function tryInsertVisitorLocation({
+  supabaseUrl,
+  supabaseServiceRoleKey,
+  lookupIp,
+  ipHash,
+  userAgent
+}) {
+  try {
+    const geoResponse = await fetch(`https://ipapi.co/${lookupIp}/json/`, {
+      headers: {
+        "User-Agent": "joebowen-visitor-map/1.0"
+      }
+    });
+
+    if (!geoResponse.ok) {
+      const errorText = await geoResponse.text();
+
+      console.error("IP geolocation request failed:", {
+        status: geoResponse.status,
+        statusText: geoResponse.statusText,
+        body: errorText,
+        lookupIp
+      });
+
+      return;
+    }
+
+    const geo = await geoResponse.json();
+
+    if (geo.error) {
+      console.error("IP geolocation lookup failed:", {
+        reason: geo.reason || "Unknown geolocation error.",
+        lookupIp
+      });
+
+      return;
+    }
+
+    const city = geo.city || null;
+    const region = geo.region || null;
+    const country = geo.country_name || null;
+    const latitude = Number(geo.latitude);
+    const longitude = Number(geo.longitude);
+
+    const hasValidCoordinates =
+      Number.isFinite(latitude) && Number.isFinite(longitude);
+
+    if (!hasValidCoordinates) {
+      console.error("IP geolocation returned invalid coordinates:", {
+        lookupIp,
+        city,
+        region,
+        country,
+        latitude: geo.latitude,
+        longitude: geo.longitude
+      });
+
+      return;
+    }
+
+    await supabaseRequest(
+      supabaseUrl,
+      supabaseServiceRoleKey,
+      "/rest/v1/visitor_locations",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ip_hash: ipHash,
+          city,
+          region,
+          country,
+          latitude,
+          longitude,
+          user_agent: userAgent
+        })
+      }
+    );
+  } catch (error) {
+    console.error("Could not insert visitor location:", error);
   }
 }
 
@@ -195,7 +239,33 @@ function normalizeIpForLookup(ip) {
     return null;
   }
 
+  if (isPrivateIpv4(cleanIp)) {
+    return null;
+  }
+
   return cleanIp;
+}
+
+function isPrivateIpv4(ip) {
+  const parts = ip.split(".").map(Number);
+
+  if (
+    parts.length !== 4 ||
+    parts.some(part => !Number.isInteger(part) || part < 0 || part > 255)
+  ) {
+    return false;
+  }
+
+  const [a, b] = parts;
+
+  return (
+    a === 10 ||
+    a === 127 ||
+    a === 0 ||
+    (a === 169 && b === 254) ||
+    (a === 192 && b === 168) ||
+    (a === 172 && b >= 16 && b <= 31)
+  );
 }
 
 function hashIp(ip, salt) {
@@ -319,7 +389,7 @@ function aggregateLocations(rows) {
       visits: location.visits
     }))
     .sort((a, b) => b.visits - a.visits)
-    .slice(0, 100);
+    .slice(0, 250);
 }
 
 function cleanLocationPart(value, fallback) {
