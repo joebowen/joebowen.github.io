@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const { message } = req.body;
 
     const poeApiKey = process.env.POE_API_KEY;
-    const poeModel = process.env.POE_MODEL || "gpt-4o-mini";
+    const poeModel = process.env.POE_MODEL || "claude-opus-4.7";
 
     if (!poeApiKey) {
       return res.status(500).json({
@@ -34,7 +34,7 @@ Known information about Joe:
 - Name: Joe Bowen
 - Recent graduate from the University of North Carolina at Chapel Hill
 - Bachelor's degree in Statistics 
-- Starting an online Master's degree in Computer Science at North Carolina State University in August 2026
+- Starting an online Master's degree in Statistics at North Carolina State University in August 2026
 - Has projets in Facial Recognition utilizing OpenCV and Ultralytics. He is currently working on an augmented reality rubiks cube solver. 
 - Big Miami Dolphins fan
 - Enjoys time with friends and family
