@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-    const allowedOrigins = [
+  const allowedOrigins = [
     "https://joebowen.dev",
     "https://www.joebowen.dev",
     "https://joebowen.github.io",
@@ -192,17 +192,17 @@ async function tryInsertVisitorLocation({
 }
 
 function getClientIp(req) {
-  const vercelForwardedFor = req.headers["x-vercel-forwarded-for"];
+  const cfConnectingIp = req.headers["cf-connecting-ip"];
   const forwardedFor = req.headers["x-forwarded-for"];
   const realIp = req.headers["x-real-ip"];
-  const cfConnectingIp = req.headers["cf-connecting-ip"];
+  const vercelForwardedFor = req.headers["x-vercel-forwarded-for"];
   const socketIp = req.socket?.remoteAddress;
 
   const candidates = [
-    vercelForwardedFor,
+    cfConnectingIp,
     forwardedFor,
     realIp,
-    cfConnectingIp,
+    vercelForwardedFor,
     socketIp
   ];
 
