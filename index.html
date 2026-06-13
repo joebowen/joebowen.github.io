@@ -428,6 +428,84 @@
       max-width: 85%;
     }
 
+    .joe-gpt-thinking {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .joe-gpt-thinking span {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .thinking-main {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center;
+      gap: 0.45rem;
+      color: rgba(226, 232, 240, 0.9);
+      font-weight: 700;
+    }
+
+    .thinking-dots {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center;
+      gap: 0.22rem;
+    }
+
+    .thinking-dots i {
+      display: block;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 999px;
+      background: var(--glow);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.55);
+      animation: thinkingDotPulse 1.05s ease-in-out infinite;
+    }
+
+    .thinking-dots i:nth-child(2) {
+      animation-delay: 0.16s;
+    }
+
+    .thinking-dots i:nth-child(3) {
+      animation-delay: 0.32s;
+    }
+
+    .thinking-status {
+      color: rgba(226, 232, 240, 0.68);
+      font-size: 0.84rem;
+      line-height: 1.35;
+    }
+
+    .thinking-bar {
+      position: relative;
+      width: 100%;
+      height: 0.3rem;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.075);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+    }
+
+    .thinking-bar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -45%;
+      width: 45%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 229, 255, 0.85),
+        transparent
+      );
+      animation: thinkingBarSlide 1.3s ease-in-out infinite;
+    }
+
     .joe-gpt-prompts {
       display: flex;
       flex-wrap: wrap;
@@ -495,6 +573,14 @@
       transform: translateY(-1px);
       background: rgba(0, 229, 255, 0.24);
       box-shadow: 0 0 18px rgba(0, 229, 255, 0.15);
+    }
+
+    .joe-gpt-form input:disabled,
+    .joe-gpt-form button:disabled,
+    .joe-gpt-prompt:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .timeline-shell,
@@ -862,6 +948,85 @@
       text-align: center;
     }
 
+    .mini-location-map {
+      position: relative;
+      width: 100%;
+      height: 175px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0f172a;
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.18),
+        0 0 22px rgba(0, 229, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .mini-location-map .leaflet-container {
+      background: #0f172a;
+    }
+
+    .mini-location-map .leaflet-control-attribution {
+      display: none;
+    }
+
+    .mini-location-map .leaflet-control-zoom {
+      display: none;
+    }
+
+    .wilmington-leaflet-marker {
+      position: relative;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 3px solid var(--glow);
+      box-shadow:
+        0 0 14px rgba(0, 229, 255, 0.95),
+        0 0 34px rgba(0, 229, 255, 0.65);
+    }
+
+    .wilmington-leaflet-marker::before,
+    .wilmington-leaflet-marker::after {
+      content: "";
+      position: absolute;
+      inset: 50%;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(0, 229, 255, 0.28);
+      transform: translate(-50%, -50%);
+      animation: markerPulse 1.8s ease-out infinite;
+      z-index: -1;
+    }
+
+    .wilmington-leaflet-marker::after {
+      animation-delay: 0.55s;
+    }
+
+    .wilmington-mini-popup .leaflet-popup-content-wrapper {
+      background: rgba(2, 6, 23, 0.96);
+      color: white;
+      border: 1px solid rgba(0, 229, 255, 0.22);
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    .wilmington-mini-popup .leaflet-popup-tip {
+      background: rgba(2, 6, 23, 0.96);
+    }
+
+    .wilmington-mini-popup .leaflet-popup-content {
+      margin: 5px 7px;
+      font-size: 0.68rem;
+      line-height: 1.2;
+      min-width: 0;
+    }
+
+    .wilmington-mini-popup strong {
+      color: var(--glow);
+    }
+
     .nc-map-wrap {
       width: 100%;
       display: flex;
@@ -1103,6 +1268,30 @@
       }
     }
 
+    @keyframes thinkingDotPulse {
+      0%,
+      80%,
+      100% {
+        opacity: 0.35;
+        transform: translateY(0) scale(0.82);
+      }
+
+      40% {
+        opacity: 1;
+        transform: translateY(-0.18rem) scale(1);
+      }
+    }
+
+    @keyframes thinkingBarSlide {
+      0% {
+        left: -45%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
     @media (max-width: 980px) {
       .hero-layout {
         grid-template-columns: 1fr;
@@ -1256,7 +1445,11 @@
       .wilmington-marker,
       .wilmington-marker::before,
       .wilmington-marker::after,
-      .visitor-marker::after {
+      .wilmington-leaflet-marker::before,
+      .wilmington-leaflet-marker::after,
+      .visitor-marker::after,
+      .thinking-dots i,
+      .thinking-bar::before {
         animation: none !important;
       }
     }
@@ -1333,18 +1526,11 @@
         <div class="location-card">
           <h3 class="location-heading">Currently in Wilmington, NC 📍</h3>
 
-          <div class="nc-map-wrap" aria-label="Map of North Carolina with a blinking marker near Wilmington">
-            <div class="nc-map-inner">
-              <img
-                class="nc-map-img"
-                src="images/nc-map.png"
-                alt="Map of North Carolina"
-                draggable="false"
-              />
-
-              <span class="wilmington-marker" aria-hidden="true"></span>
-            </div>
-          </div>
+          <div
+            class="mini-location-map"
+            id="mini-location-map"
+            aria-label="Map of North Carolina with a marker near Wilmington"
+          ></div>
         </div>
       </aside>
 
@@ -1508,7 +1694,7 @@
                   </div>
 
                   <p class="timeline-description">
-                    B.S. - Statistics 
+                    B.S. - Statistics
                   </p>
                 </div>
               </article>
@@ -1700,10 +1886,106 @@
 
     renderSong(currentSongIndex);
 
+    let miniLocationMap;
+
+    function initializeMiniLocationMap() {
+      const mapElement = document.getElementById("mini-location-map");
+
+      if (!mapElement) {
+        return;
+      }
+
+      if (typeof L === "undefined") {
+        console.error("Leaflet is not loaded yet for mini location map.");
+        return;
+      }
+
+      if (miniLocationMap) {
+        setTimeout(() => {
+          miniLocationMap.invalidateSize();
+        }, 250);
+
+        return;
+      }
+
+      const wilmingtonCoords = [34.2104, -77.8868];
+
+     miniLocationMap = L.map("mini-location-map", {
+      center: [35.45, -80],
+      zoom: 5,
+      minZoom: 5,
+      maxZoom: 7,
+      zoomControl: false,
+      attributionControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      tap: false,
+      touchZoom: false
+});
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        subdomains: "abcd",
+        maxZoom: 19
+      }).addTo(miniLocationMap);
+
+      const wilmingtonIcon = L.divIcon({
+        className: "",
+        html: '<div class="wilmington-leaflet-marker"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+        popupAnchor: [0, -10]
+      });
+
+      const wilmingtonMarker = L.marker(wilmingtonCoords, {
+        icon: wilmingtonIcon,
+        interactive: true
+      })
+        .bindPopup(
+          "<strong>Wilmington, NC</strong><br>Current general location",
+          {
+            className: "wilmington-mini-popup",
+            closeButton: false,
+            autoPan: false,
+            keepInView: false,
+            autoClose: false,
+            closeOnClick: false
+          }
+        )
+        .addTo(miniLocationMap);
+
+      wilmingtonMarker.on("mouseover", function () {
+        this.openPopup();
+      });
+
+      wilmingtonMarker.on("mouseout", function () {
+        this.closePopup();
+      });
+
+      wilmingtonMarker.on("click", function (event) {
+        if (event.originalEvent) {
+          event.originalEvent.preventDefault();
+          event.originalEvent.stopPropagation();
+        }
+
+        this.openPopup();
+      });
+
+      setTimeout(() => {
+        miniLocationMap.invalidateSize();
+      }, 250);
+    }
+
+    initializeMiniLocationMap();
+
     const joeGptForm = document.getElementById("joe-gpt-form");
     const joeGptInput = document.getElementById("joe-gpt-input");
     const joeGptChat = document.getElementById("joe-gpt-chat");
     const joeGptPrompts = document.querySelectorAll(".joe-gpt-prompt");
+
+    let joeGptIsThinking = false;
 
     function escapeHTML(text) {
       return String(text)
@@ -1725,19 +2007,99 @@
 
       joeGptChat.appendChild(message);
       joeGptChat.scrollTop = joeGptChat.scrollHeight;
+
+      return message;
+    }
+
+    function addJoeGptThinkingMessage() {
+      const message = document.createElement("div");
+
+      message.className = "joe-gpt-message joe-gpt-message-bot joe-gpt-thinking";
+
+      message.innerHTML = `
+        <strong>Joe GPT:</strong>
+        <span>
+          <span class="thinking-main">
+            Thinking
+            <span class="thinking-dots" aria-hidden="true">
+              <i></i>
+              <i></i>
+              <i></i>
+            </span>
+          </span>
+
+          <span class="thinking-status" data-thinking-status>
+            Reading your question...
+          </span>
+
+          <span class="thinking-bar" aria-hidden="true"></span>
+        </span>
+      `;
+
+      joeGptChat.appendChild(message);
+      joeGptChat.scrollTop = joeGptChat.scrollHeight;
+
+      const statuses = [
+        "Reading your question...",
+        "Checking Joe’s background...",
+        "Looking through projects and coursework...",
+        "Composing a concise response..."
+      ];
+
+      let index = 0;
+
+      const statusElement = message.querySelector("[data-thinking-status]");
+
+      const intervalId = setInterval(() => {
+        if (!message.isConnected) {
+          clearInterval(intervalId);
+          return;
+        }
+
+        index = (index + 1) % statuses.length;
+        statusElement.textContent = statuses[index];
+      }, 1200);
+
+      message.dataset.intervalId = String(intervalId);
+
+      return message;
+    }
+
+    function removeJoeGptThinkingMessage(message) {
+      if (!message) return;
+
+      const intervalId = Number(message.dataset.intervalId);
+
+      if (Number.isFinite(intervalId)) {
+        clearInterval(intervalId);
+      }
+
+      message.remove();
+    }
+
+    function setJoeGptControlsDisabled(disabled) {
+      const submitButton = joeGptForm.querySelector("button");
+
+      joeGptInput.disabled = disabled;
+      submitButton.disabled = disabled;
+
+      joeGptPrompts.forEach(button => {
+        button.disabled = disabled;
+      });
     }
 
     async function handleJoeGptSubmit(question) {
       const trimmedQuestion = question.trim();
 
-      if (!trimmedQuestion) return;
+      if (!trimmedQuestion || joeGptIsThinking) return;
+
+      joeGptIsThinking = true;
+      setJoeGptControlsDisabled(true);
 
       addJoeGptMessage("You", trimmedQuestion, "user");
       joeGptInput.value = "";
 
-      addJoeGptMessage("Joe GPT", "Thinking...", "bot");
-
-      const thinkingMessage = joeGptChat.lastElementChild;
+      const thinkingMessage = addJoeGptThinkingMessage();
 
       try {
         const response = await fetch("https://joebowen-github-io.vercel.app/api/joe-gpt", {
@@ -1752,7 +2114,7 @@
 
         const data = await response.json();
 
-        thinkingMessage.remove();
+        removeJoeGptThinkingMessage(thinkingMessage);
 
         if (!response.ok) {
           addJoeGptMessage(
@@ -1769,13 +2131,17 @@
           "bot"
         );
       } catch (error) {
-        thinkingMessage.remove();
+        removeJoeGptThinkingMessage(thinkingMessage);
 
         addJoeGptMessage(
           "Joe GPT",
           "I could not connect to the backend yet. This usually means the API route is not deployed or running locally.",
           "bot"
         );
+      } finally {
+        joeGptIsThinking = false;
+        setJoeGptControlsDisabled(false);
+        joeGptInput.focus();
       }
     }
 
@@ -2021,6 +2387,10 @@
     window.addEventListener("resize", () => {
       if (visitorMap) {
         visitorMap.invalidateSize();
+      }
+
+      if (miniLocationMap) {
+        miniLocationMap.invalidateSize();
       }
     });
   </script>

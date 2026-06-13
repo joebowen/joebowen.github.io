@@ -1,7 +1,9 @@
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  const allowedOrigins = [
+    const allowedOrigins = [
+    "https://joebowen.dev",
+    "https://www.joebowen.dev",
     "https://joebowen.github.io",
     "https://joebowen-github-io.vercel.app",
     "http://localhost:3000",
@@ -13,7 +15,7 @@ export default async function handler(req, res) {
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   } else {
-    res.setHeader("Access-Control-Allow-Origin", "https://www.joebowen.dev");
+    res.setHeader("Access-Control-Allow-Origin", "https://joebowen.dev");
   }
 
   res.setHeader("Vary", "Origin");
