@@ -976,14 +976,16 @@
 
     .wilmington-leaflet-marker {
       position: relative;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
-      background: #ffffff;
-      border: 3px solid var(--glow);
+      background: #ef4444;
+      border: 2px solid #ffffff;
       box-shadow:
-        0 0 14px rgba(0, 229, 255, 0.95),
-        0 0 34px rgba(0, 229, 255, 0.65);
+        0 0 0 2px rgba(15, 23, 42, 0.28),
+        0 0 10px rgba(239, 68, 68, 0.65),
+        0 0 24px rgba(239, 68, 68, 0.35);
+      animation: leafletMarkerBlink 1.8s ease-in-out infinite;
     }
 
     .wilmington-leaflet-marker::before,
@@ -991,10 +993,10 @@
       content: "";
       position: absolute;
       inset: 50%;
-      width: 16px;
-      height: 16px;
+      width: 10px;
+      height: 10px;
       border-radius: 999px;
-      background: rgba(0, 229, 255, 0.28);
+      background: rgba(239, 68, 68, 0.28);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
@@ -1060,14 +1062,14 @@
       width: 13px;
       height: 13px;
       border-radius: 999px;
-      background: #ffffff;
-      border: 3px solid var(--glow);
+      background: #ef4444;
+      border: 2px solid #ffffff;
       box-shadow:
-        0 0 0 0 rgba(0, 229, 255, 0.7),
-        0 0 16px rgba(0, 229, 255, 0.95),
-        0 0 34px rgba(0, 229, 255, 0.55);
+        0 0 0 2px rgba(15, 23, 42, 0.28),
+        0 0 10px rgba(239, 68, 68, 0.65),
+        0 0 24px rgba(239, 68, 68, 0.35);
       transform: translate(-50%, -50%);
-      animation: markerBlink 1.25s ease-in-out infinite;
+      animation: markerBlink 1.8s ease-in-out infinite;
     }
 
     .wilmington-marker::before,
@@ -1078,7 +1080,7 @@
       width: 100%;
       height: 100%;
       border-radius: 999px;
-      background: rgba(0, 229, 255, 0.3);
+      background: rgba(239, 68, 68, 0.28);
       transform: translate(-50%, -50%) scale(1);
       z-index: -1;
       animation: markerPulse 1.8s ease-out infinite;
@@ -1252,6 +1254,19 @@
       50% {
         opacity: 0.58;
         transform: translate(-50%, -50%) scale(0.82);
+      }
+    }
+
+    @keyframes leafletMarkerBlink {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.58;
+        transform: scale(0.82);
       }
     }
 
@@ -1445,6 +1460,7 @@
       .wilmington-marker,
       .wilmington-marker::before,
       .wilmington-marker::after,
+      .wilmington-leaflet-marker,
       .wilmington-leaflet-marker::before,
       .wilmington-leaflet-marker::after,
       .visitor-marker::after,
@@ -1926,7 +1942,7 @@
       touchZoom: false
 });
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
         subdomains: "abcd",
         maxZoom: 19
       }).addTo(miniLocationMap);
@@ -1944,7 +1960,7 @@
         interactive: true
       })
         .bindPopup(
-          "<strong>Wilmington, NC</strong><br>Current general location",
+          "<strong>Wilmington, NC</strong><br>Current Working 🎯",
           {
             className: "wilmington-mini-popup",
             closeButton: false,
@@ -2192,7 +2208,7 @@
         scrollWheelZoom: false
       });
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         subdomains: "abcd",
         maxZoom: 19
