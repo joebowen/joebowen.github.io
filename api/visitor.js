@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   } else {
-    res.setHeader("Access-Control-Allow-Origin", "https://joebowen.github.io");
+    res.setHeader("Access-Control-Allow-Origin", "https://www.joebowen.dev");
   }
 
   res.setHeader("Vary", "Origin");
