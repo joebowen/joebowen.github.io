@@ -1157,24 +1157,26 @@
 
     .visitor-marker {
       position: relative;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
-      background: #ffffff;
-      border: 3px solid #00e5ff;
+      background: #ef4444;
+      border: 2px solid #ffffff;
       box-shadow:
-        0 0 12px rgba(0, 229, 255, 0.95),
-        0 0 28px rgba(0, 229, 255, 0.65);
+        0 0 0 2px rgba(15, 23, 42, 0.28),
+        0 0 10px rgba(239, 68, 68, 0.65),
+        0 0 24px rgba(239, 68, 68, 0.35);
+      animation: leafletMarkerBlink 1.8s ease-in-out infinite;
     }
 
     .visitor-marker::after {
       content: "";
       position: absolute;
       inset: 50%;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 999px;
-      background: rgba(0, 229, 255, 0.25);
+      background: rgba(239, 68, 68, 0.28);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
@@ -1463,6 +1465,7 @@
       .wilmington-leaflet-marker,
       .wilmington-leaflet-marker::before,
       .wilmington-leaflet-marker::after,
+      .visitor-marker,
       .visitor-marker::after,
       .thinking-dots i,
       .thinking-bar::before {
@@ -2304,9 +2307,9 @@
           const visitorIcon = L.divIcon({
             className: "",
             html: '<div class="visitor-marker"></div>',
-            iconSize: [16, 16],
-            iconAnchor: [8, 8],
-            popupAnchor: [0, -10]
+            iconSize: [14, 14],
+            iconAnchor: [7, 7],
+            popupAnchor: [0, -9]
           });
 
           L.marker([latitude, longitude], {
