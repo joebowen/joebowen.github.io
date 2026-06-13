@@ -55,6 +55,7 @@
       line-height: 1.65;
       overflow-x: hidden;
       overscroll-behavior-x: none;
+      touch-action: pan-y;
       position: relative;
     }
 
@@ -975,16 +976,13 @@
 
     .wilmington-leaflet-marker {
       position: relative;
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 999px;
-      background: #ef4444;
-      border: 2px solid #ffffff;
+      background: #ff0000;
       box-shadow:
-        0 0 0 2px rgba(15, 23, 42, 0.28),
-        0 0 10px rgba(239, 68, 68, 0.65),
-        0 0 24px rgba(239, 68, 68, 0.35);
-      animation: leafletMarkerBlink 1.8s ease-in-out infinite;
+        0 0 14px rgba(255, 0, 0, 0.95),
+        0 0 34px rgba(255, 0, 0, 0.65);
     }
 
     .wilmington-leaflet-marker::before,
@@ -992,10 +990,10 @@
       content: "";
       position: absolute;
       inset: 50%;
-      width: 10px;
-      height: 10px;
+      width: 16px;
+      height: 16px;
       border-radius: 999px;
-      background: rgba(239, 68, 68, 0.28);
+      background: rgba(255, 0, 0, 0.28);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
@@ -1028,7 +1026,66 @@
       color: var(--glow);
     }
 
-    .location-caption {
+    .nc-map-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .nc-map-inner {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      line-height: 0;
+    }
+
+    .nc-map-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter:
+        drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28))
+        drop-shadow(0 0 18px rgba(0, 229, 255, 0.08));
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .wilmington-marker {
+      position: absolute;
+      left: 71.8%;
+      top: 86.3%;
+      z-index: 3;
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: #ff0000;
+      box-shadow:
+        0 0 0 0 rgba(255, 0, 0, 0.7),
+        0 0 16px rgba(255, 0, 0, 0.95),
+        0 0 34px rgba(255, 0, 0, 0.55);
+      transform: translate(-50%, -50%);
+      animation: markerBlink 1.25s ease-in-out infinite;
+    }
+
+    .wilmington-marker::before,
+    .wilmington-marker::after {
+      content: "";
+      position: absolute;
+      inset: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      background: rgba(255, 0, 0, 0.3);
+      transform: translate(-50%, -50%) scale(1);
+      z-index: -1;
+      animation: markerPulse 1.8s ease-out infinite;
+    }
+
+    .wilmington-marker::after {
+      animation-delay: 0.55s;
+    }
+        .location-caption {
       margin: 10px 0 0;
       color: rgba(255, 255, 255, 0.78);
       font-size: 0.84rem;
@@ -1049,7 +1106,6 @@
       z-index: 1;
       width: 100%;
       height: 420px;
-      min-height: 320px;
       border-radius: 20px;
       overflow: hidden;
       background: #0f172a;
@@ -1058,22 +1114,6 @@
         0 14px 34px rgba(0, 0, 0, 0.24),
         0 0 28px rgba(0, 229, 255, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      touch-action: auto;
-    }
-
-    #visitor-map,
-    #visitor-map .leaflet-container,
-    #visitor-map .leaflet-pane,
-    #visitor-map .leaflet-map-pane,
-    #visitor-map .leaflet-tile-pane,
-    #visitor-map .leaflet-overlay-pane,
-    #visitor-map .leaflet-marker-pane {
-      max-width: 100%;
-    }
-
-    #visitor-map .leaflet-container {
-      width: 100%;
-      height: 100%;
     }
 
     .visitor-map .leaflet-container {
@@ -1112,29 +1152,31 @@
 
     .visitor-marker {
       position: relative;
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 999px;
-      background: #ef4444;
-      border: 2px solid #ffffff;
+      background: #ff0000;
       box-shadow:
-        0 0 0 2px rgba(15, 23, 42, 0.28),
-        0 0 10px rgba(239, 68, 68, 0.65),
-        0 0 24px rgba(239, 68, 68, 0.35);
-      animation: leafletMarkerBlink 1.8s ease-in-out infinite;
+        0 0 14px rgba(255, 0, 0, 0.95),
+        0 0 34px rgba(255, 0, 0, 0.65);
     }
 
+    .visitor-marker::before,
     .visitor-marker::after {
       content: "";
       position: absolute;
       inset: 50%;
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 999px;
-      background: rgba(239, 68, 68, 0.28);
+      background: rgba(255, 0, 0, 0.28);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
+    }
+
+    .visitor-marker::after {
+      animation-delay: 0.55s;
     }
 
     .visitor-popup .leaflet-popup-content-wrapper {
@@ -1211,19 +1253,6 @@
       50% {
         opacity: 0.58;
         transform: translate(-50%, -50%) scale(0.82);
-      }
-    }
-
-    @keyframes leafletMarkerBlink {
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.58;
-        transform: scale(0.82);
       }
     }
 
@@ -1397,10 +1426,13 @@
         margin-right: 0;
       }
 
+      .wilmington-marker {
+        width: 8px;
+        height: 8px;
+      }
+
       .visitor-map {
-        height: 360px;
-        min-height: 320px;
-        touch-action: auto;
+        height: 300px;
       }
     }
 
@@ -1414,10 +1446,8 @@
       .wilmington-marker,
       .wilmington-marker::before,
       .wilmington-marker::after,
-      .wilmington-leaflet-marker,
       .wilmington-leaflet-marker::before,
       .wilmington-leaflet-marker::after,
-      .visitor-marker,
       .visitor-marker::after,
       .thinking-dots i,
       .thinking-bar::before {
@@ -1764,7 +1794,7 @@
 
       <footer>
         © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
-        Last updated: 06/13/2026
+        Last updated: 5/31/2026
       </footer>
     </div>
   </main>
@@ -1881,25 +1911,25 @@
 
       const wilmingtonCoords = [34.2104, -77.8868];
 
-      miniLocationMap = L.map("mini-location-map", {
-        center: [35.45, -80],
-        zoom: 5,
-        minZoom: 5,
-        maxZoom: 7,
-        zoomControl: false,
-        attributionControl: false,
-        dragging: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        keyboard: false,
-        tap: false,
-        touchZoom: false
-      });
+     miniLocationMap = L.map("mini-location-map", {
+      center: [35.45, -80],
+      zoom: 5,
+      minZoom: 5,
+      maxZoom: 7,
+      zoomControl: false,
+      attributionControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      tap: false,
+      touchZoom: false
+});
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
-        maxZoom: 19,
-        crossOrigin: true
+        subdomains: "abcd",
+        maxZoom: 19
       }).addTo(miniLocationMap);
 
       const wilmingtonIcon = L.divIcon({
@@ -1915,7 +1945,7 @@
         interactive: true
       })
         .bindPopup(
-          "<strong>Wilmington, NC</strong><br>Current Working 🎯",
+          "<strong>Wilmington, NC</strong><br>Current general location",
           {
             className: "wilmington-mini-popup",
             closeButton: false,
@@ -1947,10 +1977,6 @@
       setTimeout(() => {
         miniLocationMap.invalidateSize();
       }, 250);
-
-      setTimeout(() => {
-        miniLocationMap.invalidateSize();
-      }, 1000);
     }
 
     initializeMiniLocationMap();
@@ -2155,10 +2181,6 @@
           visitorMap.invalidateSize();
         }, 250);
 
-        setTimeout(() => {
-          visitorMap.invalidateSize();
-        }, 1000);
-
         return true;
       }
 
@@ -2168,19 +2190,13 @@
         minZoom: 1,
         maxZoom: 8,
         worldCopyJump: true,
-        scrollWheelZoom: false,
-        dragging: true,
-        tap: true,
-        touchZoom: true,
-        doubleClickZoom: true,
-        boxZoom: false,
-        keyboard: true
+        scrollWheelZoom: false
       });
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
-        attribution: '&copy; OpenStreetMap contributors',
-        maxZoom: 19,
-        crossOrigin: true
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: "abcd",
+        maxZoom: 19
       }).addTo(visitorMap);
 
       visitorMarkerLayer = L.layerGroup().addTo(visitorMap);
@@ -2188,10 +2204,6 @@
       setTimeout(() => {
         visitorMap.invalidateSize();
       }, 250);
-
-      setTimeout(() => {
-        visitorMap.invalidateSize();
-      }, 1000);
 
       return true;
     }
@@ -2227,13 +2239,7 @@
           cache: "no-store"
         });
 
-        let data;
-
-        try {
-          data = await response.json();
-        } catch (jsonError) {
-          throw new Error("Visitor API did not return valid JSON.");
-        }
+        const data = await response.json();
 
         console.log("Visitor API status:", response.status);
         console.log("Visitor API data:", data);
@@ -2283,9 +2289,9 @@
           const visitorIcon = L.divIcon({
             className: "",
             html: '<div class="visitor-marker"></div>',
-            iconSize: [14, 14],
-            iconAnchor: [7, 7],
-            popupAnchor: [0, -9]
+            iconSize: [16, 16],
+            iconAnchor: [8, 8],
+            popupAnchor: [0, -10]
           });
 
           L.marker([latitude, longitude], {
@@ -2323,10 +2329,6 @@
           setTimeout(() => {
             visitorMap.invalidateSize();
           }, 250);
-
-          setTimeout(() => {
-            visitorMap.invalidateSize();
-          }, 1000);
         }
 
         if (!visitorTableBody.children.length) {
@@ -2357,7 +2359,7 @@
 
         visitorTableBody.innerHTML = `
           <tr>
-            <td colspan="2">Visitor map could not load: ${escapeHTML(error.message)}</td>
+            <td colspan="2">Visitor map is not connected yet.</td>
           </tr>
         `;
       } finally {
@@ -2391,18 +2393,6 @@
       if (miniLocationMap) {
         miniLocationMap.invalidateSize();
       }
-    });
-
-    window.addEventListener("orientationchange", () => {
-      setTimeout(() => {
-        if (visitorMap) {
-          visitorMap.invalidateSize();
-        }
-
-        if (miniLocationMap) {
-          miniLocationMap.invalidateSize();
-        }
-      }, 500);
     });
   </script>
 </body>
