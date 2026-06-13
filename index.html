@@ -976,13 +976,14 @@
 
     .wilmington-leaflet-marker {
       position: relative;
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
       border-radius: 999px;
-      background: #ff0000;
+      background: #ffffff;
+      border: 3px solid var(--glow);
       box-shadow:
-        0 0 14px rgba(255, 0, 0, 0.95),
-        0 0 34px rgba(255, 0, 0, 0.65);
+        0 0 14px rgba(0, 229, 255, 0.95),
+        0 0 34px rgba(0, 229, 255, 0.65);
     }
 
     .wilmington-leaflet-marker::before,
@@ -993,7 +994,7 @@
       width: 16px;
       height: 16px;
       border-radius: 999px;
-      background: rgba(255, 0, 0, 0.28);
+      background: rgba(0, 229, 255, 0.28);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
@@ -1059,11 +1060,12 @@
       width: 13px;
       height: 13px;
       border-radius: 999px;
-      background: #ff0000;
+      background: #ffffff;
+      border: 3px solid var(--glow);
       box-shadow:
-        0 0 0 0 rgba(255, 0, 0, 0.7),
-        0 0 16px rgba(255, 0, 0, 0.95),
-        0 0 34px rgba(255, 0, 0, 0.55);
+        0 0 0 0 rgba(0, 229, 255, 0.7),
+        0 0 16px rgba(0, 229, 255, 0.95),
+        0 0 34px rgba(0, 229, 255, 0.55);
       transform: translate(-50%, -50%);
       animation: markerBlink 1.25s ease-in-out infinite;
     }
@@ -1076,7 +1078,7 @@
       width: 100%;
       height: 100%;
       border-radius: 999px;
-      background: rgba(255, 0, 0, 0.3);
+      background: rgba(0, 229, 255, 0.3);
       transform: translate(-50%, -50%) scale(1);
       z-index: -1;
       animation: markerPulse 1.8s ease-out infinite;
@@ -1085,7 +1087,8 @@
     .wilmington-marker::after {
       animation-delay: 0.55s;
     }
-        .location-caption {
+
+    .location-caption {
       margin: 10px 0 0;
       color: rgba(255, 255, 255, 0.78);
       font-size: 0.84rem;
@@ -1152,31 +1155,27 @@
 
     .visitor-marker {
       position: relative;
-      width: 13px;
-      height: 13px;
+      width: 16px;
+      height: 16px;
       border-radius: 999px;
-      background: #ff0000;
+      background: #ffffff;
+      border: 3px solid #00e5ff;
       box-shadow:
-        0 0 14px rgba(255, 0, 0, 0.95),
-        0 0 34px rgba(255, 0, 0, 0.65);
+        0 0 12px rgba(0, 229, 255, 0.95),
+        0 0 28px rgba(0, 229, 255, 0.65);
     }
 
-    .visitor-marker::before,
     .visitor-marker::after {
       content: "";
       position: absolute;
       inset: 50%;
-      width: 13px;
-      height: 13px;
+      width: 16px;
+      height: 16px;
       border-radius: 999px;
-      background: rgba(255, 0, 0, 0.28);
+      background: rgba(0, 229, 255, 0.25);
       transform: translate(-50%, -50%);
       animation: markerPulse 1.8s ease-out infinite;
       z-index: -1;
-    }
-
-    .visitor-marker::after {
-      animation-delay: 0.55s;
     }
 
     .visitor-popup .leaflet-popup-content-wrapper {
@@ -1927,7 +1926,7 @@
       touchZoom: false
 });
 
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         subdomains: "abcd",
         maxZoom: 19
       }).addTo(miniLocationMap);
@@ -2193,7 +2192,7 @@
         scrollWheelZoom: false
       });
 
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         subdomains: "abcd",
         maxZoom: 19
