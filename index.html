@@ -6,6 +6,13 @@
   <title>Joe Bowen</title>
   <link rel="icon" type="image/png" href="images/icons/JB_Icon.png">
 
+
+  <link rel="preload" as="image" href="images/album-covers/Sade.jpg">
+  <link rel="preload" as="image" href="images/album-covers/sombr.png">
+  <link rel="preload" as="image" href="images/album-covers/backseatlovers.jpg">
+  <link rel="preload" as="image" href="images/album-covers/Daft_Punk.png">
+  <link rel="preload" as="image" href="images/album-covers/solonholt.jpg">
+
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -1504,17 +1511,25 @@
           <h3 class="music-heading">My current favorites 🔥</h3>
 
           <div class="music-link-wrap">
-            <img id="song-cover" src="images/song1.jpg" alt="Song cover art" class="song-cover" />
+            <img
+              id="song-cover"
+              src="images/album-covers/Sade.jpg"
+              alt="The Sweetest Taboo cover art"
+              class="song-cover"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
 
             <div class="song-meta">
-              <p id="song-title" class="song-title">SONG TITLE 1</p>
-              <p id="song-artist" class="song-artist">ARTIST 1</p>
+              <p id="song-title" class="song-title">The Sweetest Taboo</p>
+              <p id="song-artist" class="song-artist">Sade</p>
               <span class="listen-text"></span>
             </div>
           </div>
 
           <audio id="song-player" class="audio-player" controls preload="metadata">
-            <source src="audio/song1.mp3" type="audio/mpeg" />
+            <source src="audio/The Sweetest Taboo.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
 
@@ -1880,6 +1895,35 @@
       }
     ];
 
+    const coverCache = new Map();
+
+    function preloadImage(src) {
+      if (coverCache.has(src)) {
+        return coverCache.get(src);
+      }
+
+      const promise = new Promise((resolve, reject) => {
+        const img = new Image();
+
+        img.onload = () => resolve(src);
+        img.onerror = reject;
+
+        img.src = src;
+      });
+
+      coverCache.set(src, promise);
+
+      return promise;
+    }
+
+    function preloadSongCovers() {
+      songs.forEach(song => {
+        preloadImage(song.cover).catch(error => {
+          console.warn("Could not preload cover:", song.cover, error);
+        });
+      });
+    }
+
     const musicCard = document.getElementById("music-card");
     const songCover = document.getElementById("song-cover");
     const songTitle = document.getElementById("song-title");
@@ -1888,37 +1932,54 @@
     const nextSongBtn = document.getElementById("next-song-btn");
 
     let currentSongIndex = 0;
+    let isSongChanging = false;
 
-    function renderSong(index, autoplay = false) {
+    async function renderSong(index, autoplay = false) {
       const song = songs[index];
 
       musicCard.classList.add("is-changing");
 
-      setTimeout(() => {
-        songCover.src = song.cover;
-        songCover.alt = song.title + " cover art";
-        songTitle.textContent = song.title;
-        songArtist.textContent = song.artist;
+      try {
+        await preloadImage(song.cover);
+      } catch (error) {
+        console.warn("Cover did not preload:", song.cover, error);
+      }
 
-        songPlayer.src = song.audio;
-        songPlayer.load();
+      songCover.src = song.cover;
+      songCover.alt = song.title + " cover art";
+      songTitle.textContent = song.title;
+      songArtist.textContent = song.artist;
 
-        if (autoplay) {
-          songPlayer.play().catch(() => {});
-        }
+      songPlayer.src = song.audio;
+      songPlayer.load();
 
+      if (autoplay) {
+        songPlayer.play().catch(() => {});
+      }
+
+      requestAnimationFrame(() => {
         musicCard.classList.remove("is-changing");
-      }, 180);
+      });
     }
 
-    function playNextSong() {
+    async function playNextSong() {
+      if (isSongChanging) return;
+
+      isSongChanging = true;
+      nextSongBtn.disabled = true;
+
       currentSongIndex = (currentSongIndex + 1) % songs.length;
-      renderSong(currentSongIndex, true);
+
+      await renderSong(currentSongIndex, true);
+
+      nextSongBtn.disabled = false;
+      isSongChanging = false;
     }
 
     songPlayer.addEventListener("ended", playNextSong);
     nextSongBtn.addEventListener("click", playNextSong);
 
+    preloadSongCovers();
     renderSong(currentSongIndex);
 
     let miniLocationMap;
