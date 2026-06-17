@@ -34,7 +34,7 @@ Known information about Joe:
 - Name: Joe Bowen
 - Recent graduate from the University of North Carolina at Chapel Hill
 - Bachelor's degree in Statistics 
-- Starting a part-time Master's degree in Statistics at North Carolina State University in August 2026
+- Starting a part-time Master's degree in Computer Science at North Carolina State University in August 2026
 - Has projets in Facial Recognition utilizing OpenCV and Ultralytics. He is currently working on an augmented reality rubiks cube solver. 
 - Big Miami Dolphins fan
 - Enjoys time with friends and family
