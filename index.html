@@ -2033,36 +2033,19 @@
     </section>
 
     <section id="visitors" class="section visitors-section">
-            <div class="section-heading">
-              <div class="section-icon">🌎</div>
-              <h2>Where Visitors Are From</h2>
-            </div>
+      <div class="section-heading">
+        <div class="section-icon">🌎</div>
+        <h2>Where Visitors Are From</h2>
+      </div>
 
-            <div class="visitor-shell">
-              <div class="visitor-map" id="visitor-map" aria-label="World map showing visitor locations"></div>
+      <div class="visitor-shell">
+        <div class="visitor-map" id="visitor-map" aria-label="World map showing visitor locations"></div>
 
-              <div class="visitor-table-wrap">
-                <table class="visitor-table">
-                  <thead>
-                    <tr>
-                      <th>Location</th>
-                      <th>Visits</th>
-                    </tr>
-                  </thead>
-
-                  <tbody id="visitor-table-body">
-                    <tr>
-                      <td colspan="2">Loading visitor locations...</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <p class="visitor-note">
-                Visitor locations are approximate and based on IP geolocation. Individual IP addresses are not shown.
-              </p>
-            </div>
-          </section>
+        <p class="visitor-note">
+          Visitor locations are approximate and based on IP geolocation. Individual IP addresses are not shown.
+        </p>
+      </div>
+    </section>
 
     <section id="contact" class="section contact-section">
             <div class="section-heading">
@@ -2576,13 +2559,6 @@
     }
 
     async function loadVisitorMap(retries = 2) {
-      const visitorTableBody = document.getElementById("visitor-table-body");
-
-      if (!visitorTableBody) {
-        console.error("Visitor table body not found.");
-        return;
-      }
-
       if (visitorMapLoading) {
         return;
       }
@@ -2615,25 +2591,11 @@
           throw new Error(data.error || "Could not load visitor data.");
         }
 
-        visitorTableBody.innerHTML = "";
-
         if (visitorMarkerLayer) {
           visitorMarkerLayer.clearLayers();
         }
 
         const locations = data.locations || [];
-
-        if (locations.length === 0) {
-          visitorTableBody.innerHTML = `
-            <tr>
-              <td colspan="2">No visitor data yet.</td>
-            </tr>
-          `;
-
-          visitorMapLoaded = true;
-          return;
-        }
-
         const bounds = [];
 
         locations.forEach(location => {
@@ -2673,14 +2635,6 @@
             .addTo(visitorMarkerLayer);
 
           bounds.push([latitude, longitude]);
-
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${escapeHTML(label)}</td>
-            <td>${escapeHTML(visits)}</td>
-          `;
-
-          visitorTableBody.appendChild(row);
         });
 
         if (bounds.length > 1 && visitorMap) {
@@ -2696,14 +2650,6 @@
           setTimeout(() => {
             visitorMap.invalidateSize();
           }, 250);
-        }
-
-        if (!visitorTableBody.children.length) {
-          visitorTableBody.innerHTML = `
-            <tr>
-              <td colspan="2">No visitor data with valid coordinates yet.</td>
-            </tr>
-          `;
         }
 
         visitorMapLoaded = true;
@@ -2723,12 +2669,6 @@
 
           return;
         }
-
-        visitorTableBody.innerHTML = `
-          <tr>
-            <td colspan="2">Visitor map is not connected yet.</td>
-          </tr>
-        `;
       } finally {
         visitorMapLoading = false;
       }
