@@ -6,7 +6,6 @@
   <title>Joe Bowen</title>
   <link rel="icon" type="image/png" href="images/icons/JB_Icon.png">
 
-
   <link rel="preload" as="image" href="images/album-covers/Sade.jpg">
   <link rel="preload" as="image" href="images/album-covers/sombr.png">
   <link rel="preload" as="image" href="images/album-covers/backseatlovers.jpg">
@@ -292,6 +291,11 @@
       align-items: center;
       gap: 14px;
       margin-bottom: 22px;
+    }
+
+    .timeline-section .section-heading {
+      justify-content: flex-start;
+      margin-bottom: 1.5rem;
     }
 
     .section-icon {
@@ -636,15 +640,46 @@
       min-width: 0;
     }
 
+    .timeline-list {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
     .timeline-track,
     .projects-track {
       position: relative;
       display: flex;
       flex-direction: column;
+    }
+
+    .projects-track {
       gap: 1.35rem;
     }
 
-    .timeline-track::before,
+    .timeline-track {
+      gap: 7.25rem;
+      padding: 2.25rem 0 0.5rem;
+      min-height: 820px;
+    }
+
+    .timeline-track::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 1rem;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        to bottom,
+        rgba(148, 163, 184, 0.18),
+        rgba(148, 163, 184, 0.48),
+        rgba(148, 163, 184, 0.4),
+        rgba(148, 163, 184, 0.18)
+      );
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.06);
+    }
+
     .projects-track::before {
       content: "";
       position: absolute;
@@ -664,13 +699,40 @@
     .timeline-item,
     .project-item {
       position: relative;
-      display: grid;
-      grid-template-columns: 1.75rem 1fr;
-      gap: 1rem;
       outline: none;
     }
 
-    .timeline-dot,
+    .timeline-item {
+      display: block;
+      width: 100%;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 1.75rem 1fr;
+      gap: 1rem;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 17px;
+      height: 1px;
+      transform: translate(-50%, -50%);
+      background: rgba(148, 163, 184, 0.58);
+      box-shadow:
+        0 0 8px rgba(0, 229, 255, 0.16),
+        0 72px 0 rgba(148, 163, 184, 0.32),
+        0 -72px 0 rgba(148, 163, 184, 0.32);
+      z-index: 2;
+    }
+
+    .timeline-dot {
+      display: none;
+    }
+
     .project-dot {
       position: relative;
       z-index: 2;
@@ -684,7 +746,22 @@
       box-shadow: 0 0 0 5px rgba(2, 6, 23, 0.94);
     }
 
-    .timeline-card,
+    .timeline-card {
+      position: relative;
+      width: min(100%, 430px);
+      min-height: 135px;
+      margin-left: 0;
+      padding: 1.2rem 4.35rem 1.15rem 1.15rem;
+      border-radius: 18px;
+      background: #1f232b;
+      border: 1px solid rgba(255, 255, 255, 0.035);
+      box-shadow:
+        0 16px 26px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+      overflow: hidden;
+      z-index: 3;
+    }
+
     .project-card {
       position: relative;
       padding: 1.35rem;
@@ -699,7 +776,10 @@
       overflow: hidden;
     }
 
-    .timeline-card::before,
+    .timeline-card::before {
+      display: none;
+    }
+
     .project-card::before {
       content: "";
       position: absolute;
@@ -714,7 +794,25 @@
       opacity: 0.45;
     }
 
-    .timeline-card-icon,
+    .timeline-card-icon {
+      position: absolute;
+      top: 1.15rem;
+      right: 1rem;
+      display: grid;
+      place-items: center;
+      width: 3.05rem;
+      height: 3.05rem;
+      border-radius: 999px;
+      color: #eaffff;
+      border: 3px solid var(--glow);
+      box-shadow:
+        0 0 14px rgba(0, 229, 255, 0.46),
+        0 8px 14px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      font-size: 1.35rem;
+      background: rgba(2, 6, 23, 0.72);
+    }
+
     .project-card-icon {
       position: absolute;
       top: 1.15rem;
@@ -742,7 +840,17 @@
       display: block;
     }
 
-    .timeline-card-title,
+    .timeline-card-title {
+      min-height: 1.1rem;
+      margin: 0 0 0.25rem 0;
+      color: var(--glow);
+      font-size: 1.28rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.18);
+    }
+
     .project-card-title {
       min-height: 1.25rem;
       margin: 0 3.8rem 0.35rem 0;
@@ -753,7 +861,16 @@
       letter-spacing: -0.04em;
     }
 
-    .timeline-meta,
+    .timeline-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.2rem;
+      margin-bottom: 0.1rem;
+      color: rgba(226, 232, 240, 0.78);
+      font-size: 0.82rem;
+      line-height: 1.25;
+    }
+
     .project-meta {
       display: flex;
       flex-wrap: wrap;
@@ -768,7 +885,15 @@
       color: #f8fbff;
     }
 
-    .timeline-date,
+    .timeline-date {
+      min-height: 1rem;
+      color: rgba(226, 232, 240, 0.82);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+
     .project-date {
       min-height: 1rem;
       color: rgba(226, 232, 240, 0.62);
@@ -777,7 +902,14 @@
       margin-bottom: 0.9rem;
     }
 
-    .timeline-description,
+    .timeline-description {
+      min-height: 0;
+      margin: 0;
+      color: rgba(226, 232, 240, 0.86);
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
     .project-description {
       min-height: 2.6rem;
       margin: 0;
@@ -1317,7 +1449,6 @@
       z-index: 1;
     }
 
-
     .contact-form {
       display: flex;
       flex-direction: column;
@@ -1403,73 +1534,6 @@
       margin: 0;
       color: rgba(226, 232, 240, 0.76);
       font-size: 0.86rem;
-    }
-
-    @media (max-width: 700px) {
-      .contact-shell {
-        padding: 1rem;
-        border-radius: 20px;
-      }
-
-      .contact-card {
-        padding: 1.15rem;
-        border-radius: 18px;
-      }
-
-      .contact-card-header {
-        justify-content: flex-start;
-      }
-
-      .contact-card-social {
-        width: 36px;
-        height: 36px;
-      }
-
-      .contact-card-social svg {
-        width: 21px;
-        height: 21px;
-      }
-
-      .contact-field textarea {
-        min-height: 135px;
-      }
-
-      .contact-submit {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .contact-bin {
-        padding: 1.1rem;
-        border-radius: 20px;
-      }
-
-      .contact-bin-header {
-        align-items: flex-start;
-      }
-
-      .contact-bin-header h3 {
-        font-size: 1.55rem;
-      }
-
-      .contact-bin-socials a {
-        width: 34px;
-        height: 34px;
-      }
-
-      .contact-bin-socials svg {
-        width: 21px;
-        height: 21px;
-      }
-
-      .contact-field textarea {
-        min-height: 130px;
-      }
-
-      .contact-submit {
-        width: 100%;
-      }
     }
 
     @keyframes markerBlink {
@@ -1619,28 +1683,67 @@
         border-radius: 20px;
       }
 
-      .timeline-item,
+      .timeline-list {
+        max-width: 100%;
+      }
+
+      .timeline-track {
+        gap: 4.25rem;
+        min-height: 0;
+        padding: 1rem 0 1rem 1.15rem;
+      }
+
+      .timeline-track::before {
+        left: 0;
+        transform: none;
+      }
+
+      .timeline-item::before {
+        left: 0;
+        width: 14px;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 54px 0 rgba(148, 163, 184, 0.26),
+          0 -54px 0 rgba(148, 163, 184, 0.26);
+      }
+
+      .timeline-card {
+        width: 100%;
+        min-height: 0;
+        padding: 1.15rem;
+        padding-right: 1.15rem;
+      }
+
+      .timeline-card-icon {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 2.7rem;
+        height: 2.7rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .timeline-card-title {
+        font-size: 1.2rem;
+      }
+
       .project-item {
         grid-template-columns: 1.4rem 1fr;
         gap: 0.8rem;
       }
 
-      .timeline-track::before,
       .projects-track::before {
         left: 0.68rem;
       }
 
-      .timeline-dot,
       .project-dot {
         margin-left: 0.22rem;
       }
 
-      .timeline-card,
       .project-card {
         padding: 1.15rem;
       }
 
-      .timeline-card-icon,
       .project-card-icon {
         position: relative;
         top: auto;
@@ -1650,7 +1753,6 @@
         margin-bottom: 0.8rem;
       }
 
-      .timeline-card-title,
       .project-card-title {
         margin-right: 0;
       }
@@ -1662,6 +1764,43 @@
 
       .visitor-map {
         height: 300px;
+      }
+
+      .contact-shell {
+        padding: 1rem;
+        border-radius: 20px;
+      }
+
+      .contact-card {
+        padding: 1.15rem;
+        border-radius: 18px;
+      }
+
+      .contact-card-header {
+        justify-content: flex-start;
+      }
+
+      .contact-card-social {
+        width: 36px;
+        height: 36px;
+      }
+
+      .contact-card-social svg {
+        width: 21px;
+        height: 21px;
+      }
+
+      .contact-field textarea {
+        min-height: 135px;
+      }
+
+      .contact-submit {
+        width: 100%;
+      }
+
+      body::before,
+      body::after {
+        display: none;
       }
     }
 
@@ -1681,13 +1820,6 @@
       .thinking-dots i,
       .thinking-bar::before {
         animation: none !important;
-      }
-    }
-
-    @media (max-width: 700px) {
-      body::before,
-      body::after {
-        display: none;
       }
     }
   </style>
@@ -1804,8 +1936,6 @@
           <p class="muted" style="margin-top: 1.5rem;">
             My interests include machine/deep learning for applications, statistical modeling,
             as well as computer vision and automation.
-            
-            </a>
           </p>
 
           <div class="joe-gpt-card">
@@ -1905,7 +2035,7 @@
                   </div>
 
                   <p class="timeline-description">
-                    Optical Fiber and Cable (OFC)
+                    Optical Fiber and Cable OFC
                   </p>
                 </div>
               </article>
@@ -1941,167 +2071,167 @@
         </div>
       </section>
 
-    <section id="projects" class="section projects-section">
-      <div class="section-heading">
-        <div class="section-icon">🧪</div>
-        <h2>Projects</h2>
-      </div>
+      <section id="projects" class="section projects-section">
+        <div class="section-heading">
+          <div class="section-icon">🧪</div>
+          <h2>Projects</h2>
+        </div>
 
-      <div class="projects-shell">
-        <div class="projects-list">
-          <div class="projects-track">
-            <article class="project-item" tabindex="0">
-              <div class="project-dot"></div>
+        <div class="projects-shell">
+          <div class="projects-list">
+            <div class="projects-track">
+              <article class="project-item" tabindex="0">
+                <div class="project-dot"></div>
 
-              <div class="project-card">
-                <div class="project-card-icon">
-                  🤖
+                <div class="project-card">
+                  <div class="project-card-icon">
+                    🤖
+                  </div>
+
+                  <h3 class="project-card-title">
+                    Project VERA: AI in Robotics
+                  </h3>
+
+                  <div class="project-meta">
+                    <strong>Skills - </strong>
+                    <span>Python, Arduino, Raspberry Pi, Computer Vision, Reinforcement Learning, Algorithms</span>
+                  </div>
+
+                  <div class="project-date">
+                    Summer 2026
+                  </div>
+
+                  <p class="project-description">
+                    Showcasing the use of AI in robotics by programming a robotic arm to play me in checkers.
+                  </p>
+
+                  <div class="project-link project-link-disabled">
+                    GitHub coming soon — check back later
+                  </div>
+
+                  <div class="project-video project-video-placeholder">
+                    Video coming soon — check back later
+                  </div>
                 </div>
+              </article>
 
-                <h3 class="project-card-title">
-                  Project VERA: AI in Robotics
-                </h3>
+              <article class="project-item" tabindex="0">
+                <div class="project-dot"></div>
 
-                <div class="project-meta">
-                  <strong>Skills - </strong>
-                  <span>Python, Arduino, Raspberry Pi, Computer Vision, Reinforcement Learning, Algorithms</span>
+                <div class="project-card">
+                  <div class="project-card-icon">
+                    🧠
+                  </div>
+
+                  <h3 class="project-card-title">
+                    KOTK Facial Recognition
+                  </h3>
+
+                  <div class="project-meta">
+                    <strong>Skills - </strong>
+                    <span>OpenCV, Python, ONNX, Ultralytics, GPU acceleration </span>
+                  </div>
+
+                  <div class="project-date">
+                    Fall 2025
+                  </div>
+
+                  <p class="project-description">
+                    A computer vision project focused on facial recognition of myself and my friends.
+                  </p>
+
+                  <a
+                    class="project-link"
+                    href="https://github.com/joebowen/KOTK-Facial-Recognition"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View project on GitHub
+                  </a>
+
+                  <div class="project-video">
+                    <video controls preload="metadata">
+                      <source src="images/Facial Recognition - Test.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                 </div>
-
-                <div class="project-date">
-                  Summer 2026
-                </div>
-
-                <p class="project-description">
-                  Showcasing the use of AI in robotics by programming a robotic arm to play me in checkers.
-                </p>
-
-                <div class="project-link project-link-disabled">
-                  GitHub coming soon — check back later
-                </div>
-
-                <div class="project-video project-video-placeholder">
-                  Video coming soon — check back later
-                </div>
-              </div>
-            </article>
-
-            <article class="project-item" tabindex="0">
-              <div class="project-dot"></div>
-
-              <div class="project-card">
-                <div class="project-card-icon">
-                  🧠
-                </div>
-
-                <h3 class="project-card-title">
-                  KOTK Facial Recognition
-                </h3>
-
-                <div class="project-meta">
-                  <strong>Skills - </strong>
-                  <span>OpenCV, Python, ONNX, Ultralytics, GPU acceleration </span>
-                </div>
-
-                <div class="project-date">
-                  Fall 2025
-                </div>
-
-                <p class="project-description">
-                  A computer vision project focused on facial recognition of myself and my friends.
-                </p>
-
-                <a
-                  class="project-link"
-                  href="https://github.com/joebowen/KOTK-Facial-Recognition"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View project on GitHub
-                </a>
-
-                <div class="project-video">
-                  <video controls preload="metadata">
-                    <source src="images/Facial Recognition - Test.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              </div>
-            </article>
+              </article>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="visitors" class="section visitors-section">
-      <div class="section-heading">
-        <div class="section-icon">🌎</div>
-        <h2>Where Visitors Are From</h2>
-      </div>
-
-      <div class="visitor-shell">
-        <div class="visitor-map" id="visitor-map" aria-label="World map showing visitor locations"></div>
-
-        <p class="visitor-note">
-          Visitor locations are approximate and based on IP geolocation. Individual IP addresses are not shown.
-        </p>
-      </div>
-    </section>
-
-    <section id="contact" class="section contact-section">
-            <div class="section-heading">
-              <div class="section-icon">📝</div>
-              <h2>Contact Me</h2>
-            </div>
-
-            <div class="contact-shell">
-              <div class="contact-card">
-                <form class="contact-form" id="contact-form">
-                  <div class="contact-field">
-                    <label for="contact-name">Name</label>
-                    <input
-                      type="text"
-                      id="contact-name"
-                      name="name"
-                      placeholder="What's a good name for you?"
-                      required
-                    />
-                  </div>
-
-                  <div class="contact-field">
-                    <label for="contact-email">Email</label>
-                    <input
-                      type="email"
-                      id="contact-email"
-                      name="email"
-                      placeholder="What's a good email for you?"
-                      required
-                    />
-                  </div>
-
-                  <div class="contact-field">
-                    <label for="contact-message">Message</label>
-                    <textarea
-                      id="contact-message"
-                      name="message"
-                      placeholder="What would you like to send me?"
-                      required
-                    ></textarea>
-                  </div>
-
-                  <button class="contact-submit" type="submit">Send</button>
-
-                  <p class="contact-status" id="contact-status" aria-live="polite"></p>
-                </form>
-              </div>
-            </div>
-          </section>
-
-          <footer>
-            © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
-            Last updated: 06/13/2026
-          </footer>
+      <section id="visitors" class="section visitors-section">
+        <div class="section-heading">
+          <div class="section-icon">🌎</div>
+          <h2>Where Visitors Are From</h2>
         </div>
-      </main>
+
+        <div class="visitor-shell">
+          <div class="visitor-map" id="visitor-map" aria-label="World map showing visitor locations"></div>
+
+          <p class="visitor-note">
+            Visitor locations are approximate and based on IP geolocation. Individual IP addresses are not shown.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact-section">
+        <div class="section-heading">
+          <div class="section-icon">📝</div>
+          <h2>Contact Me</h2>
+        </div>
+
+        <div class="contact-shell">
+          <div class="contact-card">
+            <form class="contact-form" id="contact-form">
+              <div class="contact-field">
+                <label for="contact-name">Name</label>
+                <input
+                  type="text"
+                  id="contact-name"
+                  name="name"
+                  placeholder="What's a good name for you?"
+                  required
+                />
+              </div>
+
+              <div class="contact-field">
+                <label for="contact-email">Email</label>
+                <input
+                  type="email"
+                  id="contact-email"
+                  name="email"
+                  placeholder="What's a good email for you?"
+                  required
+                />
+              </div>
+
+              <div class="contact-field">
+                <label for="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  placeholder="What would you like to send me?"
+                  required
+                ></textarea>
+              </div>
+
+              <button class="contact-submit" type="submit">Send</button>
+
+              <p class="contact-status" id="contact-status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        © 2026 Joe Bowen • Built with HTML, CSS and JavaScript. <br>
+        Last updated: 06/13/2026
+      </footer>
+    </div>
+  </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -2261,21 +2391,21 @@
 
       const wilmingtonCoords = [34.2104, -77.8868];
 
-     miniLocationMap = L.map("mini-location-map", {
-      center: [35.45, -80],
-      zoom: 5,
-      minZoom: 5,
-      maxZoom: 7,
-      zoomControl: false,
-      attributionControl: false,
-      dragging: false,
-      scrollWheelZoom: false,
-      doubleClickZoom: false,
-      boxZoom: false,
-      keyboard: false,
-      tap: false,
-      touchZoom: false
-});
+      miniLocationMap = L.map("mini-location-map", {
+        center: [35.45, -80],
+        zoom: 5,
+        minZoom: 5,
+        maxZoom: 7,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        keyboard: false,
+        tap: false,
+        touchZoom: false
+      });
 
       L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
         subdomains: "abcd",
