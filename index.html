@@ -2833,48 +2833,58 @@
       }
     });
 
-    const contactForm = document.getElementById("contact-form");
-    const contactStatus = document.getElementById("contact-status");
+  const contactForm = document.getElementById("contact-form");
+  const contactStatus = document.getElementById("contact-status");
 
-    if (contactForm && contactStatus) {
-      contactForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        const formspreeEndpoint = "https://formspree.io/f/mykqbrvg";
-
-        const formData = new FormData(contactForm);
-
-        const name = String(formData.get("name") || "").trim();
-        const email = String(formData.get("email") || "").trim();
-        const message = String(formData.get("message") || "").trim();
-
-        if (!name || !email || !message) {
-          contactStatus.textContent = "Please fill out every field before sending.";
-          return;
-        }
-
-        contactStatus.textContent = "Sending...";
-
-        try {
-          const response = await fetch(formspreeEndpoint, {
-            method: "POST",
-            body: formData,
-            headers: {
-              Accept: "application/json"
-            }
-          });
-
-          if (response.ok) {
-            contactStatus.textContent = "Thanks! Your message has been sent.";
-            contactForm.reset();
-          } else {
-            contactStatus.textContent = "Something went wrong. Please try again.";
-          }
-        } catch (error) {
-          contactStatus.textContent = "Could not send message. Please try again later.";
-        }
-      });
+  window.addEventListener("pageshow", function () {
+    if (contactForm) {
+      contactForm.reset();
     }
+
+    if (contactStatus) {
+      contactStatus.textContent = "";
+    }
+  });
+
+  if (contactForm && contactStatus) {
+    contactForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formspreeEndpoint = "https://formspree.io/f/yourFormId";
+
+      const formData = new FormData(contactForm);
+
+      const name = String(formData.get("name") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      const message = String(formData.get("message") || "").trim();
+
+      if (!name || !email || !message) {
+        contactStatus.textContent = "Please fill out every field before sending.";
+        return;
+      }
+
+      contactStatus.textContent = "Sending...";
+
+      try {
+        const response = await fetch(formspreeEndpoint, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        if (response.ok) {
+          contactStatus.textContent = "Thanks! Your message has been sent.";
+          contactForm.reset();
+        } else {
+          contactStatus.textContent = "Something went wrong. Please try again.";
+        }
+      } catch (error) {
+        contactStatus.textContent = "Could not send message. Please try again later.";
+      }
+    });
+  }
   </script>
 </body>
 </html>
