@@ -2837,8 +2837,10 @@
     const contactStatus = document.getElementById("contact-status");
 
     if (contactForm && contactStatus) {
-      contactForm.addEventListener("submit", function (e) {
+      contactForm.addEventListener("submit", async function (e) {
         e.preventDefault();
+
+        const formspreeEndpoint = "https://formspree.io/f/mykqbrvg";
 
         const formData = new FormData(contactForm);
 
@@ -2851,17 +2853,26 @@
           return;
         }
 
-        const destinationEmail = "mjbowen3@ncsu.edu";
+        contactStatus.textContent = "Sending...";
 
-        const subject = encodeURIComponent(`Portfolio message from ${name}`);
+        try {
+          const response = await fetch(formspreeEndpoint, {
+            method: "POST",
+            body: formData,
+            headers: {
+              Accept: "application/json"
+            }
+          });
 
-        const body = encodeURIComponent(
-          `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-        );
-
-        window.location.href = `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
-
-        contactStatus.textContent = "Opening your email app...";
+          if (response.ok) {
+            contactStatus.textContent = "Thanks! Your message has been sent.";
+            contactForm.reset();
+          } else {
+            contactStatus.textContent = "Something went wrong. Please try again.";
+          }
+        } catch (error) {
+          contactStatus.textContent = "Could not send message. Please try again later.";
+        }
       });
     }
   </script>
