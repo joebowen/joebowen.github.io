@@ -1,5 +1,34 @@
+# Dependencies
 node_modules
+
+# Environment variables (CRITICAL - contains API keys)
 .env
 .env.local
-.vercel
 .env*.local
+
+# Vercel
+.vercel
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Development Artifacts
+*.log
+.cache/
+.temp/
+*.tmp
+
+# Personal Working Files
+notes/
+drafts/
+TODO.md
+.scratch/
