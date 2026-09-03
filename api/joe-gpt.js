@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const { message } = req.body;
 
     const poeApiKey = process.env.POE_API_KEY;
-    const poeModel = process.env.POE_MODEL || "claude-opus-4.8";
+    const poeModel = process.env.POE_MODEL || "gpt-4o-mini";
 
     if (!poeApiKey) {
       return res.status(500).json({
