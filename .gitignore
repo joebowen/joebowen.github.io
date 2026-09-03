@@ -32,3 +32,10 @@ notes/
 drafts/
 TODO.md
 .scratch/
+
+# Old index and feature folders not in deployment
+index.html
+api/
+audio/
+images/
+features/
