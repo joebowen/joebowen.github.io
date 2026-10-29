@@ -6,7 +6,7 @@ The frontend is hosted with **GitHub Pages** at:
 
 ➡️ [https://joebowen.github.io](https://joebowen.github.io)
 
-This site also includes **Joe GPT**, a custom chatbot that answers questions about my background, projects, coursework, interests, and resume. Because GitHub Pages only supports static frontend hosting, Joe GPT uses a separate **Vercel serverless backend** to securely call the Poe API without exposing API keys in the browser.
+This site also includes **Joe GPT**, a custom chatbot that answers questions about my background, projects, coursework, interests, and resume. Because GitHub Pages only supports static frontend hosting, Joe GPT uses a separate **Vercel serverless backend** to securely call the Anthropic Claude API without exposing API keys in the browser.
 
 ---
 
@@ -34,7 +34,7 @@ This site also includes **Joe GPT**, a custom chatbot that answers questions abo
 ### Backend for Joe GPT
 
 - **Vercel Serverless Functions**
-- **Poe API**
+- **Anthropic Claude API** (`@anthropic-ai/sdk`, Claude Haiku 5.5)
 - **Node.js-style API route**
 
 ---
@@ -66,11 +66,11 @@ Joe GPT is intentionally scoped to the portfolio. It should not answer unrelated
 
 GitHub Pages is great for hosting static websites, but it cannot run backend code or securely store private API keys.
 
-Because Joe GPT needs to call the Poe API, the site uses Vercel for the backend API route:
+Because Joe GPT needs to call the Anthropic API, the site uses Vercel for the backend API route:
 
 `/api/joe-gpt`
 
-The GitHub Pages frontend sends chatbot messages to the Vercel backend. The Vercel backend then calls Poe using a secure environment variable.
+The GitHub Pages frontend sends chatbot messages to the Vercel backend. The Vercel backend then calls Anthropic using a secure environment variable.
 
 This keeps the API key hidden from the browser.
 
@@ -108,7 +108,7 @@ The backend file is located at:
 
     api/joe-gpt.js
 
-This file handles requests from the frontend, applies Joe GPT’s system context/rules, and calls the Poe API.
+This file handles requests from the frontend, applies Joe GPT’s system context/rules, and calls the Anthropic API.
 
 The backend also includes CORS headers so that the GitHub Pages site can call the Vercel API.
 
@@ -122,28 +122,19 @@ Example CORS setup:
 
 ## Environment Variables
 
-The Poe API key should never be committed to GitHub.
+The Anthropic API key should never be committed to GitHub.
 
 Instead, add it to Vercel as an environment variable.
 
-Required production environment variables:
+Required production environment variable:
 
-    POE_API_KEY
-    POE_MODEL
+    ANTHROPIC_API_KEY
 
-Example model value:
+Optional model override (defaults to the cheapest model, `claude-haiku-5-5`):
 
-    gpt-4o-mini
+    ANTHROPIC_MODEL
 
 Do not include quotes when entering values into Vercel.
-
-Correct:
-
-    gpt-4o-mini
-
-Incorrect:
-
-    "gpt-4o-mini"
 
 ---
 
@@ -151,22 +142,13 @@ Incorrect:
 
 From the project root, run:
 
-    vercel env add POE_API_KEY production
+    vercel env add ANTHROPIC_API_KEY production
 
-Paste the Poe API key when prompted.
+Paste the Anthropic API key (from https://console.anthropic.com) when prompted.
 
-Then add the model:
+If preview deployments should also work, add it for preview too:
 
-    vercel env add POE_MODEL production
-
-Example value:
-
-    gpt-4o-mini
-
-If preview deployments should also work, add the variables for preview too:
-
-    vercel env add POE_API_KEY preview
-    vercel env add POE_MODEL preview
+    vercel env add ANTHROPIC_API_KEY preview
 
 ---
 
@@ -194,7 +176,7 @@ GitHub Pages will rebuild and publish the updated site.
 
 ## Updating Joe GPT
 
-If you update Joe GPT’s backend logic, context, rules, CORS settings, or Poe API call, run:
+If you update Joe GPT’s backend logic, context, rules, CORS settings, or Anthropic API call, run:
 
     git add .
     git commit -m "Update Joe GPT backend"
@@ -221,8 +203,7 @@ This allows local testing of the serverless API route.
 
 Depending on your local setup, you may need a `.env.local` file for local environment variables:
 
-    POE_API_KEY=your_poe_api_key_here
-    POE_MODEL=gpt-4o-mini
+    ANTHROPIC_API_KEY=your_anthropic_api_key_here
 
 Do not commit `.env.local`.
 
@@ -275,7 +256,7 @@ Update with:
             ↓
     Vercel /api/joe-gpt backend
             ↓
-    Poe API
+    Anthropic API (Claude Haiku 5.5)
             ↓
     Joe GPT response
             ↓
@@ -290,5 +271,5 @@ Update with:
 - JavaScript
 - GitHub Pages
 - Vercel
-- Poe API
+- Anthropic Claude API
 

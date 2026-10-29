@@ -1,3 +1,8 @@
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+const MAX_MESSAGE_CHARS = 1000;
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "https://joebowen.dev");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -16,12 +21,21 @@ export default async function handler(req, res) {
   try {
     const { message } = req.body;
 
-    const poeApiKey = process.env.POE_API_KEY;
-    const poeModel = process.env.POE_MODEL || "gpt-4o-mini";
-
-    if (!poeApiKey) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return res.status(500).json({
-        error: "Poe API key is not configured"
+        error: "Anthropic API key is not configured"
+      });
+    }
+
+    if (typeof message !== "string" || !message.trim()) {
+      return res.status(400).json({
+        error: "Message is required"
+      });
+    }
+
+    if (message.length > MAX_MESSAGE_CHARS) {
+      return res.status(400).json({
+        error: `Message is too long (max ${MAX_MESSAGE_CHARS} characters)`
       });
     }
 
@@ -66,47 +80,39 @@ Rules:
 - Try and intepret the user's response. If you ask a question that seems rhetorical in nature, keep the context of the conversation in mind and respond in a way that makes sense. For example, if you ask "Do you have any pets?" and the user responds "I have a dog", you can respond with something like "That's awesome! Joe has a cat named Myrtle. She's 3 years old and loves to nap in the sun." This keeps the conversation flowing naturally while still sharing information about Joe.
 `;
 
-    const response = await fetch("https://api.poe.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${poeApiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: poeModel,
-        messages: [
-          {
-            role: "system",
-            content: joeContext
-          },
-          {
-            role: "user",
-            content: message
-          }
-        ]
-      })
+    const response = await client.messages.create({
+      model: process.env.ANTHROPIC_MODEL || "claude-haiku-5-5",
+      max_tokens: 300,
+      thinking: { type: "disabled" },
+      output_config: { effort: "low" },
+      system: joeContext,
+      messages: [{ role: "user", content: message }]
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      console.error("Poe API error:", errorText);
-
-      return res.status(500).json({
-        error: "Joe GPT had trouble responding"
+    if (response.stop_reason === "refusal") {
+      return res.status(200).json({
+        reply: "That one's outside my lane. Ask me something about Joe instead!"
       });
     }
 
-    const data = await response.json();
-
     const reply =
-      data?.choices?.[0]?.message?.content ||
-      "Joe GPT could not generate a response.";
+      response.content
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("")
+        .trim() || "Joe GPT could not generate a response.";
 
     return res.status(200).json({
       reply
     });
   } catch (error) {
+    if (error instanceof Anthropic.APIError) {
+      console.error(`Anthropic API error ${error.status}:`, error.message);
+      return res.status(500).json({
+        error: "Joe GPT had trouble responding"
+      });
+    }
+
     console.error("Joe GPT backend error:", error);
 
     return res.status(500).json({
