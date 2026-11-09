@@ -6,7 +6,7 @@ The frontend is hosted with **GitHub Pages** at:
 
 ➡️ [https://joebowen.github.io](https://joebowen.github.io)
 
-This site also includes **Joe GPT**, a custom chatbot that answers questions about my background, projects, coursework, interests, and resume. Because GitHub Pages only supports static frontend hosting, Joe GPT uses a separate **Vercel serverless backend** to securely call the Anthropic Claude API without exposing API keys in the browser.
+This site also includes **JoeGPT**, a custom chatbot that answers questions about my background, projects, coursework, interests, and resume. Because GitHub Pages only supports static frontend hosting, JoeGPT uses a separate **Vercel serverless backend** to securely call the Anthropic Claude API without exposing API keys in the browser.
 
 ---
 
@@ -16,7 +16,7 @@ This site also includes **Joe GPT**, a custom chatbot that answers questions abo
 - About Me section with education, interests, coursework, and resume link
 - Timeline section for education and work experience
 - Projects section highlighting technical work
-- Joe GPT chatbot for interactive questions about Joe Bowen
+- JoeGPT chatbot for interactive questions about Joe Bowen
 - Static frontend hosted on GitHub Pages
 - Secure backend API hosted on Vercel
 - API keys stored safely as Vercel environment variables
@@ -31,7 +31,7 @@ This site also includes **Joe GPT**, a custom chatbot that answers questions abo
 - **CSS3**
 - **JavaScript**
 
-### Backend for Joe GPT
+### Backend for JoeGPT
 
 - **Vercel Serverless Functions**
 - **Anthropic Claude API** (`@anthropic-ai/sdk`, Claude Haiku 5.5)
@@ -45,9 +45,9 @@ This site also includes **Joe GPT**, a custom chatbot that answers questions abo
 
 ---
 
-## Joe GPT Overview
+## JoeGPT Overview
 
-Joe GPT is an embedded chatbot on the portfolio site. It is designed to answer questions about:
+JoeGPT is an embedded chatbot on the portfolio site. It is designed to answer questions about:
 
 - Joe Bowen’s background
 - Education
@@ -58,7 +58,7 @@ Joe GPT is an embedded chatbot on the portfolio site. It is designed to answer q
 - Technical interests
 - Contact links, if available on the site
 
-Joe GPT is intentionally scoped to the portfolio. It should not answer unrelated general-knowledge questions, coding homework, news, politics, or anything unrelated to Joe Bowen or this website.
+JoeGPT is intentionally scoped to the portfolio. It should not answer unrelated general-knowledge questions, coding homework, news, politics, or anything unrelated to Joe Bowen or this website.
 
 ---
 
@@ -66,7 +66,7 @@ Joe GPT is intentionally scoped to the portfolio. It should not answer unrelated
 
 GitHub Pages is great for hosting static websites, but it cannot run backend code or securely store private API keys.
 
-Because Joe GPT needs to call the Anthropic API, the site uses Vercel for the backend API route:
+Because JoeGPT needs to call the Anthropic API, the site uses Vercel for the backend API route:
 
 `/api/joe-gpt`
 
@@ -108,7 +108,7 @@ The backend file is located at:
 
     api/joe-gpt.js
 
-This file handles requests from the frontend, applies Joe GPT’s system context/rules, and calls the Anthropic API.
+This file handles requests from the frontend, applies JoeGPT’s system context/rules, and calls the Anthropic API.
 
 The backend also includes CORS headers so that the GitHub Pages site can call the Vercel API.
 
@@ -158,7 +158,7 @@ After updating the backend or environment variables, deploy to production:
 
     vercel --prod
 
-This updates the live Vercel API endpoint used by Joe GPT.
+This updates the live Vercel API endpoint used by JoeGPT.
 
 ---
 
@@ -174,12 +174,12 @@ GitHub Pages will rebuild and publish the updated site.
 
 ---
 
-## Updating Joe GPT
+## Updating JoeGPT
 
-If you update Joe GPT’s backend logic, context, rules, CORS settings, or Anthropic API call, run:
+If you update JoeGPT’s backend logic, context, rules, CORS settings, or Anthropic API call, run:
 
     git add .
-    git commit -m "Update Joe GPT backend"
+    git commit -m "Update JoeGPT backend"
     git push origin main
     vercel --prod
 
@@ -250,7 +250,7 @@ Update with:
 
     vercel --prod
 
-### Joe GPT Flow
+### JoeGPT Flow
 
     GitHub Pages frontend
             ↓
@@ -258,7 +258,7 @@ Update with:
             ↓
     Anthropic API (Claude Haiku 5.5)
             ↓
-    Joe GPT response
+    JoeGPT response
             ↓
     GitHub Pages frontend
 

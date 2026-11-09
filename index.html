@@ -315,7 +315,7 @@
 
     .location-caption strong { color: #fff; }
 
-    /* ── Joe GPT (compact card version) ── */
+    /* ── JoeGPT (compact card version) ── */
     .gpt-mini-chat {
       min-height: 80px;
       max-height: 280px;
@@ -1098,7 +1098,7 @@
           <div class="card-label">About Me</div>
           <p>
             I am a recent graduate from the University of North Carolina at Chapel Hill,
-            where I received my bachelor's degree in Statistics and Analytics.
+            where I received my bachelor's degree in Statistics.
           </p>
           <p>
             I am currently pursuing my M.S. in Analytics from Georgia Tech with a concentration in Computational Data Analytics in order
@@ -1112,7 +1112,7 @@
 
         <!-- Music -->
         <div class="card card-music reveal" id="music-card">
-          <div class="card-label">Now Playing</div>
+          <div class="card-label">Current Favorites</div>
           <div class="music-link-wrap">
             <img
               id="song-cover"
@@ -1151,13 +1151,13 @@
           </p>
         </div>
 
-        <!-- Joe GPT -->
+        <!-- JoeGPT -->
         <div class="card card-gpt reveal">
-          <div class="card-label">Joe GPT</div>
+          <div class="card-label">JoeGPT</div>
           <div class="gpt-mini-chat" id="joe-gpt-chat">
             <div class="joe-gpt-message joe-gpt-message-bot">
-              <strong>Joe GPT:</strong>
-              <span>Hey, I'm Joe GPT. Ask me some questions!</span>
+              <strong>JoeGPT:</strong>
+              <span>Hey, I'm JoeGPT. Ask me some questions!</span>
             </div>
           </div>
 
@@ -1171,7 +1171,7 @@
             <input
               type="text"
               id="joe-gpt-input"
-              placeholder="Ask Joe GPT..."
+              placeholder="Ask JoeGPT..."
               autocomplete="off"
             />
             <button type="submit">Send</button>
@@ -1231,7 +1231,7 @@
               <h3 class="timeline-card-title">Bachelor's Degree</h3>
               <div class="timeline-meta"><strong>UNC Chapel Hill</strong></div>
               <div class="timeline-date">August 2023 - May 2026</div>
-              <p class="timeline-description">B.S. - Statistics and Analytics</p>
+              <p class="timeline-description">B.S. - Statistics</p>
             </div>
           </div>
         </article>
@@ -1555,7 +1555,7 @@
 
     initializeMiniLocationMap();
 
-    // ── Joe GPT ──
+    // ── JoeGPT ──
     const joeGptForm = document.getElementById("joe-gpt-form");
     const joeGptInput = document.getElementById("joe-gpt-input");
     const joeGptChat = document.getElementById("joe-gpt-chat");
@@ -1585,7 +1585,7 @@
       const message = document.createElement("div");
       message.className = "joe-gpt-message joe-gpt-message-bot joe-gpt-thinking";
       message.innerHTML = `
-        <strong>Joe GPT:</strong>
+        <strong>JoeGPT:</strong>
         <span>
           <span class="thinking-main">Thinking
             <span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -1647,13 +1647,13 @@
         removeJoeGptThinkingMessage(thinking);
 
         if (!response.ok) {
-          addJoeGptMessage("Joe GPT", data.error || "Something went wrong. Please try again later.", "bot");
+          addJoeGptMessage("JoeGPT", data.error || "Something went wrong. Please try again later.", "bot");
           return;
         }
-        addJoeGptMessage("Joe GPT", data.reply || "I could not generate a response.", "bot");
+        addJoeGptMessage("JoeGPT", data.reply || "I could not generate a response.", "bot");
       } catch {
         removeJoeGptThinkingMessage(thinking);
-        addJoeGptMessage("Joe GPT", "I could not connect to the backend yet.", "bot");
+        addJoeGptMessage("JoeGPT", "I could not connect to the backend yet.", "bot");
       } finally {
         joeGptIsThinking = false;
         setJoeGptControlsDisabled(false);
