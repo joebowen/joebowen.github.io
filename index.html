@@ -318,6 +318,12 @@
       transform: scale(0.98);
     }
 
+    /* Hide the static fallback until the first Spotify response (or failure). */
+    .music-loading .song-cover-link,
+    .music-loading .song-meta {
+      opacity: 0;
+    }
+
     /* ── Location Card ── */
     .mini-location-map {
       width: 100%;
@@ -1137,7 +1143,7 @@
         </div>
 
         <!-- Music -->
-        <div class="card card-music reveal" id="music-card">
+        <div class="card card-music reveal music-loading" id="music-card">
           <div class="card-label"><span class="live-dot" aria-hidden="true"></span><span id="music-label">Last Played</span></div>
           <div class="music-link-wrap">
             <a id="song-cover-link" class="song-cover-link" href="https://open.spotify.com/" target="_blank" rel="noopener">
@@ -1500,18 +1506,36 @@
       requestAnimationFrame(() => musicCard.classList.remove("music-card-changing"));
     }
 
+    const SPOTIFY_CACHE_KEY = "spotify:last";
+
     async function updateSpotify() {
       try {
-        const response = await fetch(SPOTIFY_API);
+        const response = await fetch(SPOTIFY_API, { cache: "no-store" });
         if (!response.ok) return;
         const data = await response.json();
-        if (data?.track) await renderSpotify(data);
+        if (data?.track) {
+          await renderSpotify(data);
+          try { localStorage.setItem(SPOTIFY_CACHE_KEY, JSON.stringify(data)); } catch {}
+        }
       } catch {
-        // Keep whatever is showing (static fallback on first load).
+        // Keep whatever is showing (cached track or static fallback).
+      } finally {
+        musicCard.classList.remove("music-loading");
       }
     }
 
-    updateSpotify();
+    // Show the last known track instantly on repeat visits instead of the static fallback.
+    let cachedRender = Promise.resolve();
+    try {
+      const cached = JSON.parse(localStorage.getItem(SPOTIFY_CACHE_KEY));
+      if (cached?.track) {
+        cachedRender = renderSpotify(cached)
+          .catch(() => {})
+          .finally(() => musicCard.classList.remove("music-loading"));
+      }
+    } catch {}
+
+    cachedRender.then(updateSpotify);
     setInterval(() => {
       if (document.visibilityState === "visible") updateSpotify();
     }, SPOTIFY_POLL_MS);

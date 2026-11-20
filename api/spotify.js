@@ -78,9 +78,16 @@ async function getCurrentlyPlaying(accessToken) {
   }
 
   const data = await response.json();
-  // Ignore podcasts/ads and paused playback; fall back to last played instead.
-  if (!data?.is_playing || data.currently_playing_type !== "track" || !data.item) {
+  // Ignore podcasts/ads; fall back to recently-played instead.
+  if (data?.currently_playing_type !== "track" || !data.item) {
     return null;
+  }
+
+  // A paused track is the real "last played" song: recently-played only logs
+  // a track once it finishes or is skipped, so it would show the one before.
+  if (!data.is_playing) {
+    const pausedAt = data.timestamp ? new Date(data.timestamp).toISOString() : null;
+    return { isPlaying: false, playedAt: pausedAt, track: formatTrack(data.item) };
   }
 
   return { isPlaying: true, playedAt: null, track: formatTrack(data.item) };
