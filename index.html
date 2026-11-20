@@ -10,12 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="preload" as="image" href="images/album-covers/hers.jpg">
-  <link rel="preload" as="image" href="images/album-covers/sombr.png">
-  <link rel="preload" as="image" href="images/album-covers/backseatlovers.jpg">
-  <link rel="preload" as="image" href="images/album-covers/Daft_Punk.png">
-  <link rel="preload" as="image" href="images/album-covers/solonholt.jpg">
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
@@ -268,10 +262,37 @@
       line-height: 1.25;
     }
 
-    .audio-player { width: 100%; margin-top: 8px; }
+    .song-cover-link { flex-shrink: 0; display: block; line-height: 0; }
+
+    .song-status {
+      margin: 6px 0 0;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .live-dot {
+      display: none;
+      width: 8px;
+      height: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #1ed760;
+      vertical-align: middle;
+      animation: live-pulse 1.6s ease-in-out infinite;
+    }
+
+    .music-playing .live-dot { display: inline-block; }
+
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
 
     .shuffle-btn {
-      margin-top: 12px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 4px;
       width: 100%;
       border: 1px solid var(--border);
       border-radius: 999px;
@@ -1117,30 +1138,29 @@
 
         <!-- Music -->
         <div class="card card-music reveal" id="music-card">
-          <div class="card-label">Current Favorites</div>
+          <div class="card-label"><span class="live-dot" aria-hidden="true"></span><span id="music-label">Current Favorites</span></div>
           <div class="music-link-wrap">
-            <img
-              id="song-cover"
-              src="images/album-covers/hers.jpg"
-              alt="What Once Was cover art"
-              class="song-cover"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-            />
+            <a id="song-cover-link" class="song-cover-link" href="https://open.spotify.com/" target="_blank" rel="noopener">
+              <img
+                id="song-cover"
+                src="images/album-covers/hers.jpg"
+                alt="What Once Was cover art"
+                class="song-cover"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </a>
             <div class="song-meta">
               <p id="song-title" class="song-title">What Once Was</p>
               <p id="song-artist" class="song-artist">Her's</p>
+              <p id="song-status" class="song-status" hidden></p>
             </div>
           </div>
 
-          <audio id="song-player" class="audio-player" controls preload="metadata">
-            <source src="audio/Her's - What Once Was (Official Audio).mp3" type="audio/mpeg" />
-          </audio>
-
-          <button id="next-song-btn" class="shuffle-btn" type="button">
-            Next Song
-          </button>
+          <a id="spotify-link" class="shuffle-btn" href="https://open.spotify.com/" target="_blank" rel="noopener">
+            Open in Spotify
+          </a>
         </div>
 
         <!-- Location -->
@@ -1414,100 +1434,90 @@
 
     document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
-    // ── Music Player ──
-    const songs = [
-      {
-        title: "What Once Was",
-        artist: "Her's",
-        cover: "images/album-covers/hers.jpg",
-        audio: "audio/Her's - What Once Was (Official Audio).mp3"
-      },
-      {
-        title: "Homewrecker",
-        artist: "Sombr",
-        cover: "images/album-covers/sombr.png",
-        audio: "audio/sombr Homewrecker Audio.mp3"
-      },
-      {
-        title: "Dugout",
-        artist: "The Backseat Lovers",
-        cover: "images/album-covers/backseatlovers.jpg",
-        audio: "audio/Dugout.mp3"
-      },
-      {
-        title: "Digital Love",
-        artist: "Daft Punk",
-        cover: "images/album-covers/Daft_Punk.png",
-        audio: "audio/Daft Punk - Digital Love (Official Audio).mp3"
-      },
-      {
-        title: "Good Does It Do",
-        artist: "Solon Holt",
-        cover: "images/album-covers/solonholt.jpg",
-        audio: "audio/Good Does It Do.mp3"
-      }
-    ];
+    // ── Spotify Now Playing ──
+    const SPOTIFY_API = "https://joebowen-github-io.vercel.app/api/spotify";
+    const SPOTIFY_POLL_MS = 60000;
 
-    const coverCache = new Map();
+    const musicCard = document.getElementById("music-card");
+    const musicLabel = document.getElementById("music-label");
+    const songCover = document.getElementById("song-cover");
+    const songCoverLink = document.getElementById("song-cover-link");
+    const songTitle = document.getElementById("song-title");
+    const songArtist = document.getElementById("song-artist");
+    const songStatus = document.getElementById("song-status");
+    const spotifyLink = document.getElementById("spotify-link");
+
+    let lastTrackKey = null;
 
     function preloadImage(src) {
-      if (coverCache.has(src)) return coverCache.get(src);
-      const promise = new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(src);
         img.onerror = reject;
         img.src = src;
       });
-      coverCache.set(src, promise);
-      return promise;
     }
 
-    function preloadSongCovers() {
-      songs.forEach(song => preloadImage(song.cover).catch(() => {}));
+    function timeAgo(iso) {
+      const seconds = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+      if (seconds < 60) return "just now";
+      const units = [["day", 86400], ["hour", 3600], ["minute", 60]];
+      for (const [name, size] of units) {
+        const n = Math.floor(seconds / size);
+        if (n >= 1) return `${n} ${name}${n === 1 ? "" : "s"} ago`;
+      }
+      return "just now";
     }
 
-    const musicCard = document.getElementById("music-card");
-    const songCover = document.getElementById("song-cover");
-    const songTitle = document.getElementById("song-title");
-    const songArtist = document.getElementById("song-artist");
-    const songPlayer = document.getElementById("song-player");
-    const nextSongBtn = document.getElementById("next-song-btn");
+    async function renderSpotify(data) {
+      const track = data.track;
+      musicCard.classList.toggle("music-playing", data.isPlaying);
+      musicLabel.textContent = data.isPlaying ? "Now Playing" : "Last Played";
 
-    let currentSongIndex = 0;
-    let isSongChanging = false;
+      if (data.playedAt) {
+        songStatus.textContent = timeAgo(data.playedAt);
+        songStatus.hidden = false;
+      } else {
+        songStatus.hidden = true;
+      }
 
-    async function renderSong(index, autoplay = false) {
-      const song = songs[index];
+      const key = `${track.title}|${track.artist}`;
+      if (key === lastTrackKey) return;
+      lastTrackKey = key;
+
       musicCard.classList.add("music-card-changing");
-
-      try { await preloadImage(song.cover); } catch {}
-
-      songCover.src = song.cover;
-      songCover.alt = song.title + " cover art";
-      songTitle.textContent = song.title;
-      songArtist.textContent = song.artist;
-      songPlayer.src = song.audio;
-      songPlayer.load();
-
-      if (autoplay) songPlayer.play().catch(() => {});
-
+      if (track.cover) {
+        try { await preloadImage(track.cover); } catch {}
+        songCover.src = track.cover;
+      }
+      songCover.alt = `${track.title} cover art`;
+      songTitle.textContent = track.title;
+      songArtist.textContent = track.artist;
+      if (track.url) {
+        songCoverLink.href = track.url;
+        spotifyLink.href = track.url;
+      }
       requestAnimationFrame(() => musicCard.classList.remove("music-card-changing"));
     }
 
-    async function playNextSong() {
-      if (isSongChanging) return;
-      isSongChanging = true;
-      nextSongBtn.disabled = true;
-      currentSongIndex = (currentSongIndex + 1) % songs.length;
-      await renderSong(currentSongIndex, true);
-      nextSongBtn.disabled = false;
-      isSongChanging = false;
+    async function updateSpotify() {
+      try {
+        const response = await fetch(SPOTIFY_API);
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data?.track) await renderSpotify(data);
+      } catch {
+        // Keep whatever is showing (static fallback on first load).
+      }
     }
 
-    songPlayer.addEventListener("ended", playNextSong);
-    nextSongBtn.addEventListener("click", playNextSong);
-    preloadSongCovers();
-    renderSong(currentSongIndex);
+    updateSpotify();
+    setInterval(() => {
+      if (document.visibilityState === "visible") updateSpotify();
+    }, SPOTIFY_POLL_MS);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") updateSpotify();
+    });
 
     // ── Mini Location Map ──
     const OSM_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
