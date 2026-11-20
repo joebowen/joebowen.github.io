@@ -34,8 +34,7 @@ export default async function handler(req, res) {
 
     const track = (await getCurrentlyPlaying(accessToken)) || (await getLastPlayed(accessToken));
 
-    // Short edge cache so many visitors don't each hit Spotify.
-    res.setHeader("Cache-Control", "public, s-maxage=30, stale-while-revalidate=60");
+    res.setHeader("Cache-Control", "no-store");
     return res.status(200).json(track || { isPlaying: false, track: null });
   } catch (error) {
     console.error("Spotify API error:", error);
