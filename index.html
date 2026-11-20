@@ -1138,7 +1138,7 @@
 
         <!-- Music -->
         <div class="card card-music reveal" id="music-card">
-          <div class="card-label"><span class="live-dot" aria-hidden="true"></span><span id="music-label">Current Favorites</span></div>
+          <div class="card-label"><span class="live-dot" aria-hidden="true"></span><span id="music-label">My Last Track</span></div>
           <div class="music-link-wrap">
             <a id="song-cover-link" class="song-cover-link" href="https://open.spotify.com/" target="_blank" rel="noopener">
               <img
@@ -1439,7 +1439,6 @@
     const SPOTIFY_POLL_MS = 60000;
 
     const musicCard = document.getElementById("music-card");
-    const musicLabel = document.getElementById("music-label");
     const songCover = document.getElementById("song-cover");
     const songCoverLink = document.getElementById("song-cover-link");
     const songTitle = document.getElementById("song-title");
@@ -1472,7 +1471,6 @@
     async function renderSpotify(data) {
       const track = data.track;
       musicCard.classList.toggle("music-playing", data.isPlaying);
-      musicLabel.textContent = data.isPlaying ? "Now Playing" : "Last Played";
 
       if (data.playedAt) {
         songStatus.textContent = timeAgo(data.playedAt);
